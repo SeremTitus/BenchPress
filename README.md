@@ -3,6 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-orange?style=for-the-badge&logo=python&logoColor=white)
 ![Selenium](https://img.shields.io/badge/Selenium-green?style=for-the-badge&logo=Selenium&logoColor=white)
 ![Pywinauto](https://img.shields.io/badge/Pywinauto-purple?style=for-the-badge)
+![Pyautogui](https://img.shields.io/badge/Pyautogui-green?style=for-the-badge)
 
 Flow's Dojo
 ============
