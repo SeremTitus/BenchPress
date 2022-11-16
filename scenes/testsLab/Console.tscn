@@ -207,7 +207,7 @@ popup_exclusive = true
 window_title = "Select py"
 resizable = true
 mode_overrides_title = false
-mode = 1
+mode = 0
 access = 2
 
 [connection signal="item_selected" from="HBoxContainer/ActionTestLab/GridContainer/SelectProcess" to="." method="_on_SelectProcess_item_selected"]
@@ -216,4 +216,5 @@ access = 2
 [connection signal="pressed" from="HBoxContainer/ActionTestLab/GridContainer/What is Run" to="." method="_on_What_is_Run_pressed"]
 [connection signal="pressed" from="HBoxContainer/ActionTestLab/GridContainer/RunScript" to="." method="_on_Run_Script_pressed"]
 [connection signal="pressed" from="HBoxContainer/ActionTestLab/GridContainer/KillSelectedProcess" to="." method="_on_KillCurrentProcess_pressed"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_files_selected"]
 [connection signal="files_selected" from="FileDialog" to="." method="_on_FileDialog_files_selected"]

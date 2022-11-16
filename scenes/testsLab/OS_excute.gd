@@ -1,9 +1,9 @@
 extends Node
 
 
-export var executablePath:String = 'python.exe'
-export var arg = ['']
-export var FilePath =['testsLab\\helloworld.py']
+export var executablePath:String ='python.exe'# 'cmd.exe'
+export var arg:PoolStringArray = ['']#['/C','python.exe']
+export var FilePath =''
 var threadsdict:Dictionary ={}#MAY BE BE REPLACED WITH  GODOT'S MUTEX
 
 onready var filedialog = $'FileDialog'
@@ -19,16 +19,6 @@ func _ready():
 	ToolTip.bbcode_text = 'Welcome to Test Console \n'
 
 func _process(_delta):
-	if  select_changed:
-		selectProcess.clear()
-		for threads in threadsdict:
-			if threadsdict.has(threads):
-				selectProcess.add_item(str(threadsdict[threads]['thread'])+str(threadsdict[threads]['scriptname']),int(threads))
-				selectProcess.add_separator()
-		selectProcess.selected = selectProcess.get_item_index(selected_thread)
-		if selectProcess.get_item_count ( ) <= 0:
-			selectProcess.add_item('No Active Process')
-		select_changed= false
 	for threads in threadsdict:
 		if threadsdict.has(threads):
 			if not(threadsdict[threads]['output'].empty()):
@@ -43,7 +33,16 @@ func _process(_delta):
 					if threadsdict.has(treads_key):
 						selected_thread = treads_key
 				select_changed = true
-			
+	if  select_changed:
+		selectProcess.clear()
+		for threads in threadsdict:
+			if threadsdict.has(threads):
+				selectProcess.add_item(str(threadsdict[threads]['thread'])+str(threadsdict[threads]['scriptname']),int(threads))
+				selectProcess.add_separator()
+		selectProcess.selected = selectProcess.get_item_index(selected_thread)
+		if selectProcess.get_item_count ( ) <= 0:
+			selectProcess.add_item('No Active Process')
+		select_changed= false
 func _on_SelectProcess_item_selected(index):
 	selected_thread = selectProcess.get_item_id(index)
 
@@ -71,23 +70,30 @@ func _on_select_script_pressed():
 	filedialog.popup()
 
 func _on_FileDialog_files_selected(paths):
-	FilePath  = paths
+	var strpath:String=''
+	for stri in paths:
+		if strpath == '\\': stri = '/'
+		strpath += stri
+	FilePath = strpath
 
 func _on_Run_Script_pressed():
 	var newindex:int = 0
 	for treads_key in threadsdict:
 		if threadsdict.has(treads_key):
 			newindex = treads_key +1
-	threadsdict[newindex] ={'thread':Thread.new(),'pID':0,'output':[],'scriptname':str(arg + FilePath)}
+	threadsdict[newindex] ={'thread':Thread.new(),'pID':0,'output':[],'scriptname':str(FilePath)}
 	active_thread = newindex
 	selected_thread = newindex
 	threadsdict[active_thread]['thread'].start(self,"treaded_execute")
 	select_changed = true
 	
 func treaded_execute():
-	var input_arg = arg + FilePath
-	threadsdict[active_thread]['pID'] = OS.execute(executablePath,input_arg,true,threadsdict[active_thread]['output'])
-	
+	var input_arg = arg 
+	input_arg.append(FilePath)
+	if not(FilePath == ''):
+		threadsdict[active_thread]['pID'] = OS.execute(executablePath,input_arg,true,threadsdict[active_thread]['output'],true)
+	else:
+		add_text('File Path is Empty')
 func _on_KillCurrentProcess_pressed():
 	if threadsdict.has(selected_thread) and not (threadsdict[selected_thread]['thread'].is_alive()):
 		if threadsdict[selected_thread]['thread'].is_active() :
