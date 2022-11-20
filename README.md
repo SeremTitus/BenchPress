@@ -5,7 +5,7 @@
 ![Pywinauto](https://img.shields.io/badge/Pywinauto-purple?style=for-the-badge)
 ![Pyautogui](https://img.shields.io/badge/Pyautogui-green?style=for-the-badge)
 
-Flow's Dojo
+BenchPress
 ============
-Flow's Dojo is a easy to use automation tool for the Web-browsers, Desktop Application GUI and other automations. 
-Flow's Dojo automations are cross-platform,shared,launched remotely and schedulable.
+BenchPress is a easy to use automation tool for the Web-browsers, Desktop Application GUI and other automations. 
+BenchPress automations are cross-platform,shared,launched remotely and schedulable.
