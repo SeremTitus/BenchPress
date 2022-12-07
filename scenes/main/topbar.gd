@@ -1,12 +1,12 @@
 extends Control
 
 
-onready var file = $'HBoxContainer/file'
-onready var edit = $'HBoxContainer/edit'
-onready var debug = $'HBoxContainer/debug'
-onready var editor = $'HBoxContainer/editor'
-onready var help = $'HBoxContainer/help'
-onready var device = $'Right/HBoxContainer/device'
+onready var file = $"%file"
+onready var edit = $"%edit"
+onready var debug = $"%debug"
+onready var editor = $"%editor"
+onready var help = $"%help"
+onready var device = $"%device"
 
 
 func _ready():
@@ -20,8 +20,6 @@ func _ready():
 func file_item():
 	file.get_popup().add_item("New")
 	file.get_popup().add_item("Open")
-	#editor_item()
-	#Help_item()
 	file.get_popup().add_item("Save")
 	file.get_popup().add_item("Append")
 	file.get_popup().add_item("Export")

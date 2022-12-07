@@ -1,0 +1,155 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://scenes/elementUI/elementRep.gd" type="Script" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 0.0
+content_margin_right = 0.0
+content_margin_top = 0.0
+content_margin_bottom = 0.0
+bg_color = Color( 0.207843, 0.207843, 0.207843, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.760784, 0.760784, 0.760784, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 10
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 1, 0.756863, 0.113725, 0 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 1, 0.756863, 0.113725, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 10
+
+[sub_resource type="DynamicFontData" id=3]
+font_path = "res://assets/fonts/Roboto-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=4]
+size = 17
+use_filter = true
+font_data = SubResource( 3 )
+
+[sub_resource type="DynamicFontData" id=5]
+font_path = "res://assets/fonts/Roboto-Light.ttf"
+
+[sub_resource type="DynamicFont" id=6]
+size = 15
+use_filter = true
+font_data = SubResource( 5 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+content_margin_left = 10.0
+content_margin_right = 10.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+bg_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="ElementRep" type="PanelContainer"]
+margin_left = 1.0
+margin_right = 201.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 1 )
+
+[node name="highlight" type="PanelContainer" parent="."]
+visible = false
+margin_right = 200.0
+margin_bottom = 355.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 8 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 200.0
+margin_bottom = 51.0
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 196.0
+margin_bottom = 47.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer2" type="CenterContainer" parent="MarginContainer/HBoxContainer"]
+margin_right = 30.0
+margin_bottom = 30.0
+size_flags_vertical = 0
+
+[node name="icon" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+margin_right = 30.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 30, 30 )
+size_flags_vertical = 6
+texture = ExtResource( 2 )
+expand = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+margin_left = 34.0
+margin_right = 192.0
+margin_bottom = 43.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+margin_right = 158.0
+margin_bottom = 21.0
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 4 )
+text = "ADD VARIABLE"
+align = 1
+clip_text = true
+
+[node name="Description" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 25.0
+margin_right = 158.0
+margin_bottom = 43.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 6 )
+text = "Test description"
+autowrap = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+visible = false
+margin_top = 47.0
+margin_right = 158.0
+margin_bottom = 154.0
+custom_constants/margin_right = 7
+custom_constants/margin_bottom = 7
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer"]
+margin_right = 151.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 0, 100 )
+size_flags_horizontal = 3
+custom_styles/panel = SubResource( 9 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/PanelContainer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 141.0
+margin_bottom = 90.0

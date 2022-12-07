@@ -1,0 +1,156 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://scenes/elementUI/elementPropertyEdit.gd" type="Script" id=1]
+[ext_resource path="res://addons/MaxSizeContainer/max_size_container.gd" type="Script" id=2]
+[ext_resource path="res://scenes/elementUI/morph_data.tscn" type="PackedScene" id=3]
+
+[sub_resource type="StyleBoxFlat" id=36]
+bg_color = Color( 0.207843, 0.207843, 0.207843, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="DynamicFontData" id=4]
+font_path = "res://assets/fonts/noto_sans_ui_bold.ttf"
+
+[sub_resource type="DynamicFont" id=35]
+use_filter = true
+font_data = SubResource( 4 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 12
+use_filter = true
+font_data = SubResource( 4 )
+
+[sub_resource type="DynamicFontData" id=29]
+font_path = "res://assets/fonts/Roboto-Black.ttf"
+
+[sub_resource type="DynamicFont" id=38]
+size = 14
+use_filter = true
+font_data = SubResource( 29 )
+
+[sub_resource type="DynamicFontData" id=31]
+font_path = "res://assets/fonts/noto_sans_ui_bold.ttf"
+
+[sub_resource type="DynamicFont" id=37]
+size = 13
+use_filter = true
+font_data = SubResource( 31 )
+
+[node name="Control" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 36 )
+script = ExtResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 2
+custom_constants/margin_top = 2
+custom_constants/margin_left = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
+margin_left = 5.0
+margin_top = 2.0
+margin_right = 1022.0
+margin_bottom = 600.0
+
+[node name="content" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
+margin_right = 1017.0
+margin_bottom = 405.0
+rect_clip_content = true
+size_flags_horizontal = 3
+
+[node name="spacer" type="Control" parent="MarginContainer/ScrollContainer/content"]
+margin_right = 1017.0
+margin_bottom = 5.0
+rect_min_size = Vector2( 0, 5 )
+
+[node name="Title" type="Label" parent="MarginContainer/ScrollContainer/content"]
+unique_name_in_owner = true
+margin_top = 9.0
+margin_right = 1017.0
+margin_bottom = 33.0
+rect_min_size = Vector2( 0, 24 )
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 35 )
+text = "ADD VARIABLE"
+valign = 1
+autowrap = true
+uppercase = true
+
+[node name="doc" type="Label" parent="MarginContainer/ScrollContainer/content"]
+unique_name_in_owner = true
+margin_top = 37.0
+margin_right = 1017.0
+margin_bottom = 61.0
+rect_min_size = Vector2( 0, 24 )
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0.427451, 1, 0.745098, 1 )
+custom_fonts/font = SubResource( 6 )
+text = "Doc Example"
+valign = 1
+autowrap = true
+
+[node name="parameter" type="VBoxContainer" parent="MarginContainer/ScrollContainer/content"]
+unique_name_in_owner = true
+margin_top = 65.0
+margin_right = 1017.0
+margin_bottom = 377.0
+
+[node name="morph_data" parent="MarginContainer/ScrollContainer/content/parameter" instance=ExtResource( 3 )]
+margin_right = 1017.0
+margin_bottom = 312.0
+
+[node name="OutputVar" type="HFlowContainer" parent="MarginContainer/ScrollContainer/content"]
+unique_name_in_owner = true
+margin_top = 381.0
+margin_right = 1017.0
+margin_bottom = 405.0
+custom_constants/vseparation = 2
+custom_constants/hseparation = 2
+
+[node name="lable" type="Label" parent="MarginContainer/ScrollContainer/content/OutputVar"]
+unique_name_in_owner = true
+margin_right = 54.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 0, 24 )
+custom_colors/font_color = Color( 0.564706, 0.454902, 1, 1 )
+custom_fonts/font = SubResource( 38 )
+text = "Output >"
+valign = 1
+
+[node name="flowVariables" type="MarginContainer" parent="MarginContainer/ScrollContainer/content/OutputVar"]
+unique_name_in_owner = true
+visible = false
+margin_left = 86.0
+margin_right = 236.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 150, 26 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 2 )
+max_size = Vector2( 150, 26 )
+constant_size = true
+
+[node name="value" type="LineEdit" parent="MarginContainer/ScrollContainer/content/OutputVar/flowVariables"]
+margin_right = 150.0
+margin_bottom = 28.0
+focus_mode = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 37 )
+text = "var"
+align = 1
+editable = false
+caret_blink = true
+caret_blink_speed = 0.5

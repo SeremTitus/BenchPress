@@ -92,6 +92,8 @@ func treaded_execute():
 	input_arg.append(FilePath)
 	if not(FilePath == ''):
 		threadsdict[active_thread]['pID'] = OS.execute(executablePath,input_arg,true,threadsdict[active_thread]['output'],true)
+		# warning-ignore:return_value_discarded
+		OS.kill(threadsdict[active_thread]['pID'])
 	else:
 		add_text('File Path is Empty')
 func _on_KillCurrentProcess_pressed():
@@ -99,7 +101,6 @@ func _on_KillCurrentProcess_pressed():
 		if threadsdict[selected_thread]['thread'].is_active() :
 			# warning-ignore:return_value_discarded
 			threadsdict[selected_thread]['thread'].wait_to_finish()
-			#OS.kill(threadsdict[selected_thread]['pID'])
 			# warning-ignore:return_value_discarded
 			threadsdict.erase(selected_thread)
 		else:

@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/MaxSizeContainer/max_size_container.gd" type="Script" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://assets/theme/menubutton.tres" type="Theme" id=3]
+[ext_resource path="res://scenes/elementUI/PropertiesDispay/variablesLocator.gd" type="Script" id=4]
+
+[node name="variablesLocator" type="Panel"]
+margin_right = 26.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 26, 26 )
+size_flags_vertical = 0
+script = ExtResource( 4 )
+
+[node name="variablesLocator" type="MarginContainer" parent="."]
+margin_right = 26.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 26, 26 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+max_size = Vector2( 26, 26 )
+constant_size = true
+
+[node name="TextureRect" type="TextureRect" parent="variablesLocator"]
+margin_right = 26.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+texture = ExtResource( 2 )
+expand = true
+
+[node name="PopupMenu" type="PopupMenu" parent="variablesLocator/TextureRect"]
+unique_name_in_owner = true
+margin_top = 27.0
+margin_right = 250.0
+margin_bottom = 277.0
+rect_min_size = Vector2( 120, 250 )
+theme = ExtResource( 3 )
+
+[connection signal="gui_input" from="variablesLocator/TextureRect" to="." method="_on_TextureRect_gui_input"]

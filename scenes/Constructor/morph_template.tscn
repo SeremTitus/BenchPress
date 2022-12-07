@@ -1,0 +1,87 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://addons/MaxSizeContainer/max_size_container.gd" type="Script" id=1]
+[ext_resource path="res://assets/icons/bin.svg" type="Texture" id=2]
+[ext_resource path="res://scenes/Constructor/morph_template.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFontData" id=29]
+font_path = "res://assets/fonts/noto_sans_ui_bold.ttf"
+
+[sub_resource type="DynamicFont" id=7]
+size = 11
+use_filter = true
+font_data = SubResource( 29 )
+
+[node name="morph_template" type="HBoxContainer"]
+margin_top = 23.0
+margin_right = 1016.0
+margin_bottom = 49.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+script = ExtResource( 3 )
+
+[node name="MaxSizeContainer3" type="MarginContainer" parent="."]
+margin_right = 478.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 478, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+max_size = Vector2( 478, -1 )
+constant_size = true
+
+[node name="Morph" type="LineEdit" parent="MaxSizeContainer3"]
+margin_right = 478.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 7 )
+placeholder_text = "base"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="MaxSizeContainer4" type="MarginContainer" parent="."]
+margin_left = 482.0
+margin_right = 988.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 506, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+max_size = Vector2( 506, -1 )
+constant_size = true
+
+[node name="Feature" type="LineEdit" parent="MaxSizeContainer4"]
+margin_right = 506.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 7 )
+placeholder_text = "Windows,MacOS,Linux,BSD.Android,IOS,AllPlatform,CustomFeature"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="MaxSizeContainer5" type="MarginContainer" parent="."]
+margin_left = 992.0
+margin_right = 1016.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 24, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+max_size = Vector2( 24, -1 )
+constant_size = true
+
+[node name="TextureRect" type="TextureRect" parent="MaxSizeContainer5"]
+margin_right = 24.0
+margin_bottom = 26.0
+texture = ExtResource( 2 )
+expand = true
+
+[connection signal="text_changed" from="MaxSizeContainer3/Morph" to="." method="_on_Morph_text_changed"]
+[connection signal="text_changed" from="MaxSizeContainer4/Feature" to="." method="_on_Feature_text_changed"]
+[connection signal="gui_input" from="MaxSizeContainer5/TextureRect" to="." method="_on_TextureRect_gui_input"]

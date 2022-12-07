@@ -1,0 +1,1117 @@
+[gd_scene load_steps=34 format=2]
+
+[ext_resource path="res://scenes/elementUI/elementRep.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/elementUI/elementPropertyEdit.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Constructor/properties_template.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/Constructor/OptionButtonExtend.gd" type="Script" id=4]
+[ext_resource path="res://scenes/Constructor/Constructor.gd" type="Script" id=5]
+[ext_resource path="res://scenes/Constructor/icon.gd" type="Script" id=6]
+[ext_resource path="res://icon.png" type="Texture" id=7]
+[ext_resource path="res://scenes/Constructor/morph_template.tscn" type="PackedScene" id=8]
+[ext_resource path="res://addons/MaxSizeContainer/max_size_container.gd" type="Script" id=9]
+[ext_resource path="res://scenes/Constructor/properties.gd" type="Script" id=10]
+[ext_resource path="res://scenes/Constructor/MorphsList.gd" type="Script" id=11]
+[ext_resource path="res://scenes/Constructor/code_template.tscn" type="PackedScene" id=12]
+
+[sub_resource type="StyleBoxFlat" id=27]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[sub_resource type="StyleBoxFlat" id=32]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[sub_resource type="DynamicFontData" id=29]
+font_path = "res://assets/fonts/noto_sans_ui_bold.ttf"
+
+[sub_resource type="DynamicFont" id=7]
+size = 11
+use_filter = true
+font_data = SubResource( 29 )
+
+[sub_resource type="DynamicFontData" id=30]
+font_path = "res://assets/fonts/Roboto-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=5]
+use_filter = true
+font_data = SubResource( 30 )
+
+[sub_resource type="StyleBoxFlat" id=24]
+bg_color = Color( 0.172549, 0.164706, 0.196078, 1 )
+
+[sub_resource type="DynamicFontData" id=37]
+font_path = "res://assets/fonts/Roboto-Black.ttf"
+
+[sub_resource type="DynamicFont" id=20]
+size = 15
+use_filter = true
+font_data = SubResource( 37 )
+
+[sub_resource type="StyleBoxFlat" id=36]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.4312, 0.4116, 0.49, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id=35]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.3901, 0.47, 0.440703, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id=21]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.172549, 0.164706, 0.196078, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id=13]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[sub_resource type="DynamicFontData" id=8]
+font_path = "res://assets/fonts/Roboto-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=9]
+size = 13
+use_filter = true
+font_data = SubResource( 8 )
+
+[sub_resource type="StyleBoxFlat" id=12]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.203922, 0.196078, 0.196078, 0 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.113725, 0.113725, 0.113725, 1 )
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id=31]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[sub_resource type="DynamicFontData" id=4]
+font_path = "res://assets/fonts/noto_sans_ui_bold.ttf"
+
+[sub_resource type="DynamicFont" id=17]
+use_filter = true
+font_data = SubResource( 4 )
+
+[sub_resource type="DynamicFont" id=18]
+use_filter = true
+font_data = SubResource( 4 )
+
+[sub_resource type="StyleBoxFlat" id=33]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.207843, 0.207843, 0.207843, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="ElementConstructor" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 5 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.145098, 0.145098, 0.164706, 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 3.0
+margin_right = 1021.0
+margin_bottom = 597.0
+rect_clip_content = true
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
+margin_right = 1018.0
+margin_bottom = 555.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 27 )
+
+[node name="Flow Element" type="Tabs" parent="VBoxContainer/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 24.0
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer/TabContainer/Flow Element"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 32 )
+tab_align = 2
+
+[node name="Details" type="ScrollContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details"]
+margin_right = 1018.0
+margin_bottom = 507.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer"]
+margin_right = 1018.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/HBoxContainer"]
+margin_right = 1018.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="iconFileDialog" type="FileDialog" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/HBoxContainer/CenterContainer"]
+unique_name_in_owner = true
+margin_left = 309.0
+margin_top = -150.0
+margin_right = 709.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 400, 300 )
+window_title = "Open a File"
+resizable = true
+mode = 0
+access = 2
+filters = PoolStringArray( "*.png;PNG", "*.svg;SVG", "*.jpg;JPG" )
+
+[node name="Details" type="VBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer"]
+margin_top = 4.0
+margin_right = 1018.0
+margin_bottom = 507.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="LineEdit" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details"]
+unique_name_in_owner = true
+margin_left = 419.0
+margin_right = 599.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 180, 0 )
+size_flags_horizontal = 6
+custom_fonts/font = SubResource( 7 )
+align = 1
+placeholder_text = "Title: ADD VARIABLE"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="spacer2" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details"]
+margin_top = 30.0
+margin_right = 1018.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="items" type="VBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details"]
+margin_top = 44.0
+margin_right = 1018.0
+margin_bottom = 503.0
+
+[node name="item" type="HBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items"]
+margin_right = 1018.0
+margin_bottom = 30.0
+
+[node name="spacer" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item"]
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="Lable" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item"]
+margin_left = 4.0
+margin_top = 5.0
+margin_right = 113.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 109, 0 )
+custom_fonts/font = SubResource( 5 )
+text = "Type"
+
+[node name="Type" type="OptionButton" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item"]
+unique_name_in_owner = true
+margin_left = 117.0
+margin_right = 1014.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 26 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/normal = SubResource( 24 )
+script = ExtResource( 4 )
+OptionItems = PoolStringArray( "Element", "Inheritable", "Errorhandler" )
+
+[node name="spacer2" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item"]
+margin_left = 1018.0
+margin_right = 1018.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="item2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items"]
+margin_top = 34.0
+margin_right = 1018.0
+margin_bottom = 64.0
+
+[node name="spacer" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item2"]
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="Lable" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item2"]
+margin_left = 4.0
+margin_top = 5.0
+margin_right = 113.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 109, 0 )
+custom_fonts/font = SubResource( 5 )
+text = "Library"
+
+[node name="Library" type="LineEdit" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item2"]
+unique_name_in_owner = true
+margin_left = 117.0
+margin_right = 1014.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 7 )
+placeholder_text = "Library name the flow element is part of"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="spacer2" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item2"]
+margin_left = 1018.0
+margin_right = 1018.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="item3" type="HBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items"]
+margin_top = 68.0
+margin_right = 1018.0
+margin_bottom = 98.0
+
+[node name="spacer" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item3"]
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="Lable" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item3"]
+margin_left = 4.0
+margin_top = 5.0
+margin_right = 113.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 109, 0 )
+custom_fonts/font = SubResource( 5 )
+text = "Description"
+
+[node name="Description" type="LineEdit" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item3"]
+unique_name_in_owner = true
+margin_left = 117.0
+margin_right = 1014.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 7 )
+placeholder_text = "Describe what the Flow Element does"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="spacer2" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item3"]
+margin_left = 1018.0
+margin_right = 1018.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="item4" type="HBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items"]
+margin_top = 102.0
+margin_right = 1018.0
+margin_bottom = 211.0
+
+[node name="spacer" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item4"]
+margin_bottom = 109.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="Lable" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item4"]
+margin_left = 4.0
+margin_right = 113.0
+margin_bottom = 109.0
+rect_min_size = Vector2( 0, 109 )
+custom_fonts/font = SubResource( 5 )
+text = "Documentation"
+
+[node name="Doc" type="TextEdit" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item4"]
+unique_name_in_owner = true
+margin_left = 117.0
+margin_right = 1014.0
+margin_bottom = 109.0
+rect_min_size = Vector2( 0, 70 )
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 7 )
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="spacer2" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item4"]
+margin_left = 1018.0
+margin_right = 1018.0
+margin_bottom = 109.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="item5" type="HBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items"]
+margin_top = 215.0
+margin_right = 1018.0
+margin_bottom = 245.0
+
+[node name="spacer" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item5"]
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="Lable" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item5"]
+margin_left = 4.0
+margin_top = 5.0
+margin_right = 113.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 109, 0 )
+custom_fonts/font = SubResource( 5 )
+text = "Icon"
+
+[node name="icon" type="TextureRect" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item5"]
+unique_name_in_owner = true
+margin_left = 117.0
+margin_right = 147.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 30, 30 )
+texture = ExtResource( 7 )
+expand = true
+script = ExtResource( 6 )
+
+[node name="add" type="Button" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item5"]
+margin_left = 151.0
+margin_right = 187.0
+margin_bottom = 30.0
+focus_mode = 0
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 20 )
+custom_styles/hover = SubResource( 36 )
+custom_styles/pressed = SubResource( 35 )
+custom_styles/focus = SubResource( 21 )
+custom_styles/disabled = SubResource( 21 )
+custom_styles/normal = SubResource( 21 )
+text = "Add"
+
+[node name="remove" type="Button" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item5"]
+margin_left = 191.0
+margin_right = 256.0
+margin_bottom = 30.0
+focus_mode = 0
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 20 )
+custom_styles/hover = SubResource( 36 )
+custom_styles/pressed = SubResource( 35 )
+custom_styles/focus = SubResource( 21 )
+custom_styles/disabled = SubResource( 21 )
+custom_styles/normal = SubResource( 21 )
+text = "Remove"
+
+[node name="item6" type="HBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items"]
+margin_top = 249.0
+margin_right = 1018.0
+margin_bottom = 279.0
+
+[node name="spacer" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item6"]
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="Lable" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item6"]
+margin_left = 4.0
+margin_top = 5.0
+margin_right = 113.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 109, 0 )
+custom_fonts/font = SubResource( 5 )
+text = "Group Path"
+
+[node name="GroupPath" type="LineEdit" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item6"]
+unique_name_in_owner = true
+margin_left = 117.0
+margin_right = 1014.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 7 )
+placeholder_text = "Variables/"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="spacer2" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item6"]
+margin_left = 1018.0
+margin_right = 1018.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="item7" type="HBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items"]
+margin_top = 283.0
+margin_right = 1018.0
+margin_bottom = 313.0
+
+[node name="spacer" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item7"]
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="Lable" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item7"]
+margin_left = 4.0
+margin_top = 5.0
+margin_right = 113.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 109, 0 )
+custom_fonts/font = SubResource( 5 )
+text = "Dependencies"
+
+[node name="Dependencies" type="LineEdit" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item7"]
+unique_name_in_owner = true
+margin_left = 117.0
+margin_right = 1014.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 7 )
+placeholder_text = "selenium,Pyautogui"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="spacer2" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item7"]
+margin_left = 1018.0
+margin_right = 1018.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="item8" type="HBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items"]
+margin_top = 317.0
+margin_right = 1018.0
+margin_bottom = 347.0
+
+[node name="spacer" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item8"]
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="Lable" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item8"]
+margin_left = 4.0
+margin_top = 5.0
+margin_right = 113.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 109, 0 )
+custom_fonts/font = SubResource( 5 )
+text = "Inherit"
+
+[node name="Inherit" type="LineEdit" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item8"]
+unique_name_in_owner = true
+margin_left = 117.0
+margin_right = 1014.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 7 )
+placeholder_text = "easyselenium,"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="spacer2" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item8"]
+margin_left = 1018.0
+margin_right = 1018.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="item9" type="HBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items"]
+margin_top = 351.0
+margin_right = 1018.0
+margin_bottom = 381.0
+
+[node name="spacer" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item9"]
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="Lable" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item9"]
+margin_left = 4.0
+margin_top = 5.0
+margin_right = 113.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 109, 0 )
+custom_fonts/font = SubResource( 5 )
+text = "Iniciator"
+
+[node name="Iniciator" type="LineEdit" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item9"]
+unique_name_in_owner = true
+margin_left = 117.0
+margin_right = 1014.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 7 )
+placeholder_text = "builtin/Browser/Open Browser (<library>/<GroupPath>/<title>)"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="spacer2" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item9"]
+margin_left = 1018.0
+margin_right = 1018.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="item10" type="HBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items"]
+margin_top = 385.0
+margin_right = 1018.0
+margin_bottom = 415.0
+
+[node name="spacer" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item10"]
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="Lable" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item10"]
+margin_left = 4.0
+margin_top = 5.0
+margin_right = 113.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 109, 0 )
+custom_fonts/font = SubResource( 5 )
+text = "AntiIniciator"
+
+[node name="AntiIniciator" type="LineEdit" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item10"]
+unique_name_in_owner = true
+margin_left = 117.0
+margin_right = 1014.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 7 )
+placeholder_text = "builtin/Browser/Close Browser (<library>/<GroupPath>/<title>)"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="spacer2" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item10"]
+margin_left = 1018.0
+margin_right = 1018.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="item11" type="HBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items"]
+margin_top = 419.0
+margin_right = 1018.0
+margin_bottom = 459.0
+
+[node name="spacer" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item11"]
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="Lable" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item11"]
+margin_left = 4.0
+margin_top = 10.0
+margin_right = 113.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 109, 0 )
+custom_fonts/font = SubResource( 5 )
+text = "Parent"
+
+[node name="Parent" type="CheckButton" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item11"]
+unique_name_in_owner = true
+margin_left = 117.0
+margin_right = 193.0
+margin_bottom = 40.0
+
+[node name="spacer2" type="Control" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item11"]
+margin_left = 197.0
+margin_right = 197.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="Morphs and Properties" type="ScrollContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Morphs and Properties" type="VBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties"]
+margin_right = 1018.0
+margin_bottom = 507.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties"]
+margin_right = 1018.0
+margin_bottom = 251.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/bg = SubResource( 13 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/ScrollContainer"]
+margin_right = 1018.0
+margin_bottom = 251.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PyEditor" type="TabContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+margin_right = 1018.0
+margin_bottom = 251.0
+rect_min_size = Vector2( 0, 200 )
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 9 )
+custom_styles/panel = SubResource( 12 )
+tab_align = 0
+
+[node name="base" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/ScrollContainer/VBoxContainer/PyEditor" instance=ExtResource( 12 )]
+
+[node name="varMorph" type="TabContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties"]
+margin_top = 255.0
+margin_right = 1018.0
+margin_bottom = 507.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 31 )
+tab_align = 0
+
+[node name="morphs" type="Tabs" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 24.0
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1021.0
+margin_bottom = 189.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="MorphsList" type="VBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer"]
+unique_name_in_owner = true
+margin_right = 1016.0
+margin_bottom = 184.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 11 )
+
+[node name="lable" type="HBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer/MorphsList"]
+margin_right = 1016.0
+margin_bottom = 23.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="MaxSizeContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer/MorphsList/lable"]
+margin_right = 478.0
+margin_bottom = 23.0
+rect_min_size = Vector2( 478, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 9 )
+max_size = Vector2( 478, -1 )
+constant_size = true
+
+[node name="lable" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer/MorphsList/lable/MaxSizeContainer"]
+margin_right = 478.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 17 )
+text = "Lable"
+
+[node name="MaxSizeContainer2" type="MarginContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer/MorphsList/lable"]
+margin_left = 482.0
+margin_right = 988.0
+margin_bottom = 23.0
+rect_min_size = Vector2( 506, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 9 )
+max_size = Vector2( 506, -1 )
+constant_size = true
+
+[node name="lable2" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer/MorphsList/lable/MaxSizeContainer2"]
+margin_right = 506.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 18 )
+text = "Feature"
+
+[node name="morph_template" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer/MorphsList" instance=ExtResource( 8 )]
+margin_top = 27.0
+margin_bottom = 53.0
+
+[node name="Morph" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer/MorphsList/morph_template/MaxSizeContainer3" index="0"]
+text = "base"
+
+[node name="Feature" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer/MorphsList/morph_template/MaxSizeContainer4" index="0"]
+text = "ALLPlatforms"
+
+[node name="TextureRect" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer/MorphsList/morph_template/MaxSizeContainer5" index="0"]
+visible = false
+
+[node name="Add" type="Button" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs"]
+margin_left = 495.0
+margin_top = 194.0
+margin_right = 531.0
+margin_bottom = 222.0
+focus_mode = 0
+size_flags_horizontal = 6
+size_flags_vertical = 4
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 20 )
+custom_styles/hover = SubResource( 36 )
+custom_styles/pressed = SubResource( 35 )
+custom_styles/focus = SubResource( 21 )
+custom_styles/disabled = SubResource( 21 )
+custom_styles/normal = SubResource( 21 )
+text = "Add"
+
+[node name="variables" type="Tabs" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables"]
+margin_right = 1019.0
+margin_bottom = 216.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer"]
+margin_right = 1019.0
+margin_bottom = 184.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="propertiesList" type="VBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+margin_right = 1019.0
+margin_bottom = 184.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 10 )
+
+[node name="lable" type="HBoxContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList"]
+margin_right = 1021.0
+margin_bottom = 23.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="MaxSizeContainer10" type="MarginContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable"]
+margin_right = 100.0
+margin_bottom = 23.0
+rect_min_size = Vector2( 100, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 9 )
+max_size = Vector2( 100, -1 )
+constant_size = true
+
+[node name="lable" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable/MaxSizeContainer10"]
+margin_right = 100.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 17 )
+text = "Properties"
+
+[node name="MaxSizeContainer11" type="MarginContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable"]
+margin_left = 104.0
+margin_right = 204.0
+margin_bottom = 23.0
+rect_min_size = Vector2( 100, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 9 )
+max_size = Vector2( 100, -1 )
+constant_size = true
+
+[node name="lable2" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable/MaxSizeContainer11"]
+margin_right = 100.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 17 )
+text = "Py Variable"
+
+[node name="MaxSizeContainer12" type="MarginContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable"]
+margin_left = 208.0
+margin_right = 308.0
+margin_bottom = 23.0
+rect_min_size = Vector2( 100, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 9 )
+max_size = Vector2( 100, -1 )
+constant_size = true
+
+[node name="lable3" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable/MaxSizeContainer12"]
+margin_right = 100.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 17 )
+text = "morph"
+
+[node name="MaxSizeContainer13" type="MarginContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable"]
+margin_left = 312.0
+margin_right = 435.0
+margin_bottom = 23.0
+rect_min_size = Vector2( 90, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 9 )
+max_size = Vector2( 90, -1 )
+constant_size = true
+
+[node name="lable4" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable/MaxSizeContainer13"]
+margin_left = 16.0
+margin_right = 107.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 18 )
+text = "Type"
+
+[node name="MaxSizeContainer14" type="MarginContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable"]
+margin_left = 439.0
+margin_right = 562.0
+margin_bottom = 23.0
+rect_min_size = Vector2( 123, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 9 )
+max_size = Vector2( 123, -1 )
+constant_size = true
+
+[node name="lable5" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable/MaxSizeContainer14"]
+margin_right = 123.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 18 )
+text = "Display"
+
+[node name="MaxSizeContainer15" type="MarginContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable"]
+margin_left = 566.0
+margin_right = 764.0
+margin_bottom = 23.0
+rect_min_size = Vector2( 198, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 9 )
+max_size = Vector2( 198, -1 )
+constant_size = true
+
+[node name="lable6" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable/MaxSizeContainer15"]
+margin_right = 198.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 18 )
+text = "Display Type"
+
+[node name="MaxSizeContainer16" type="MarginContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable"]
+margin_left = 768.0
+margin_right = 891.0
+margin_bottom = 23.0
+rect_min_size = Vector2( 123, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 9 )
+max_size = Vector2( 123, -1 )
+constant_size = true
+
+[node name="lable7" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable/MaxSizeContainer16"]
+margin_right = 123.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 18 )
+text = "Default value"
+
+[node name="MaxSizeContainer17" type="MarginContainer" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable"]
+margin_left = 895.0
+margin_right = 991.0
+margin_bottom = 23.0
+rect_min_size = Vector2( 96, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 9 )
+max_size = Vector2( 96, -1 )
+constant_size = true
+
+[node name="lable8" type="Label" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList/lable/MaxSizeContainer17"]
+margin_right = 96.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 18 )
+text = "function"
+
+[node name="properties_template" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList" instance=ExtResource( 3 )]
+margin_top = 27.0
+margin_right = 1021.0
+margin_bottom = 53.0
+
+[node name="Add" type="Button" parent="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer"]
+margin_left = 491.0
+margin_top = 188.0
+margin_right = 527.0
+margin_bottom = 216.0
+focus_mode = 0
+size_flags_horizontal = 6
+size_flags_vertical = 4
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 20 )
+custom_styles/hover = SubResource( 36 )
+custom_styles/pressed = SubResource( 35 )
+custom_styles/focus = SubResource( 21 )
+custom_styles/disabled = SubResource( 21 )
+custom_styles/normal = SubResource( 21 )
+text = "Add"
+
+[node name="Preview" type="Tabs" parent="VBoxContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 24.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TabContainer/Preview"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Preview/ScrollContainer"]
+margin_right = 1018.0
+margin_bottom = 531.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 18
+
+[node name="ElementRep" parent="VBoxContainer/TabContainer/Preview/ScrollContainer/VBoxContainer" instance=ExtResource( 1 )]
+margin_left = 0.0
+margin_right = 1018.0
+margin_bottom = 51.0
+
+[node name="FlowElementEditor" parent="VBoxContainer/TabContainer/Preview/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 69.0
+margin_right = 1018.0
+margin_bottom = 441.0
+
+[node name="Manage Flow Element" type="Tabs" parent="VBoxContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 24.0
+
+[node name="HBoxContainer" type="PanelContainer" parent="VBoxContainer"]
+margin_top = 559.0
+margin_right = 1018.0
+margin_bottom = 597.0
+rect_clip_content = true
+size_flags_horizontal = 3
+custom_styles/panel = SubResource( 33 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1013.0
+margin_bottom = 33.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Draft" type="Button" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
+margin_left = 917.0
+margin_right = 961.0
+margin_bottom = 28.0
+focus_mode = 0
+size_flags_horizontal = 10
+size_flags_vertical = 4
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 20 )
+custom_styles/hover = SubResource( 36 )
+custom_styles/pressed = SubResource( 35 )
+custom_styles/focus = SubResource( 21 )
+custom_styles/disabled = SubResource( 21 )
+custom_styles/normal = SubResource( 21 )
+text = "Draft"
+
+[node name="Save" type="Button" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
+margin_left = 965.0
+margin_right = 1008.0
+margin_bottom = 28.0
+focus_mode = 0
+size_flags_horizontal = 12
+size_flags_vertical = 4
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 20 )
+custom_styles/hover = SubResource( 36 )
+custom_styles/pressed = SubResource( 35 )
+custom_styles/focus = SubResource( 21 )
+custom_styles/disabled = SubResource( 21 )
+custom_styles/normal = SubResource( 21 )
+text = "Save"
+
+[connection signal="file_selected" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/HBoxContainer/CenterContainer/iconFileDialog" to="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item5/icon" method="_on_iconFileDialog_file_selected"]
+[connection signal="text_changed" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/Title" to="." method="changesmade"]
+[connection signal="item_selected" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item/Type" to="." method="changesmade"]
+[connection signal="text_changed" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item2/Library" to="." method="changesmade"]
+[connection signal="text_changed" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item3/Description" to="." method="changesmade"]
+[connection signal="text_changed" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item4/Doc" to="." method="_on_Doc_text_changed"]
+[connection signal="Texture_Changed" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item5/icon" to="." method="changesmade"]
+[connection signal="button_down" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item5/add" to="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item5/icon" method="_on_add_button_down"]
+[connection signal="button_down" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item5/remove" to="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item5/icon" method="_on_remove_button_down"]
+[connection signal="text_changed" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item6/GroupPath" to="." method="changesmade"]
+[connection signal="text_changed" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item7/Dependencies" to="." method="changesmade"]
+[connection signal="text_changed" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item8/Inherit" to="." method="changesmade"]
+[connection signal="text_changed" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item9/Iniciator" to="." method="changesmade"]
+[connection signal="text_changed" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item10/AntiIniciator" to="." method="changesmade"]
+[connection signal="toggled" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Details/VBoxContainer/Details/items/item11/Parent" to="." method="changesmade"]
+[connection signal="emit_code" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/ScrollContainer/VBoxContainer/PyEditor/base" to="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer/MorphsList/morph_template" method="set_code"]
+[connection signal="changesmade" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer/MorphsList/morph_template" to="." method="changesmade"]
+[connection signal="morph_freed" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer/MorphsList/morph_template" to="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/ScrollContainer/VBoxContainer/PyEditor/base" method="freed"]
+[connection signal="morph_renamed" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer/MorphsList/morph_template" to="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/ScrollContainer/VBoxContainer/PyEditor/base" method="renamed"]
+[connection signal="button_down" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/Add" to="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer/MorphsList" method="_on_Add_button_down"]
+[connection signal="button_down" from="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/Add" to="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/variables/VBoxContainer/ScrollContainer/propertiesList" method="_on_Add_button_down"]
+
+[editable path="VBoxContainer/TabContainer/Flow Element/TabContainer/Morphs and Properties/Morphs and Properties/varMorph/morphs/ScrollContainer/MorphsList/morph_template"]

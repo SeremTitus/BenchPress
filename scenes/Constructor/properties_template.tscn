@@ -1,0 +1,243 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://addons/MaxSizeContainer/max_size_container.gd" type="Script" id=1]
+[ext_resource path="res://scenes/Constructor/OptionButtonExtend.gd" type="Script" id=2]
+[ext_resource path="res://scenes/Constructor/id.gd" type="Script" id=3]
+[ext_resource path="res://assets/icons/bin.svg" type="Texture" id=4]
+[ext_resource path="res://scenes/Constructor/property_template.gd" type="Script" id=5]
+
+[sub_resource type="DynamicFontData" id=29]
+font_path = "res://assets/fonts/noto_sans_ui_bold.ttf"
+
+[sub_resource type="DynamicFont" id=7]
+size = 11
+use_filter = true
+font_data = SubResource( 29 )
+
+[sub_resource type="StyleBoxFlat" id=24]
+bg_color = Color( 0.172549, 0.164706, 0.196078, 1 )
+
+[node name="properties_template" type="HBoxContainer"]
+margin_right = 1018.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+script = ExtResource( 5 )
+
+[node name="MaxSizeContainer10" type="MarginContainer" parent="."]
+margin_right = 100.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 100, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+max_size = Vector2( 100, -1 )
+constant_size = true
+
+[node name="Properties" type="LineEdit" parent="MaxSizeContainer10"]
+unique_name_in_owner = true
+margin_right = 100.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 7 )
+placeholder_text = "Enter Variable Name"
+caret_blink = true
+caret_blink_speed = 0.5
+script = ExtResource( 3 )
+
+[node name="MaxSizeContainer11" type="MarginContainer" parent="."]
+margin_left = 104.0
+margin_right = 204.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 100, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+max_size = Vector2( 100, -1 )
+constant_size = true
+
+[node name="Variable" type="LineEdit" parent="MaxSizeContainer11"]
+unique_name_in_owner = true
+margin_right = 100.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 7 )
+placeholder_text = "variable"
+caret_blink = true
+caret_blink_speed = 0.5
+script = ExtResource( 3 )
+
+[node name="MaxSizeContainer12" type="MarginContainer" parent="."]
+margin_left = 208.0
+margin_right = 308.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 100, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+max_size = Vector2( 100, -1 )
+constant_size = true
+
+[node name="Morph" type="OptionButton" parent="MaxSizeContainer12"]
+unique_name_in_owner = true
+margin_right = 100.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 0, 26 )
+size_flags_horizontal = 3
+custom_styles/normal = SubResource( 24 )
+clip_text = true
+script = ExtResource( 2 )
+
+[node name="MaxSizeContainer13" type="MarginContainer" parent="."]
+margin_left = 312.0
+margin_right = 402.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 90, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+max_size = Vector2( 90, -1 )
+constant_size = true
+
+[node name="Type" type="OptionButton" parent="MaxSizeContainer13"]
+unique_name_in_owner = true
+margin_right = 90.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 0, 26 )
+size_flags_horizontal = 3
+custom_styles/normal = SubResource( 24 )
+clip_text = true
+script = ExtResource( 2 )
+OptionItems = PoolStringArray( "int", "string", "bool", "list", "dictionary", "any", "tuple", "path" )
+
+[node name="MaxSizeContainer14" type="MarginContainer" parent="."]
+margin_left = 406.0
+margin_right = 529.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 123, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+max_size = Vector2( 123, -1 )
+constant_size = true
+
+[node name="Display" type="OptionButton" parent="MaxSizeContainer14"]
+unique_name_in_owner = true
+margin_right = 123.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 0, 26 )
+size_flags_horizontal = 3
+custom_styles/normal = SubResource( 24 )
+clip_text = true
+script = ExtResource( 2 )
+OptionItems = PoolStringArray( "LineEdit", "TextEdit", "RadioButton", "Options", "List", "Dictionary" )
+
+[node name="MaxSizeContainer15" type="MarginContainer" parent="."]
+margin_left = 533.0
+margin_right = 731.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 198, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+max_size = Vector2( 198, -1 )
+constant_size = true
+
+[node name="DisplayType" type="OptionButton" parent="MaxSizeContainer15"]
+unique_name_in_owner = true
+margin_right = 198.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 0, 26 )
+size_flags_horizontal = 3
+custom_styles/normal = SubResource( 24 )
+script = ExtResource( 2 )
+OptionItems = PoolStringArray( "ALL Allowed", "Display only", "Global variable only", "Flow variables only", "Display with Global variables", "Display with flow variables" )
+
+[node name="MaxSizeContainer16" type="MarginContainer" parent="."]
+margin_left = 735.0
+margin_right = 858.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 123, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+max_size = Vector2( 123, -1 )
+constant_size = true
+
+[node name="Default" type="LineEdit" parent="MaxSizeContainer16"]
+unique_name_in_owner = true
+margin_right = 123.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 7 )
+caret_blink = true
+caret_blink_speed = 0.5
+script = ExtResource( 3 )
+
+[node name="MaxSizeContainer17" type="MarginContainer" parent="."]
+margin_left = 862.0
+margin_right = 958.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 96, 0 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+max_size = Vector2( 96, -1 )
+constant_size = true
+
+[node name="InorOutOption" type="OptionButton" parent="MaxSizeContainer17"]
+unique_name_in_owner = true
+margin_right = 96.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 0, 26 )
+size_flags_horizontal = 3
+custom_styles/normal = SubResource( 24 )
+clip_text = true
+script = ExtResource( 2 )
+OptionItems = PoolStringArray( "Input", "Output" )
+
+[node name="MaxSizeContainer18" type="MarginContainer" parent="."]
+margin_left = 962.0
+margin_right = 988.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 26, 26 )
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+max_size = Vector2( 26, 26 )
+constant_size = true
+
+[node name="TextureRect" type="TextureRect" parent="MaxSizeContainer18"]
+margin_right = 26.0
+margin_bottom = 26.0
+texture = ExtResource( 4 )
+expand = true
+
+[connection signal="text_changed" from="MaxSizeContainer10/Properties" to="." method="changesmade"]
+[connection signal="text_changed" from="MaxSizeContainer11/Variable" to="." method="changesmade"]
+[connection signal="item_selected" from="MaxSizeContainer12/Morph" to="." method="changesmade"]
+[connection signal="item_selected" from="MaxSizeContainer13/Type" to="." method="changesmade"]
+[connection signal="item_selected" from="MaxSizeContainer14/Display" to="." method="changesmade"]
+[connection signal="item_selected" from="MaxSizeContainer15/DisplayType" to="." method="changesmade"]
+[connection signal="resized" from="MaxSizeContainer15/DisplayType" to="MaxSizeContainer15/DisplayType" method="change"]
+[connection signal="text_changed" from="MaxSizeContainer16/Default" to="." method="changesmade"]
+[connection signal="item_selected" from="MaxSizeContainer17/InorOutOption" to="." method="changesmade"]
+[connection signal="gui_input" from="MaxSizeContainer18/TextureRect" to="." method="_on_TextureRect_gui_input"]
