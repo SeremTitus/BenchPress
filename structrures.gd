@@ -1,7 +1,7 @@
 extends Node
 
 
-var flowElementStruct:Dictionary ={
+var ElementStructure:Dictionary ={
 	'Library' : '',
 	'Type':'Element',#Inheritable,errorhandler
 	'Title' : 'ADD VARIABLE',
@@ -35,30 +35,27 @@ var flowElementStruct:Dictionary ={
 		}
 	}
 
-var flowsStruct :Dictionary = {#loop-able keys are not fixed
-	#Placeholder key but Main maybe found in most flows
-	'Main' :{#loop-able keys are not fixed
-		'Added_ElementID':{#fixed keys
-			'parent' : '.',
-			'Enabled' : 'True',
-			'BreakingPoint': 'False',
-			'morphs' :['Base'],
-			'Properties':{#loop-able keys are not fixed
-				'Edited_Properties_Name' :'Value'#set_values
-				},
-			'errorhandlers':{#loop-able keys are not fixed
-				'Added_errorhandlerID':{
-					'Enabled' : 'True',
-					'Properties':{#loop-able keys are not fixed
-						'Edited_Properties_Name' :'Value'
-						}
+var ElementProperties :Dictionary = {#loop-able keys are not fixed
+	'Added_ElementID':{#fixed keys
+		'parent' : '.',
+		'Enabled' : 'True',
+		'BreakingPoint': 'False',
+		'morphs' :['Base'],
+		'Properties':{#loop-able keys are not fixed
+			'Edited_Properties_Name' :'Value'#set_values
+			},
+		'errorhandlers':{#loop-able keys are not fixed
+			'Added_errorhandlerID':{
+				'Enabled' : 'True',
+				'Properties':{#loop-able keys are not fixed
+					'Edited_Properties_Name' :'Value'
 					}
 				}
 			}
 		}
-	}
+		}
 
-var flowElementslist:Dictionary ={#loop-able, keys are not fixed
+var FlowStructure:Dictionary ={#loop-able, keys are not fixed
 	'ElementID' : flowElementStruct
 	}
 

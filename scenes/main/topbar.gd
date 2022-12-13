@@ -67,6 +67,3 @@ func device_item():
 	device.get_popup().add_radio_check_item("Local")
 	device.get_popup().set_item_disabled(0,true)
 	
-	
-	
-	

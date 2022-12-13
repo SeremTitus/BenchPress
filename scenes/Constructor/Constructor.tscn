@@ -1,6 +1,6 @@
 [gd_scene load_steps=34 format=2]
 
-[ext_resource path="res://scenes/elementUI/elementRep.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/elementUI/element.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/elementUI/elementPropertyEdit.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Constructor/properties_template.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/Constructor/OptionButtonExtend.gd" type="Script" id=4]

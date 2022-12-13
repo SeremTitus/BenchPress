@@ -11,33 +11,33 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="DynamicFontData" id=4]
+[sub_resource type="DynamicFontData" id=39]
 font_path = "res://assets/fonts/noto_sans_ui_bold.ttf"
 
 [sub_resource type="DynamicFont" id=35]
 use_filter = true
-font_data = SubResource( 4 )
+font_data = SubResource( 39 )
 
 [sub_resource type="DynamicFont" id=6]
 size = 12
 use_filter = true
-font_data = SubResource( 4 )
+font_data = SubResource( 39 )
 
-[sub_resource type="DynamicFontData" id=29]
+[sub_resource type="DynamicFontData" id=40]
 font_path = "res://assets/fonts/Roboto-Black.ttf"
 
 [sub_resource type="DynamicFont" id=38]
 size = 14
 use_filter = true
-font_data = SubResource( 29 )
+font_data = SubResource( 40 )
 
-[sub_resource type="DynamicFontData" id=31]
+[sub_resource type="DynamicFontData" id=41]
 font_path = "res://assets/fonts/noto_sans_ui_bold.ttf"
 
 [sub_resource type="DynamicFont" id=37]
 size = 13
 use_filter = true
-font_data = SubResource( 31 )
+font_data = SubResource( 41 )
 
 [node name="Control" type="PanelContainer"]
 anchor_right = 1.0
@@ -64,7 +64,7 @@ margin_bottom = 600.0
 
 [node name="content" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
 margin_right = 1017.0
-margin_bottom = 405.0
+margin_bottom = 423.0
 rect_clip_content = true
 size_flags_horizontal = 3
 
@@ -103,17 +103,17 @@ autowrap = true
 unique_name_in_owner = true
 margin_top = 65.0
 margin_right = 1017.0
-margin_bottom = 377.0
+margin_bottom = 395.0
 
 [node name="morph_data" parent="MarginContainer/ScrollContainer/content/parameter" instance=ExtResource( 3 )]
 margin_right = 1017.0
-margin_bottom = 312.0
+margin_bottom = 330.0
 
 [node name="OutputVar" type="HFlowContainer" parent="MarginContainer/ScrollContainer/content"]
 unique_name_in_owner = true
-margin_top = 381.0
+margin_top = 399.0
 margin_right = 1017.0
-margin_bottom = 405.0
+margin_bottom = 423.0
 custom_constants/vseparation = 2
 custom_constants/hseparation = 2
 

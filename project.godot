@@ -21,6 +21,11 @@ config/icon="res://icon.png"
 
 Global="*res://global.gd"
 
+[benchpress]
+
+elements/display_with_properties=false
+properties/dock_visible=true
+
 [display]
 
 window/dpi/allow_hidpi=true
@@ -29,6 +34,7 @@ window/stretch/aspect="expand"
 [editor]
 
 version_control_autoload_on_startup=true
+convert_text_resources_to_binary_on_export=true
 
 [editor_plugins]
 
@@ -37,6 +43,14 @@ enabled=PoolStringArray( "res://addons/MaxSizeContainer/plugin.cfg", "res://addo
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
+
+[input]
+
+ui_end={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777230,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [physics]
 
