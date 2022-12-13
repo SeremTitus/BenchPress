@@ -38,11 +38,15 @@ var ElementStructure:Dictionary ={
 var ElementProperties :Dictionary = {#loop-able keys are not fixed
 	'Added_ElementID':{#fixed keys
 		'parent' : '.',
+		'SourceLibrary':'',
 		'Enabled' : 'True',
 		'BreakingPoint': 'False',
 		'morphs' :['Base'],
 		'Properties':{#loop-able keys are not fixed
 			'Edited_Properties_Name' :'Value'#set_values
+			},
+		'ElementVariable':{#loop-able keys are not fixed
+			'Edited_Properties_Name' :'Name'#set_values
 			},
 		'errorhandlers':{#loop-able keys are not fixed
 			'Added_errorhandlerID':{
@@ -56,7 +60,12 @@ var ElementProperties :Dictionary = {#loop-able keys are not fixed
 		}
 
 var FlowStructure:Dictionary ={#loop-able, keys are not fixed
-	'ElementID' : flowElementStruct
+	'main' : ElementProperties
+	
+	}
+
+var flowElementslist:Dictionary ={
+	'Added_ElementID': ElementStructure
 	}
 
 var BenchPress :Dictionary = {
@@ -75,8 +84,8 @@ var BenchPress :Dictionary = {
 			'Value':''
 			}
 		},
-	'Flows': flowsStruct,
-	'FlowElements':flowElementslist, # if FileState is Flow flowElementslist only include used elements
+	'Flows': FlowStructure,
+	'ElementStructures':flowElementslist, # if FileState is Flow flowElementslist only include used elements
 	'Resourses':{#loop-able keys are not fixed
 		'Resourseid': {
 			'Name:':'',
@@ -89,8 +98,8 @@ var BenchPress :Dictionary = {
 
 var some_notes
 # > Flow is Python function ,
-	#(is just a collection of FlowElement) 
-	#visible in FlowEdit dock and FlowSelect Dock 
+	#(is just a collection of FlowElement) 	#visible in FlowEdit dock and FlowSelect Dock 
+
 # > FlowElement.Element is Python Snippet, 
 	#visible in FlowElementSelect Dock 
 	#and Constructor.FlowElementManager 
