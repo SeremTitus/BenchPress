@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/icons/bin.svg" type="Texture" id=1]
-[ext_resource path="res://addons/MaxSizeContainer/max_size_container.gd" type="Script" id=2]
 [ext_resource path="res://scenes/elementUI/PropertiesDispay/ListingItem.gd" type="Script" id=3]
 
 [sub_resource type="DynamicFontData" id=33]
@@ -41,25 +40,14 @@ align = 1
 caret_blink = true
 caret_blink_speed = 0.5
 
-[node name="MaxSizeContainer18" type="MarginContainer" parent="."]
+[node name="TextureRect" type="TextureRect" parent="."]
 margin_left = 308.0
 margin_right = 334.0
 margin_bottom = 26.0
-rect_min_size = Vector2( 26, 26 )
-custom_constants/margin_right = 0
-custom_constants/margin_top = 0
-custom_constants/margin_left = 0
-custom_constants/margin_bottom = 0
-script = ExtResource( 2 )
-max_size = Vector2( 26, 26 )
-constant_size = true
-
-[node name="TextureRect" type="TextureRect" parent="MaxSizeContainer18"]
-margin_right = 26.0
-margin_bottom = 26.0
+rect_min_size = Vector2( 26, 0 )
 texture = ExtResource( 1 )
 expand = true
 
 [connection signal="focus_exited" from="index" to="." method="_on_index_focus_exited"]
 [connection signal="text_entered" from="index" to="." method="_on_index_text_entered"]
-[connection signal="gui_input" from="MaxSizeContainer18/TextureRect" to="." method="_on_TextureRect_gui_input"]
+[connection signal="gui_input" from="TextureRect" to="." method="_on_TextureRect_gui_input"]

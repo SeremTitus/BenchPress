@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/elementUI/FlowContainer.gd" type="Script" id=3]
+
+[node name="FlowContainer" type="VBoxContainer"]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 3
+script = ExtResource( 3 )
+
+[node name="spacer" type="Control" parent="."]
+unique_name_in_owner = true
+margin_bottom = 60.0
+rect_min_size = Vector2( 0, 60 )
+size_flags_horizontal = 0
+size_flags_vertical = 0

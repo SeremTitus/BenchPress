@@ -1,6 +1,5 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://addons/MaxSizeContainer/max_size_container.gd" type="Script" id=1]
 [ext_resource path="res://scenes/elementUI/PropertiesDispay/Option.gd" type="Script" id=2]
 
 [sub_resource type="DynamicFontData" id=29]
@@ -23,42 +22,31 @@ font_data = SubResource( 31 )
 bg_color = Color( 0.172549, 0.164706, 0.196078, 1 )
 
 [node name="Option" type="HBoxContainer"]
-margin_right = 1027.0
-margin_bottom = 26.0
+anchor_right = 1.0
+margin_bottom = 17.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 1
 script = ExtResource( 2 )
 
-[node name="MaxSizeContainer" type="MarginContainer" parent="."]
-margin_right = 65.0
-margin_bottom = 26.0
-rect_min_size = Vector2( 65, 0 )
-custom_constants/margin_right = 0
-custom_constants/margin_top = 0
-custom_constants/margin_left = 0
-custom_constants/margin_bottom = 0
-script = ExtResource( 1 )
-max_size = Vector2( 65, 0 )
-constant_size = true
-
-[node name="lable" type="Label" parent="MaxSizeContainer"]
+[node name="lable" type="Label" parent="."]
 unique_name_in_owner = true
-margin_right = 65.0
-margin_bottom = 26.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+margin_right = 61.0
+margin_bottom = 17.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
 custom_fonts/font = SubResource( 30 )
 text = "prop name"
 valign = 1
 
 [node name="edit" type="OptionButton" parent="."]
 unique_name_in_owner = true
-margin_left = 66.0
-margin_right = 1027.0
+margin_left = 62.0
+margin_right = 1024.0
 margin_bottom = 26.0
 rect_min_size = Vector2( 0, 26 )
 size_flags_horizontal = 3
+size_flags_vertical = 0
 custom_fonts/font = SubResource( 32 )
 custom_styles/hover = SubResource( 34 )
 custom_styles/pressed = SubResource( 34 )

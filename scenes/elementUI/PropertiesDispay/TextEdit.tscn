@@ -1,6 +1,5 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://addons/MaxSizeContainer/max_size_container.gd" type="Script" id=1]
 [ext_resource path="res://scenes/elementUI/PropertiesDispay/TextEdit.gd" type="Script" id=2]
 
 [sub_resource type="DynamicFontData" id=29]
@@ -28,21 +27,9 @@ size_flags_vertical = 3
 custom_constants/separation = 1
 script = ExtResource( 2 )
 
-[node name="MaxSizeContainer" type="MarginContainer" parent="."]
-margin_right = 65.0
-margin_bottom = 120.0
-rect_min_size = Vector2( 65, 0 )
-custom_constants/margin_right = 0
-custom_constants/margin_top = 0
-custom_constants/margin_left = 0
-custom_constants/margin_bottom = 0
-script = ExtResource( 1 )
-max_size = Vector2( 65, -1 )
-constant_size = true
-
-[node name="lable" type="Label" parent="MaxSizeContainer"]
+[node name="lable" type="Label" parent="."]
 unique_name_in_owner = true
-margin_right = 65.0
+margin_right = 61.0
 margin_bottom = 120.0
 size_flags_vertical = 1
 custom_fonts/font = SubResource( 30 )
@@ -50,7 +37,7 @@ text = "prop name"
 
 [node name="edit" type="TextEdit" parent="."]
 unique_name_in_owner = true
-margin_left = 66.0
+margin_left = 62.0
 margin_right = 1010.0
 margin_bottom = 120.0
 rect_min_size = Vector2( 0, 120 )

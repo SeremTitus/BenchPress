@@ -1,6 +1,5 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://addons/MaxSizeContainer/max_size_container.gd" type="Script" id=1]
 [ext_resource path="res://scenes/elementUI/PropertiesDispay/listing.gd" type="Script" id=2]
 
 [sub_resource type="DynamicFontData" id=29]
@@ -61,48 +60,36 @@ size_flags_vertical = 3
 custom_constants/separation = 1
 script = ExtResource( 2 )
 
-[node name="MaxSizeContainer" type="MarginContainer" parent="."]
-margin_right = 65.0
-margin_bottom = 58.0
-rect_min_size = Vector2( 65, 0 )
-custom_constants/margin_right = 0
-custom_constants/margin_top = 0
-custom_constants/margin_left = 0
-custom_constants/margin_bottom = 0
-script = ExtResource( 1 )
-max_size = Vector2( 65, -1 )
-constant_size = true
-
-[node name="lable" type="Label" parent="MaxSizeContainer"]
+[node name="lable" type="Label" parent="."]
 unique_name_in_owner = true
-margin_right = 65.0
-margin_bottom = 58.0
+margin_right = 61.0
+margin_bottom = 51.0
 size_flags_vertical = 1
 custom_fonts/font = SubResource( 30 )
 text = "prop name"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 66.0
+margin_left = 62.0
 margin_right = 407.0
-margin_bottom = 58.0
+margin_bottom = 51.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="listing" type="VBoxContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
-margin_right = 341.0
-margin_bottom = 26.0
+margin_right = 345.0
+margin_bottom = 19.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="lable" type="HBoxContainer" parent="VBoxContainer/listing"]
-margin_right = 341.0
-margin_bottom = 26.0
+margin_right = 345.0
+margin_bottom = 17.0
 rect_pivot_offset = Vector2( -178, -180 )
 
 [node name="inx" type="Label" parent="VBoxContainer/listing/lable"]
-margin_right = 153.0
-margin_bottom = 26.0
+margin_right = 170.0
+margin_bottom = 17.0
 rect_min_size = Vector2( 50, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -112,9 +99,9 @@ text = "index"
 align = 1
 
 [node name="lable" type="Label" parent="VBoxContainer/listing/lable"]
-margin_left = 157.0
-margin_right = 311.0
-margin_bottom = 26.0
+margin_left = 174.0
+margin_right = 345.0
+margin_bottom = 17.0
 rect_min_size = Vector2( 50, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -123,23 +110,10 @@ custom_fonts/font = SubResource( 30 )
 text = "Value"
 align = 1
 
-[node name="placeholder" type="MarginContainer" parent="VBoxContainer/listing/lable"]
-margin_left = 315.0
-margin_right = 341.0
-margin_bottom = 26.0
-rect_min_size = Vector2( 26, 26 )
-custom_constants/margin_right = 0
-custom_constants/margin_top = 0
-custom_constants/margin_left = 0
-custom_constants/margin_bottom = 0
-script = ExtResource( 1 )
-max_size = Vector2( 26, 26 )
-constant_size = true
-
 [node name="add" type="Button" parent="VBoxContainer"]
-margin_top = 30.0
-margin_right = 341.0
-margin_bottom = 58.0
+margin_top = 23.0
+margin_right = 345.0
+margin_bottom = 51.0
 custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
 custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )

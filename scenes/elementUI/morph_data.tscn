@@ -27,21 +27,20 @@ font_data = SubResource( 31 )
 unique_name_in_owner = true
 margin_right = 1024.0
 margin_bottom = 323.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 2
+size_flags_vertical = 2
 script = ExtResource( 8 )
 
 [node name="title" type="HBoxContainer" parent="."]
 margin_right = 1024.0
-margin_bottom = 42.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+margin_bottom = 40.0
+size_flags_vertical = 0
 
 [node name="subtitle" type="Label" parent="title"]
 unique_name_in_owner = true
-margin_top = 9.0
+margin_top = 8.0
 margin_right = 117.0
-margin_bottom = 33.0
+margin_bottom = 32.0
 rect_min_size = Vector2( 0, 24 )
 custom_fonts/font = SubResource( 33 )
 text = "Select Properties"
@@ -51,19 +50,21 @@ valign = 1
 unique_name_in_owner = true
 margin_left = 121.0
 margin_right = 197.0
-margin_bottom = 42.0
+margin_bottom = 40.0
 custom_fonts/font = SubResource( 37 )
 
 [node name="content" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
-margin_top = 46.0
+margin_top = 44.0
 margin_right = 1024.0
 margin_bottom = 323.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="LineEdit" parent="content" instance=ExtResource( 3 )]
+anchor_right = 0.0
 margin_right = 1024.0
+margin_bottom = 26.0
 
 [node name="RadioButton" parent="content" instance=ExtResource( 5 )]
 margin_top = 30.0
@@ -71,18 +72,19 @@ margin_right = 1024.0
 margin_bottom = 70.0
 
 [node name="Option" parent="content" instance=ExtResource( 2 )]
+anchor_right = 0.0
 margin_top = 74.0
 margin_right = 1024.0
-margin_bottom = 91.0
+margin_bottom = 102.0
 
 [node name="TextEdit" parent="content" instance=ExtResource( 4 )]
-margin_top = 95.0
+margin_top = 106.0
 margin_right = 1024.0
-margin_bottom = 215.0
+margin_bottom = 226.0
 
 [node name="list" parent="content" instance=ExtResource( 1 )]
-margin_top = 219.0
+margin_top = 230.0
 margin_right = 1024.0
-margin_bottom = 277.0
+margin_bottom = 279.0
 
 [connection signal="toggled" from="title/active" to="." method="_on_active_toggled"]
