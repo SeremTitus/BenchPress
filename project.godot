@@ -16,6 +16,7 @@ BenchPress automations are cross-platform,shared,launched remotely and schedulab
 run/main_scene="res://scenes/main/Editor.tscn"
 run/low_processor_mode=true
 config/icon="res://icon.png"
+config/version="0.0.1.Dev"
 
 [autoload]
 
@@ -38,7 +39,7 @@ convert_text_resources_to_binary_on_export=true
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/MaxSizeContainer/plugin.cfg", "res://addons/dockable_container/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/dockable_container/plugin.cfg" )
 
 [gui]
 

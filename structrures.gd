@@ -1,8 +1,10 @@
 extends Node
 
 
+# Once major version 1 is reached this file is not changed ....else backward compatability may be lost   
 var ElementStructure:Dictionary ={
 	'Library' : '',
+	'LibraryVersion' :'',
 	'Type':'Element',#Inheritable,errorhandler
 	'Title' : 'ADD VARIABLE',
 	'Description' : '',
@@ -36,12 +38,12 @@ var ElementStructure:Dictionary ={
 	}
 
 var ElementProperties :Dictionary = {#loop-able keys are not fixed
-	'Added_ElementID':{#fixed keys
-		'parent' : '.',
-		'SourceLibrary':'',
-		'Enabled' : 'True',
-		'BreakingPoint': 'False',
-		'morphs' :['Base'],
+	'position_index':{#fixed keys
+		'parent' : 0,#indicate level of nesting, 0 can the parent if the next element is 1
+		'SourceLibrary':'',#Libraries['Nameunique'] (First name is editor assigned to prevent library collision)+':'+Libraries['Name']  +':'+ ElementStructure['GroupPath'] +':'+ ElementStructure['GroupPath']
+		'Enabled' : true,
+		'BreakingPoint': false,
+		'ActiveMorphs' :['Base'],
 		'Properties':{#loop-able keys are not fixed
 			'Edited_Properties_Name' :'Value'#set_values
 			},
@@ -49,34 +51,37 @@ var ElementProperties :Dictionary = {#loop-able keys are not fixed
 			'Edited_Properties_Name' :'Name'#set_values
 			},
 		'errorhandlers':{#loop-able keys are not fixed
-			'Added_errorhandlerID':{
-				'Enabled' : 'True',
+			'SourceLibrary':{
+				'Enabled' : true,
+				'Properties':{#loop-able keys are not fixed
+					'Edited_Properties_Name' :'Value'
+					}
+				}
+			},
+		'Inheritables':{#loop-able keys are not fixed
+			'SourceLibrary':{
+				'Enabled' : true,
 				'Properties':{#loop-able keys are not fixed
 					'Edited_Properties_Name' :'Value'
 					}
 				}
 			}
 		}
-		}
+	}
 
 var FlowStructure:Dictionary ={#loop-able, keys are not fixed
 	'main' : ElementProperties
-	
 	}
 
 var flowElementslist:Dictionary ={
-	'Added_ElementID': ElementStructure
+	'SourceLibrary': ElementStructure# Nameunique = Libraries['Name'] or (First name is editor assigned to prevent library collision but not include in library files)+':'+Libraries['Name']  +':'+ ElementStructure['GroupPath'] +':'+ ElementStructure['GroupPath']
 	}
 
 var BenchPress :Dictionary = {
-	'Version' : '0.0.1',
-	'Patch' :'Alfa',# beta,Version,stable
+	'Version' : '0.0.1.Dev',
 	'FileState' : 'Library',#Flow,app -->'app' filestate is reserved for deployed clients
-	'Libraries' :{#loop-able keys are not fixed
-		'built-in':{
-			'Version' : '0.0.1',
-			'Patch' :'Alfa'
-			}
+	'LibrariesVersion' :{#loop-able keys are not fixed
+		'built-in': '0.0.1.Alfa',
 		},
 	'Globals':{#loop-able keys are not fixed
 		'Globalsid':{
@@ -86,26 +91,31 @@ var BenchPress :Dictionary = {
 		},
 	'Flows': FlowStructure,
 	'ElementStructures':flowElementslist, # if FileState is Flow flowElementslist only include used elements
-	'Resourses':{#loop-able keys are not fixed
-		'Resourseid': {
-			'Name:':'',
-			'Type':'',
-			'Data':''
-			# Resourses are considered object(image and its type may vary
-			}
+	'ElementUpdatePatterns':{#loop-able keys are not fixed
+		#Intended for libraries to be able to be updated atleast in minorEditor releases
+		#TOBE DEFINED
 		}
 	}
 
-var some_notes
+func some_notes():
+	pass
 # > Flow is Python function ,
-	#(is just a collection of FlowElement) 	#visible in FlowEdit dock and FlowSelect Dock 
-
-# > FlowElement.Element is Python Snippet, 
-	#visible in FlowElementSelect Dock 
-	#and Constructor.FlowElementManager 
+	#(is just a collection of FlowElement)
+	#visible in Editor.FlowContainer
+# > Element.type = 'Element' is Python Snippet, 
+	#visible in Editor.ElementsContainer 
+	#and Constructor.ElementManager 
 	#(it properties are editable in FlowElementProprertiesEdit)
-# > FlowElement.Inheritable are Python Classes,
-	#visible in Constructor.FlowElement
-# > FlowElement.Errorhandler is Python Exception Handling,
+# > Element.type = 'Inheritable' are Python Classes,
+	#visible in Constructor.ElementCreate
+# > Element.type = 'Errorhandler' is Python Exception Handling,
 	#visible in in FlowElementProprertiesEdit Dock 
-	#and Constructor.FlowElementManager
+	#and Constructor.ElementManager
+
+func custom_user_folders():
+	pass
+# > user://Editor
+# > user://enve
+# > user://Library
+# > user://Flows
+# > user://Running
