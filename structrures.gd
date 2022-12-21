@@ -36,7 +36,7 @@ var ElementStructure:Dictionary ={
 			}
 		}
 	}
-
+	
 var ElementProperties :Dictionary = {#loop-able keys are not fixed
 	'position_index':{#fixed keys
 		'parent' : 0,#indicate level of nesting, 0 can the parent if the next element is 1
@@ -45,16 +45,16 @@ var ElementProperties :Dictionary = {#loop-able keys are not fixed
 		'BreakingPoint': false,
 		'ActiveMorphs' :['Base'],
 		'Properties':{#loop-able keys are not fixed
-			'Edited_Properties_Name' :'Value'#set_values
+			#'Edited_Properties_Name' :'Value'#set_values
 			},
-		'ElementVariable':{#loop-able keys are not fixed
-			'Edited_Properties_Name' :'Name'#set_values
+		'FlowVariable':{#loop-able keys are not fixed
+			#'Edited_Properties_Name' :'Name'#set_values
 			},
 		'errorhandlers':{#loop-able keys are not fixed
 			'SourceLibrary':{
 				'Enabled' : true,
 				'Properties':{#loop-able keys are not fixed
-					'Edited_Properties_Name' :'Value'
+					#'Edited_Properties_Name' :'Value'
 					}
 				}
 			},
@@ -62,21 +62,21 @@ var ElementProperties :Dictionary = {#loop-able keys are not fixed
 			'SourceLibrary':{
 				'Enabled' : true,
 				'Properties':{#loop-able keys are not fixed
-					'Edited_Properties_Name' :'Value'
+					#'Edited_Properties_Name' :'Value'
 					}
 				}
 			}
 		}
 	}
-
+	
 var FlowStructure:Dictionary ={#loop-able, keys are not fixed
 	'main' : ElementProperties
 	}
-
+	
 var flowElementslist:Dictionary ={
 	'SourceLibrary': ElementStructure# Nameunique = Libraries['Name'] or (First name is editor assigned to prevent library collision but not include in library files)+':'+Libraries['Name']  +':'+ ElementStructure['GroupPath'] +':'+ ElementStructure['GroupPath']
 	}
-
+	
 var BenchPress :Dictionary = {
 	'Version' : '0.0.1.Dev',
 	'FileState' : 'Library',#Flow,app -->'app' filestate is reserved for deployed clients
@@ -96,7 +96,17 @@ var BenchPress :Dictionary = {
 		#TOBE DEFINED
 		}
 	}
-
+	
+var custom_user_folders={
+		'user://Library' : {
+			"built_in.benchpress":"res://Library/builtIn.benchpress",
+			},
+		'user://Editor' : {},
+		'user://enve':{},
+		'user://Flows' : {},
+		'user://Running' : {},
+	}
+	
 func some_notes():
 	pass
 # > Flow is Python function ,
@@ -111,11 +121,5 @@ func some_notes():
 # > Element.type = 'Errorhandler' is Python Exception Handling,
 	#visible in in FlowElementProprertiesEdit Dock 
 	#and Constructor.ElementManager
+	
 
-func custom_user_folders():
-	pass
-# > user://Editor
-# > user://enve
-# > user://Library
-# > user://Flows
-# > user://Running
