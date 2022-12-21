@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/icons/debug/Record.svg" type="Texture" id=2]
 [ext_resource path="res://assets/icons/debug/Stop.svg" type="Texture" id=3]
 [ext_resource path="res://assets/icons/debug/SkipInto.svg" type="Texture" id=4]
-[ext_resource path="res://scenes/elementUI/element.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/main/ElementContainer/ElementsContainer.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/elementUI/elementProperties.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/icons/debug/Pause.svg" type="Texture" id=7]
 [ext_resource path="res://assets/icons/debug/play.svg" type="Texture" id=8]
@@ -13,7 +13,7 @@
 [ext_resource path="res://addons/dockable_container/dockable_container.gd" type="Script" id=11]
 [ext_resource path="res://addons/dockable_container/layout.gd" type="Script" id=12]
 [ext_resource path="res://addons/dockable_container/layout_panel.gd" type="Script" id=13]
-[ext_resource path="res://scenes/elementUI/FlowContainer.tscn" type="PackedScene" id=14]
+[ext_resource path="res://scenes/main/FlowContainer.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/main/Editor.gd" type="Script" id=15]
 
 [sub_resource type="StyleBoxFlat" id=3]
@@ -282,161 +282,11 @@ theme = SubResource( 7 )
 follow_focus = true
 scroll_horizontal_enabled = false
 
-[node name="ElementsContainer" type="VBoxContainer" parent="ui/body/SelectElementPanel/ScrollContainer"]
-unique_name_in_owner = true
-margin_right = 232.0
-margin_bottom = 1371.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Element" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_right = 232.0
-margin_bottom = 51.0
-
-[node name="Element2" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 55.0
-margin_right = 232.0
-margin_bottom = 106.0
-
-[node name="Element3" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 110.0
-margin_right = 232.0
-margin_bottom = 161.0
-
-[node name="Element4" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 165.0
-margin_right = 232.0
-margin_bottom = 216.0
-
-[node name="Element5" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 220.0
-margin_right = 232.0
-margin_bottom = 271.0
-
-[node name="Element6" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 275.0
-margin_right = 232.0
-margin_bottom = 326.0
-
-[node name="Element7" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 330.0
-margin_right = 232.0
-margin_bottom = 381.0
-
-[node name="Element8" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 385.0
-margin_right = 232.0
-margin_bottom = 436.0
-
-[node name="Element9" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 440.0
-margin_right = 232.0
-margin_bottom = 491.0
-
-[node name="Element10" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 495.0
-margin_right = 232.0
-margin_bottom = 546.0
-
-[node name="Element11" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 550.0
-margin_right = 232.0
-margin_bottom = 601.0
-
-[node name="Element12" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 605.0
-margin_right = 232.0
-margin_bottom = 656.0
-
-[node name="Element13" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 660.0
-margin_right = 232.0
-margin_bottom = 711.0
-
-[node name="Element14" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 715.0
-margin_right = 232.0
-margin_bottom = 766.0
-
-[node name="Element15" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 770.0
-margin_right = 232.0
-margin_bottom = 821.0
-
-[node name="Element16" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 825.0
-margin_right = 232.0
-margin_bottom = 876.0
-
-[node name="Element17" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 880.0
-margin_right = 232.0
-margin_bottom = 931.0
-
-[node name="Element18" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 935.0
-margin_right = 232.0
-margin_bottom = 986.0
-
-[node name="Element19" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 990.0
-margin_right = 232.0
-margin_bottom = 1041.0
-
-[node name="Element20" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 1045.0
-margin_right = 232.0
-margin_bottom = 1096.0
-
-[node name="Element21" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 1100.0
-margin_right = 232.0
-margin_bottom = 1151.0
-
-[node name="Element22" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 1155.0
-margin_right = 232.0
-margin_bottom = 1206.0
-
-[node name="Element23" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 1210.0
-margin_right = 232.0
-margin_bottom = 1261.0
-
-[node name="Element24" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 1265.0
-margin_right = 232.0
-margin_bottom = 1316.0
-
-[node name="Element25" parent="ui/body/SelectElementPanel/ScrollContainer/ElementsContainer" instance=ExtResource( 5 )]
-margin_left = 0.0
-margin_top = 1320.0
-margin_right = 232.0
-margin_bottom = 1371.0
+[node name="ElementsContainer" parent="ui/body/SelectElementPanel/ScrollContainer" instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 244.0
+margin_bottom = 541.0
 
 [node name="FlowPanel" type="PanelContainer" parent="ui/body"]
 margin_left = 258.0
@@ -495,19 +345,17 @@ tab_align = 0
 layout = SubResource( 38 )
 
 [node name="Properties" type="ScrollContainer" parent="ui/body/rightDock/ScrollContainer/VBoxContainer/DockableContainer"]
-margin_top = 28.0
-margin_right = 244.0
-margin_bottom = 541.0
+visible = false
+margin_right = 197.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="Properties" parent="ui/body/rightDock/ScrollContainer/VBoxContainer/DockableContainer/Properties" instance=ExtResource( 6 )]
-margin_right = 244.0
-margin_bottom = 513.0
+margin_right = 197.0
+margin_bottom = 381.0
 
 [node name="Flows" type="PanelContainer" parent="ui/body/rightDock/ScrollContainer/VBoxContainer/DockableContainer"]
-visible = false
 margin_top = 28.0
 margin_right = 244.0
 margin_bottom = 541.0
