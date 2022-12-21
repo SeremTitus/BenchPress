@@ -15,7 +15,6 @@ func can_drop_data(_position,_data):
 	return true
 	
 func drop_data(_position,_data):
-	print(_data['origin'].active_mode)
 	var thisElement = get_parent()
 	var flowContainer = thisElement.get_parent()
 	if _data['origin'].active_mode == 1 or _data['origin'].active_mode == 3:

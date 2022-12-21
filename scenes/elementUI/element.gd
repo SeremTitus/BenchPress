@@ -7,7 +7,7 @@ onready var title  =$"%Title"
 onready var description =$"%Description"
 
 var ElementStructureReference = '' 
-var ElementProperties = {}
+var ElementProperties = Global.structures.ElementProperties.position_index.duplicate(true)
 
 enum mode{
 	SELECT = 1,
