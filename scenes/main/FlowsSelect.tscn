@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/main/FlowsSelect.gd" type="Script" id=1]
+[ext_resource path="res://scenes/main/FlowSelectName.tscn" type="PackedScene" id=2]
+
+[node name="FlowsSelect" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 1 )
+
+[node name="content" type="ScrollContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 576.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="content" type="VBoxContainer" parent="content"]
+unique_name_in_owner = true
+margin_right = 1024.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+
+[node name="FlowSelectName" parent="content/content" instance=ExtResource( 2 )]
+
+[node name="Button" type="Button" parent="."]
+margin_top = 580.0
+margin_right = 1024.0
+margin_bottom = 600.0
+text = "ADD FLOW"
+
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
