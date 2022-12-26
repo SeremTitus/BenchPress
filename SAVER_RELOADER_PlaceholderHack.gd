@@ -20,7 +20,7 @@ func _load(path):
 	path = change_extention(path,'res')
 	var result = FAILED
 	if ResourceLoader.exists(path):
-		result  =  load(path).data
+		result  =  load(path).data.duplicate(true)
 		if verify_blenchpress_data(result) != OK :
 			result = FAILED
 	rename_file(path,change_extention(path,'benchpress'))

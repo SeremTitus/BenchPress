@@ -39,7 +39,7 @@ var ElementStructure:Dictionary ={
 	
 var ElementProperties :Dictionary = {#loop-able keys are not fixed
 	'position_index':{#fixed keys
-		'parent' : 0,#indicate level of nesting, 0 can the parent if the next element is 1
+		'children' : {},#children ElementProperties
 		'SourceLibrary':'',#Libraries['Nameunique'] (First name is editor assigned to prevent library collision)+':'+Libraries['Name']  +':'+ ElementStructure['GroupPath'] +':'+ ElementStructure['GroupPath']
 		'Enabled' : true,
 		'BreakingPoint': false,
@@ -58,14 +58,6 @@ var ElementProperties :Dictionary = {#loop-able keys are not fixed
 					}
 				}
 			},
-		'Inheritables':{#loop-able keys are not fixed
-			'SourceLibrary':{
-				'Enabled' : true,
-				'Properties':{#loop-able keys are not fixed
-					#'Edited_Properties_Name' :'Value'
-					}
-				}
-			}
 		}
 	}
 	
@@ -79,7 +71,7 @@ var flowElementslist:Dictionary ={
 	
 var BenchPress :Dictionary = {
 	'Version' : '0.0.1.Dev',
-	'FileState' : 'Library',#Flow,app -->'app' filestate is reserved for deployed clients
+	'FileState' : 'Library',#Flow,App -->'App' filestate is reserved for deployed clients
 	'LibrariesVersion' :{#loop-able keys are not fixed
 		'built-in': '0.0.1.Alfa',
 		},

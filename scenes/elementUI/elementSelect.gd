@@ -10,7 +10,7 @@ func get_drag_data(_position):
 func can_drop_data(_position,_data):
 	if _data['origin'] == get_parent():
 		return false
-	if typeof(_data) != 18 or not(_data.has('origin')) or get_parent().active_mode == 0:
+	if typeof(_data) != 18 or not(_data.has('origin')) or get_parent().active_mode == 1:
 		return false
 	return true
 	

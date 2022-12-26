@@ -1,14 +1,15 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/main/ElementContainer/ElementContainergroup.gd" type="Script" id=1]
+[ext_resource path="res://assets/icons/right-arrow.png" type="Texture" id=2]
 
-[sub_resource type="DynamicFontData" id=3]
+[sub_resource type="DynamicFontData" id=5]
 font_path = "res://assets/fonts/Roboto-Bold.ttf"
 
 [sub_resource type="DynamicFont" id=4]
 size = 17
 use_filter = true
-font_data = SubResource( 3 )
+font_data = SubResource( 5 )
 
 [node name="ElementsContainerGroup" type="VBoxContainer"]
 margin_right = 1024.0
@@ -19,26 +20,37 @@ script = ExtResource( 1 )
 margin_right = 1024.0
 margin_bottom = 21.0
 
+[node name="icon" type="TextureRect" parent="Label"]
+unique_name_in_owner = true
+margin_top = 3.0
+margin_right = 15.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 15, 15 )
+size_flags_vertical = 6
+texture = ExtResource( 2 )
+expand = true
+
 [node name="Label" type="Label" parent="Label"]
 unique_name_in_owner = true
+margin_left = 19.0
 margin_right = 1024.0
 margin_bottom = 21.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = SubResource( 4 )
-text = "> Add Variable"
+text = "Add Variable"
 clip_text = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 margin_top = 25.0
 margin_right = 1024.0
 margin_bottom = 25.0
-custom_constants/margin_left = 3
+custom_constants/margin_left = 10
 
 [node name="items" type="VBoxContainer" parent="MarginContainer"]
 unique_name_in_owner = true
 visible = false
-margin_left = 3.0
+margin_left = 10.0
 margin_right = 1024.0
 
 [connection signal="gui_input" from="Label" to="." method="toggle_items"]

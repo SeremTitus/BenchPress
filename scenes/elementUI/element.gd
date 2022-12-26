@@ -22,8 +22,8 @@ var view_properties = ProjectSettings.get_setting('benchpress/elements/display_w
 func set_activemode(newvalue):
 	active_mode = newvalue
 	if active_mode >1:
-		$"%spacer".visible = true
-		description.visible = false
+		#$"%spacer".visible = true
+		description.visible = true
 		ElementProperties  = create_ElementProperties()
 	
 func create_ElementProperties():

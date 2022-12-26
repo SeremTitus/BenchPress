@@ -2,16 +2,96 @@ extends Node
 
 
 var saverReloader=preload("res://SAVER_RELOADER_PlaceholderHack.gd").new()
-var LibraryElementStructure = {}
-var current_project = {}
+var structures = preload("res://structrures.gd").new()
+
+var LibraryElementStructure = {'uniwu/item/variable/New_variable':{},
+							'uniwu/item/variables/New_variablel':{},
+							'uniwu/item/variable/p/k/m/New_variablek':{}}
+signal LibraryElementStructure_Constructed
+var current_project_filePath = ''
+var current_project = {} setget current_Project_changed
+signal current_Project_changed
 var GlobalVariables = {}
 var FlowVariables = []
 
-var highlighted_element
+var highlighted_element = null setget highlighted_element_changed
+signal highlighted_element_changed
+var selected_flow = 'main' setget selected_flow_changed
 
 func _ready():
 	create_dir()
-	get_LibraryElementStructure()
+	create_newProject()
+	#get_LibraryElementStructure()
+
+
+func create_newProject():
+	current_project = {
+		'Version' : '0.0.1.Dev',
+		'FileState' : 'Flow',#Flow,App -->'App' filestate is reserved for deployed clients
+		'LibrariesVersion' :{#loop-able keys are not fixed
+			'built-in': '0.0.1.Alfa',
+			},
+		'Globals':{#loop-able keys are not fixed
+			'Globalsid':{
+				'Type':'',
+				'Value':''
+				}
+			},
+		'Flows': {#loop-able, keys are not fixed
+		'main' : {},
+		'mainb' : {},
+		},
+		'ElementStructures':{}, # if FileState is Flow flowElementslist only include used elements
+		'ElementUpdatePatterns':{#loop-able keys are not fixed
+			#Intended for libraries to be able to be updated atleast in minorEditor releases
+			#TOBE DEFINED
+			}
+		}
+	
+func create_Update_flow(flowname,changes):
+	if current_project.Flows.has(flowname) and typeof(changes) == TYPE_DICTIONARY:
+		current_project.Flows[flowname] = changes
+		return OK
+	return FAILED
+	
+func add_NewFlow(flowname):
+	current_project.Flows[flowname] ={}
+	selected_flow = flowname
+	return OK
+	
+func rename_flow(flowname,_changes):
+	if current_project.Flows.has(flowname):
+		#FORCE_SAVE
+		current_project.Flows[_changes] = current_project.Flows[flowname]
+		current_project.Flows.erase(flowname)
+		emit_signal("current_Project_changed")
+		return OK
+	return FAILED
+func delete_flow(flowname):
+	if current_project.Flows.has(flowname):
+		current_project.Flows.erase(flowname)
+		emit_signal("current_Project_changed")
+		return OK
+	return FAILED
+	
+func run_current_flow(_params):
+	pass
+	
+func save_current_benchpress():
+	pass
+	
+func current_Project_changed(newvalue):
+	current_project = newvalue
+	emit_signal("current_Project_changed")
+	
+func highlighted_element_changed(newvalue):
+	highlighted_element = newvalue
+	emit_signal("highlighted_element_changed")
+
+func selected_flow_changed(newvalue):
+	selected_flow = newvalue
+	emit_signal("current_Project_changed")
+
 	
 func get_LibraryElementStructure():
 	var contents = dir_contents('user://Library').files
@@ -20,6 +100,7 @@ func get_LibraryElementStructure():
 		if file_name.get_extension() != 'benchpress': continue
 		#get data .benchpress files that are type library store it in BenchPressfile		
 		var BenchPressfile =saverReloader._load('user://Library/'+file_name)
+		if BenchPressfile['FileState'] != 'Library':continue
 		for SourceLibraryName in BenchPressfile['ElementStructures']:
 			var uniqueSourceLibraryName = SourceLibraryName.get_slice("/", 0)+'/'+SourceLibraryName.get_slice("/", 0)+'/'+SourceLibraryName.get_slice("/", 1)+'/'+SourceLibraryName.get_slice("/", 2)
 			var makeunique = 0
@@ -27,6 +108,7 @@ func get_LibraryElementStructure():
 				makeunique += 1
 				uniqueSourceLibraryName =(SourceLibraryName.get_slice("/", 0)+str(makeunique))+'/'+SourceLibraryName.get_slice("/", 0)+'/'+SourceLibraryName.get_slice("/", 1)+'/'+SourceLibraryName.get_slice("/", 2)
 			LibraryElementStructure[uniqueSourceLibraryName] = BenchPressfile['ElementStructures'][SourceLibraryName]
+	emit_signal("LibraryElementStructure_Constructed")
 	
 func dir_contents(path):
 	var contents = {
@@ -45,18 +127,13 @@ func dir_contents(path):
 			file_name = directory.get_next()
 	return contents
 	
-func create_dir(dirAndFiles = {
-		'user://Library' : {"icon.png":"res://icon.png"},
-		'user://Editor' : {},
-		'user://Flows' : {},
-		'user://Running' : {},
-	}):
+func create_dir(dirAndFiles = structures.custom_user_folders):
 	var directory = Directory.new()
 	for dir in dirAndFiles:
 		if  ! directory.dir_exists(dir):
 			directory.make_dir_recursive(dir)
 		for copyfile in dirAndFiles[dir]:
-			if ! directory.file_exists(dir +'/'+copyfile):
+			if ! directory.file_exists(dir +'/'+copyfile) and directory.file_exists(dirAndFiles[dir][copyfile]):
 				directory.copy(dirAndFiles[dir][copyfile],dir+'/'+copyfile)
 			var file = File.new()
 			if file.get_sha256(dir +'/'+copyfile) != file.get_sha256(dirAndFiles[dir][copyfile]):
@@ -80,3 +157,5 @@ func unique_name(names:PoolStringArray,newName:String):
 		makeunique += 1
 		newName = uniqueName + str(makeunique)
 	return newName
+	
+

@@ -1,6 +1,6 @@
 extends Control
 
-var highlighted_element
+
 func _ready():
 	$"%spacer".rect_size.y = 120
 	$"%spacer".rect_min_size.y = 120
@@ -9,12 +9,8 @@ func _ready():
 		$"%spacer".rect_min_size.y = 50
 	
 func can_drop_data(_position, data):
-	var scroll = find_parent('FlowPanelScroll')
-	if typeof(scroll) == 17 and scroll != null :
-		if get_global_mouse_position().y <= (scroll.rect_size.y/0.3):
-			scroll.set_v_scroll(scroll.get_v_scroll()-50)
-		elif get_global_mouse_position().y >= (scroll.rect_size.y/0.95):
-			scroll.set_v_scroll(scroll.get_v_scroll()+50)
+	#var scroll = find_parent('FlowPanelScroll')
+	# impliment scroll
 	if typeof(data) != 18 or not(data.has('origin')):
 		return false
 	return true
@@ -48,9 +44,23 @@ func add_from_selectElement(_data):
 	drop_data(_position,_data)
 
 func highlight_element(_data):
-	if typeof(highlighted_element) == 17 and (highlighted_element) != null:
-		highlighted_element.call('toggle_highlight')
+	if typeof(Global.highlighted_element) == TYPE_OBJECT and (Global.highlighted_element) != null:
+		Global.highlighted_element.call('toggle_highlight')
 	if typeof(_data) == 17 and (_data) != null:
 		_data.call('toggle_highlight')
-		highlighted_element =_data
+		Global.highlighted_element =_data
 
+func generate_PlacedElement():
+	
+	
+	pass
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

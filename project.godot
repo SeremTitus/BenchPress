@@ -16,7 +16,6 @@ BenchPress automations are cross-platform,shared,launched remotely and schedulab
 run/main_scene="res://scenes/main/Editor.tscn"
 run/low_processor_mode=true
 config/icon="res://icon.png"
-config/version="0.0.1.Dev"
 
 [autoload]
 
@@ -26,6 +25,8 @@ Global="*res://global.gd"
 
 elements/display_with_properties=false
 properties/dock_visible=true
+elements/version/Editor="0.0.1.Dev"
+elements/version/built-in_library="0.0.1.Alfa"
 
 [display]
 

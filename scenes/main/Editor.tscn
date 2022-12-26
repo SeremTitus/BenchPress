@@ -15,13 +15,14 @@
 [ext_resource path="res://addons/dockable_container/layout_panel.gd" type="Script" id=13]
 [ext_resource path="res://scenes/main/FlowContainer.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/main/Editor.gd" type="Script" id=15]
+[ext_resource path="res://scenes/main/FlowsSelect.tscn" type="PackedScene" id=16]
 
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.133333, 0.133333, 0.133333, 1 )
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://assets/fonts/Roboto-Regular.ttf"
@@ -51,8 +52,8 @@ VScrollBar/styles/scroll_focus = SubResource( 8 )
 [sub_resource type="Resource" id=37]
 resource_name = "Tabs"
 script = ExtResource( 13 )
-names = PoolStringArray( "Properties", "Flows" )
-current_tab = 1
+names = PoolStringArray( "Flows", "Properties" )
+current_tab = 0
 
 [sub_resource type="Resource" id=38]
 resource_name = "Layout"
@@ -60,13 +61,6 @@ script = ExtResource( 12 )
 root = SubResource( 37 )
 hidden_tabs = {
 }
-
-[sub_resource type="StyleBoxFlat" id=36]
-bg_color = Color( 0.14902, 0.14902, 0.14902, 1 )
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
 
 [node name="main" type="Control"]
 anchor_right = 1.0
@@ -94,8 +88,8 @@ rect_min_size = Vector2( 0, 5 )
 [node name="topbar" type="PanelContainer" parent="ui"]
 margin_top = 9.0
 margin_right = 1024.0
-margin_bottom = 49.0
-rect_min_size = Vector2( 0, 40 )
+margin_bottom = 44.0
+rect_min_size = Vector2( 0, 35 )
 custom_styles/panel = SubResource( 3 )
 script = ExtResource( 1 )
 __meta__ = {
@@ -104,70 +98,72 @@ __meta__ = {
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ui/topbar"]
 margin_right = 1024.0
-margin_bottom = 40.0
+margin_bottom = 35.0
 
-[node name="file" type="MenuButton" parent="ui/topbar/HBoxContainer"]
+[node name="Left" type="HBoxContainer" parent="ui/topbar/HBoxContainer"]
+margin_right = 364.0
+margin_bottom = 35.0
+size_flags_horizontal = 3
+
+[node name="file" type="MenuButton" parent="ui/topbar/HBoxContainer/Left"]
 unique_name_in_owner = true
 margin_right = 37.0
-margin_bottom = 40.0
+margin_bottom = 35.0
 theme = ExtResource( 10 )
 custom_fonts/font = SubResource( 2 )
 text = "File"
 switch_on_hover = true
 
-[node name="edit" type="MenuButton" parent="ui/topbar/HBoxContainer"]
+[node name="edit" type="MenuButton" parent="ui/topbar/HBoxContainer/Left"]
 unique_name_in_owner = true
 margin_left = 41.0
 margin_right = 80.0
-margin_bottom = 40.0
+margin_bottom = 35.0
 theme = ExtResource( 10 )
 custom_fonts/font = SubResource( 2 )
 text = "Edit"
 switch_on_hover = true
 
-[node name="debug" type="MenuButton" parent="ui/topbar/HBoxContainer"]
+[node name="debug" type="MenuButton" parent="ui/topbar/HBoxContainer/Left"]
 unique_name_in_owner = true
 margin_left = 84.0
 margin_right = 142.0
-margin_bottom = 40.0
+margin_bottom = 35.0
 theme = ExtResource( 10 )
 custom_fonts/font = SubResource( 2 )
 text = "Debug"
 switch_on_hover = true
 
-[node name="editor" type="MenuButton" parent="ui/topbar/HBoxContainer"]
+[node name="editor" type="MenuButton" parent="ui/topbar/HBoxContainer/Left"]
 unique_name_in_owner = true
 margin_left = 146.0
 margin_right = 199.0
-margin_bottom = 40.0
+margin_bottom = 35.0
 theme = ExtResource( 10 )
 custom_fonts/font = SubResource( 2 )
 text = "Editor"
 switch_on_hover = true
 
-[node name="help" type="MenuButton" parent="ui/topbar/HBoxContainer"]
+[node name="help" type="MenuButton" parent="ui/topbar/HBoxContainer/Left"]
 unique_name_in_owner = true
 margin_left = 203.0
 margin_right = 247.0
-margin_bottom = 40.0
-size_flags_horizontal = 2
+margin_bottom = 35.0
 theme = ExtResource( 10 )
 custom_fonts/font = SubResource( 2 )
 text = "Help"
 switch_on_hover = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ui/topbar/HBoxContainer"]
-margin_left = 605.0
-margin_right = 1024.0
-margin_bottom = 40.0
-__meta__ = {
-"_edit_group_": true
-}
+[node name="Center" type="HBoxContainer" parent="ui/topbar/HBoxContainer"]
+margin_left = 368.0
+margin_right = 733.0
+margin_bottom = 35.0
+size_flags_horizontal = 3
 
-[node name="Global" type="MenuButton" parent="ui/topbar/HBoxContainer/HBoxContainer"]
+[node name="Global" type="MenuButton" parent="ui/topbar/HBoxContainer/Center"]
 unique_name_in_owner = true
-margin_right = 128.0
-margin_bottom = 40.0
+margin_right = 66.0
+margin_bottom = 35.0
 theme = ExtResource( 10 )
 custom_colors/font_color_disabled = Color( 0.341176, 0.811765, 0.290196, 1 )
 custom_colors/font_color_focus = Color( 0.341176, 0.811765, 0.290196, 1 )
@@ -175,76 +171,103 @@ custom_colors/font_color = Color( 0.341176, 0.811765, 0.290196, 1 )
 custom_colors/font_color_hover = Color( 0.25098, 0.603922, 0.211765, 1 )
 custom_colors/font_color_pressed = Color( 0.164706, 0.847059, 0.0901961, 1 )
 custom_fonts/font = SubResource( 2 )
-text = "Global Variables"
+text = "Globals"
 icon_align = 2
 switch_on_hover = true
 
-[node name="RunRerun" type="Button" parent="ui/topbar/HBoxContainer/HBoxContainer"]
-margin_left = 132.0
-margin_top = 5.0
-margin_right = 169.0
+[node name="Schedule" type="MenuButton" parent="ui/topbar/HBoxContainer/Center"]
+unique_name_in_owner = true
+margin_left = 70.0
+margin_right = 147.0
 margin_bottom = 35.0
+focus_mode = 2
+theme = ExtResource( 10 )
+custom_colors/font_color_disabled = Color( 0.341176, 0.811765, 0.290196, 1 )
+custom_colors/font_color_focus = Color( 0.341176, 0.811765, 0.290196, 1 )
+custom_colors/font_color = Color( 0.341176, 0.811765, 0.290196, 1 )
+custom_colors/font_color_hover = Color( 0.25098, 0.603922, 0.211765, 1 )
+custom_colors/font_color_pressed = Color( 0.164706, 0.847059, 0.0901961, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Schedule"
+icon_align = 2
+switch_on_hover = true
+
+[node name="Right" type="HBoxContainer" parent="ui/topbar/HBoxContainer"]
+margin_left = 737.0
+margin_right = 1024.0
+margin_bottom = 35.0
+
+[node name="RunRerun" type="Button" parent="ui/topbar/HBoxContainer/Right"]
+unique_name_in_owner = true
+margin_top = 2.0
+margin_right = 37.0
+margin_bottom = 32.0
 size_flags_horizontal = 0
 size_flags_vertical = 6
 icon = ExtResource( 8 )
 flat = true
 
-[node name="Pause" type="Button" parent="ui/topbar/HBoxContainer/HBoxContainer"]
+[node name="Pause" type="Button" parent="ui/topbar/HBoxContainer/Right"]
+unique_name_in_owner = true
 modulate = Color( 1, 1, 1, 0.352941 )
-margin_left = 173.0
-margin_top = 5.0
-margin_right = 209.0
-margin_bottom = 35.0
+margin_left = 41.0
+margin_top = 2.0
+margin_right = 77.0
+margin_bottom = 32.0
 size_flags_vertical = 6
 icon = ExtResource( 7 )
 flat = true
 
-[node name="Stop" type="Button" parent="ui/topbar/HBoxContainer/HBoxContainer"]
+[node name="Stop" type="Button" parent="ui/topbar/HBoxContainer/Right"]
+unique_name_in_owner = true
 modulate = Color( 1, 1, 1, 0.352941 )
-margin_left = 213.0
-margin_top = 5.0
-margin_right = 249.0
-margin_bottom = 35.0
+margin_left = 81.0
+margin_top = 2.0
+margin_right = 117.0
+margin_bottom = 32.0
 size_flags_vertical = 6
 icon = ExtResource( 3 )
 flat = true
 
-[node name="SkipInto" type="Button" parent="ui/topbar/HBoxContainer/HBoxContainer"]
+[node name="SkipInto" type="Button" parent="ui/topbar/HBoxContainer/Right"]
+unique_name_in_owner = true
 modulate = Color( 1, 1, 1, 0.352941 )
-margin_left = 253.0
-margin_top = 5.0
-margin_right = 289.0
-margin_bottom = 35.0
+margin_left = 121.0
+margin_top = 2.0
+margin_right = 157.0
+margin_bottom = 32.0
 size_flags_horizontal = 0
 size_flags_vertical = 6
 icon = ExtResource( 4 )
 flat = true
 
-[node name="SkipBreakpoint" type="Button" parent="ui/topbar/HBoxContainer/HBoxContainer"]
+[node name="SkipBreakpoint" type="Button" parent="ui/topbar/HBoxContainer/Right"]
+unique_name_in_owner = true
 modulate = Color( 1, 1, 1, 0.352941 )
-margin_left = 293.0
-margin_top = 5.0
-margin_right = 328.0
-margin_bottom = 35.0
+margin_left = 161.0
+margin_top = 2.0
+margin_right = 196.0
+margin_bottom = 32.0
 size_flags_horizontal = 0
 size_flags_vertical = 6
 icon = ExtResource( 9 )
 flat = true
 icon_align = 1
 
-[node name="Record" type="Button" parent="ui/topbar/HBoxContainer/HBoxContainer"]
+[node name="Record" type="Button" parent="ui/topbar/HBoxContainer/Right"]
+unique_name_in_owner = true
 modulate = Color( 1, 0.278431, 0.278431, 0.352941 )
-margin_left = 332.0
-margin_right = 364.0
-margin_bottom = 40.0
+margin_left = 200.0
+margin_right = 232.0
+margin_bottom = 35.0
 icon = ExtResource( 2 )
 flat = true
 
-[node name="device" type="MenuButton" parent="ui/topbar/HBoxContainer/HBoxContainer"]
+[node name="device" type="MenuButton" parent="ui/topbar/HBoxContainer/Right"]
 unique_name_in_owner = true
-margin_left = 368.0
-margin_right = 419.0
-margin_bottom = 40.0
+margin_left = 236.0
+margin_right = 287.0
+margin_bottom = 35.0
 theme = ExtResource( 10 )
 custom_colors/font_color_disabled = Color( 0.290196, 0.8, 0.811765, 1 )
 custom_colors/font_color_focus = Color( 0.290196, 0.8, 0.811765, 1 )
@@ -257,19 +280,19 @@ icon_align = 2
 switch_on_hover = true
 
 [node name="body" type="HBoxContainer" parent="ui"]
-margin_top = 53.0
+margin_top = 48.0
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_vertical = 3
 custom_constants/separation = 4
 
 [node name="spacer" type="Control" parent="ui/body"]
-margin_bottom = 547.0
+margin_bottom = 552.0
 
 [node name="SelectElementPanel" type="PanelContainer" parent="ui/body"]
 margin_left = 4.0
 margin_right = 254.0
-margin_bottom = 547.0
+margin_bottom = 552.0
 rect_min_size = Vector2( 250, 0 )
 custom_styles/panel = SubResource( 4 )
 
@@ -277,7 +300,7 @@ custom_styles/panel = SubResource( 4 )
 margin_left = 3.0
 margin_top = 3.0
 margin_right = 247.0
-margin_bottom = 544.0
+margin_bottom = 549.0
 theme = SubResource( 7 )
 follow_focus = true
 scroll_horizontal_enabled = false
@@ -286,12 +309,12 @@ scroll_horizontal_enabled = false
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 244.0
-margin_bottom = 541.0
+margin_bottom = 546.0
 
 [node name="FlowPanel" type="PanelContainer" parent="ui/body"]
 margin_left = 258.0
 margin_right = 766.0
-margin_bottom = 547.0
+margin_bottom = 552.0
 rect_min_size = Vector2( 250, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -301,7 +324,7 @@ custom_styles/panel = SubResource( 4 )
 margin_left = 3.0
 margin_top = 3.0
 margin_right = 505.0
-margin_bottom = 544.0
+margin_bottom = 549.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 follow_focus = true
@@ -311,12 +334,12 @@ scroll_horizontal_enabled = false
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 502.0
-margin_bottom = 541.0
+margin_bottom = 546.0
 
 [node name="rightDock" type="PanelContainer" parent="ui/body"]
 margin_left = 770.0
 margin_right = 1020.0
-margin_bottom = 547.0
+margin_bottom = 552.0
 rect_min_size = Vector2( 250, 0 )
 custom_styles/panel = SubResource( 4 )
 
@@ -324,25 +347,29 @@ custom_styles/panel = SubResource( 4 )
 margin_left = 3.0
 margin_top = 3.0
 margin_right = 247.0
-margin_bottom = 544.0
+margin_bottom = 549.0
 scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ui/body/rightDock/ScrollContainer"]
 margin_right = 244.0
-margin_bottom = 541.0
+margin_bottom = 546.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="DockableContainer" type="Container" parent="ui/body/rightDock/ScrollContainer/VBoxContainer"]
 margin_right = 244.0
-margin_bottom = 541.0
+margin_bottom = 546.0
 input_pass_on_modal_close_click = false
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 10 )
 script = ExtResource( 11 )
 tab_align = 0
+use_hidden_tabs_for_min_size = true
 layout = SubResource( 38 )
+
+[node name="Flows" parent="ui/body/rightDock/ScrollContainer/VBoxContainer/DockableContainer" instance=ExtResource( 16 )]
+margin_top = 28.0
 
 [node name="Properties" type="ScrollContainer" parent="ui/body/rightDock/ScrollContainer/VBoxContainer/DockableContainer"]
 visible = false
@@ -355,15 +382,7 @@ scroll_horizontal_enabled = false
 margin_right = 197.0
 margin_bottom = 381.0
 
-[node name="Flows" type="PanelContainer" parent="ui/body/rightDock/ScrollContainer/VBoxContainer/DockableContainer"]
-margin_top = 28.0
-margin_right = 244.0
-margin_bottom = 541.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/panel = SubResource( 36 )
-
 [node name="spacer2" type="Control" parent="ui/body"]
 margin_left = 1024.0
 margin_right = 1024.0
-margin_bottom = 547.0
+margin_bottom = 552.0
