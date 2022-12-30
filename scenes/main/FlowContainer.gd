@@ -4,7 +4,7 @@ extends Control
 func _ready():
 	$"%spacer".rect_size.y = 120
 	$"%spacer".rect_min_size.y = 120
-	if get_parent().name == 'ChildElements':
+	if get_parent().get_parent().get_parent().name == 'ChildElements':
 		$"%spacer".rect_size.y = 50
 		$"%spacer".rect_min_size.y = 50
 	
@@ -20,7 +20,7 @@ func drop_data(_position,_data):
 			var elementInstance = _data['origin'].duplicate()
 			add_child(elementInstance)
 			if _data['origin'].active_mode == 3:_data['origin'].queue_free()
-			if get_parent().name == 'ChildElements':
+			if get_parent().get_parent().get_parent().name == 'ChildElements':
 				elementInstance.active_mode = elementInstance.mode['DISPLAY_IN_PARENT']
 			else:
 				elementInstance.active_mode = elementInstance.mode['DISPLAY']
@@ -29,7 +29,7 @@ func drop_data(_position,_data):
 			if  _data['origin'].active_mode == 3:
 				_data['origin'].queue_free()
 	elif _data['origin'].active_mode == 2:
-			if get_parent().name == 'ChildElements':
+			if get_parent().get_parent().get_parent().name == 'ChildElements':
 				var elementInstance = _data['origin'].duplicate()
 				add_child(elementInstance)
 				elementInstance.active_mode = elementInstance.mode['DISPLAY_IN_PARENT']
@@ -51,16 +51,4 @@ func highlight_element(_data):
 		Global.highlighted_element =_data
 
 func generate_PlacedElement():
-	
-	
 	pass
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
