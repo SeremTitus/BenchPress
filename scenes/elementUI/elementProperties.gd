@@ -89,4 +89,4 @@ func createOutputVar():
 					propertyName = Properties_set_values[propertyName]
 				item.get_child(0).text = propertyName
 				$"%OutputVar".add_child(item)
-	
+
