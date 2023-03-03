@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/elementUI/element.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -23,13 +23,21 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 corner_detail = 10
 
-[sub_resource type="StyleBoxFlat" id=8]
-bg_color = Color( 1, 0.756863, 0.113725, 0 )
+[sub_resource type="StyleBoxFlat" id=12]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color( 1, 0.756863, 0.113725, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 10
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.180392, 0.439216, 0.545098, 0.372549 )
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -63,8 +71,8 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id=10]
-bg_color = Color( 0.803922, 0.596078, 0.0470588, 0 )
+[sub_resource type="StyleBoxFlat" id=13]
+bg_color = Color( 0.545098, 0.447059, 0.180392, 0 )
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -72,9 +80,8 @@ corner_radius_bottom_left = 10
 corner_detail = 10
 
 [node name="Element" type="PanelContainer"]
-margin_left = 1.0
-margin_right = 201.0
-margin_bottom = 50.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 hint_tooltip = "test"
 size_flags_horizontal = 3
 custom_styles/panel = SubResource( 1 )
@@ -83,33 +90,44 @@ script = ExtResource( 1 )
 [node name="highlight" type="PanelContainer" parent="."]
 unique_name_in_owner = true
 visible = false
-margin_right = 200.0
-margin_bottom = 73.0
+margin_right = 1024.0
+margin_bottom = 686.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_styles/panel = SubResource( 12 )
+
+[node name="selectColor" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+margin_right = 1024.0
+margin_bottom = 50.944
+rect_min_size = Vector2( 0, 50.944 )
+size_flags_horizontal = 3
+size_flags_vertical = 0
 custom_styles/panel = SubResource( 8 )
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-margin_right = 200.0
-margin_bottom = 50.0
+[node name="margin" type="MarginContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 695.0
 custom_constants/margin_right = 4
 custom_constants/margin_top = 4
 custom_constants/margin_left = 4
 custom_constants/margin_bottom = 4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="margin"]
 margin_left = 4.0
 margin_top = 4.0
-margin_right = 196.0
-margin_bottom = 46.0
+margin_right = 1020.0
+margin_bottom = 691.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="margin/HBoxContainer"]
 margin_right = 30.0
-margin_bottom = 42.0
+margin_bottom = 687.0
+focus_mode = 1
 
-[node name="icon" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+[node name="icon" type="TextureRect" parent="margin/HBoxContainer/VBoxContainer2"]
 margin_right = 30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 30, 30 )
@@ -117,112 +135,121 @@ size_flags_vertical = 4
 texture = ExtResource( 2 )
 expand = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="margin/HBoxContainer"]
 margin_left = 34.0
-margin_right = 192.0
-margin_bottom = 41.72
+margin_right = 1016.0
+margin_bottom = 687.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Title" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="margin/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
-margin_right = 158.0
+margin_right = 982.0
 margin_bottom = 21.0
 size_flags_vertical = 1
 custom_fonts/font = SubResource( 4 )
 text = "ADD VARIABLE"
 clip_text = true
 
-[node name="Description" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Description" type="Label" parent="margin/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
-visible = false
 margin_top = 25.0
-margin_right = 158.0
+margin_right = 982.0
 margin_bottom = 43.0
 size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_vertical = 1
 custom_fonts/font = SubResource( 6 )
 text = "Test description"
 autowrap = true
 
-[node name="spacer" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="ElementProperties" parent="margin/HBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
 unique_name_in_owner = true
-visible = false
 margin_top = 47.0
-margin_right = 158.0
-margin_bottom = 65.0
-rect_min_size = Vector2( 0, 18 )
+margin_right = 982.0
+margin_bottom = 433.0
 
-[node name="ElementProperties" parent="MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
+[node name="MarginContainer" parent="margin/HBoxContainer/VBoxContainer/ElementProperties" index="0"]
+margin_right = 982.0
+margin_bottom = 386.0
+
+[node name="ScrollContainer" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer" index="0"]
+margin_right = 982.0
+margin_bottom = 381.0
+scroll_vertical_enabled = false
+
+[node name="content" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer" index="0"]
+margin_right = 982.0
+margin_bottom = 381.0
+
+[node name="Title" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer/content" index="0"]
 visible = false
-margin_top = 69.0
-margin_right = 197.0
-margin_bottom = 446.0
+margin_right = 982.0
 
-[node name="content" parent="MarginContainer/HBoxContainer/VBoxContainer/ElementProperties" index="0"]
-margin_right = 197.0
-margin_bottom = 377.0
-
-[node name="Title" parent="MarginContainer/HBoxContainer/VBoxContainer/ElementProperties/content" index="0"]
-visible = false
-margin_right = 200.0
-
-[node name="doc" parent="MarginContainer/HBoxContainer/VBoxContainer/ElementProperties/content" index="1"]
+[node name="doc" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer/content" index="1"]
 margin_top = 0.0
-margin_right = 197.0
+margin_right = 982.0
 margin_bottom = 24.0
 
-[node name="OutputVar" parent="MarginContainer/HBoxContainer/VBoxContainer/ElementProperties/content" index="2"]
+[node name="OutputVar" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer/content" index="2"]
 margin_top = 28.0
-margin_right = 197.0
-margin_bottom = 52.0
+margin_right = 982.0
+margin_bottom = 56.0
 
-[node name="flowVariables" parent="MarginContainer/HBoxContainer/VBoxContainer/ElementProperties/content/OutputVar" index="1"]
-margin_bottom = 34.0
+[node name="lable" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer/content/OutputVar" index="0"]
+margin_top = 2.0
+margin_bottom = 26.0
 
-[node name="parameter" parent="MarginContainer/HBoxContainer/VBoxContainer/ElementProperties/content" index="3"]
-margin_top = 56.0
-margin_right = 197.0
-margin_bottom = 377.0
+[node name="flowVariables" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer/content/OutputVar" index="1"]
+visible = true
 
-[node name="morph_data" parent="MarginContainer/HBoxContainer/VBoxContainer/ElementProperties/content/parameter" index="0"]
-margin_right = 197.0
+[node name="parameter" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer/content" index="3"]
+margin_top = 60.0
+margin_right = 982.0
+margin_bottom = 381.0
 
-[node name="ChildElements" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-visible = false
-margin_top = 69.0
-margin_right = 158.0
-margin_bottom = 326.0
-custom_constants/margin_right = 7
-custom_constants/margin_bottom = 7
+[node name="morph_data" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer/content/parameter" index="0"]
+margin_right = 982.0
 
-[node name="ChildElements" type="PanelContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/ChildElements"]
-margin_right = 151.0
-margin_bottom = 250.0
+[node name="ChildElements" type="PanelContainer" parent="margin/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 437.0
+margin_right = 982.0
+margin_bottom = 687.0
 rect_min_size = Vector2( 0, 250 )
 rect_pivot_offset = Vector2( -281, 85 )
 size_flags_horizontal = 3
+size_flags_vertical = 3
 custom_styles/panel = SubResource( 9 )
 
-[node name="FlowContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/ChildElements/ChildElements" instance=ExtResource( 4 )]
+[node name="FlowContainer" parent="margin/HBoxContainer/VBoxContainer/ChildElements" instance=ExtResource( 4 )]
+unique_name_in_owner = false
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 10.0
 margin_top = 10.0
-margin_right = 141.0
+margin_right = 972.0
 margin_bottom = 240.0
+
+[node name="ScrollContainer" parent="margin/HBoxContainer/VBoxContainer/ChildElements/FlowContainer" index="0"]
+margin_right = 962.0
+margin_bottom = 230.0
+scroll_vertical_enabled = false
+
+[node name="content" parent="margin/HBoxContainer/VBoxContainer/ChildElements/FlowContainer/ScrollContainer" index="0"]
+margin_right = 962.0
+margin_bottom = 230.0
 
 [node name="select" type="PanelContainer" parent="."]
 unique_name_in_owner = true
-margin_right = 200.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 0, 50 )
+margin_right = 1024.0
+margin_bottom = 50.944
+rect_min_size = Vector2( 0, 50.944 )
+size_flags_horizontal = 3
 size_flags_vertical = 0
-custom_styles/panel = SubResource( 10 )
+custom_styles/panel = SubResource( 13 )
 script = ExtResource( 3 )
-
-[node name="clickTimer" type="Timer" parent="select"]
 
 [connection signal="gui_input" from="select" to="select" method="_on_select_gui_input"]
 
-[editable path="MarginContainer/HBoxContainer/VBoxContainer/ElementProperties"]
+[editable path="margin/HBoxContainer/VBoxContainer/ElementProperties"]
+[editable path="margin/HBoxContainer/VBoxContainer/ChildElements/FlowContainer"]

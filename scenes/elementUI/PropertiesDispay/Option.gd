@@ -8,7 +8,7 @@ var displayType = '' setget displaytype
 func displaytype(input):
 	displayType = input
 	if displayType != '':
-		var item = load("res://scenes/elementUI/PropertiesDispay/variablesLocator.tscn").instance()
+		var item = preload("res://scenes/elementUI/PropertiesDispay/variablesLocator.tscn").instance()
 		item.displayType = displayType
 		item.connect('selectedvariable',self,'recivevalue')
 		add_child(item)

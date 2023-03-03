@@ -1,12 +1,54 @@
 extends Node
 
 
-var saverReloader=preload("res://SAVER_RELOADER_PlaceholderHack.gd").new()
-var structures = preload("res://structrures.gd").new()
+var saverReloader=preload("res://specialFunction/SAVER_RELOADER_PlaceholderHack.gd").new()
+var structures = preload("res://specialFunction/structrures.gd").new()
 
-var LibraryElementStructure = {'uniwu/item/variable/New_variable':{},
-							'uniwu/item/variables/New_variablel':{},
-							'uniwu/item/variable/p/k/m/New_variablek':{}}
+var LibraryElementStructure = {
+	'uniwu/item/variable/New_variable':{
+		'Library' : '',
+		'Type':'Element',#Inheritable,errorhandler
+		'Title' : 'ADD VARIABLE',
+		'Description' : 'test description',
+		'Doc':'Doc Example',
+		'Icon':'',
+		'GroupPath':'',
+		'Dependencies':[],
+		'Inherit':[],
+		'Iniciator':[],
+		'AntiIniciator':[],
+		'Parent':false,
+		'Morphs':{#loop-able, keys are not fixed
+										#Placeholder key but Base maybe found in most elements
+			'Base' :{#fixed keys
+				'Feature' : '',
+				'Code' : '',
+				'Properties':{#loop-able keys are not fixed
+												#Placeholder key
+					'Enter Variable Name':{#fixed keys
+						'VariableName':'n',
+						'Type':'n',
+						'Display':'Options',
+						'DisplayType':'n',
+						'subtype':['s','t'],
+						'DefaultValue':'',
+						'InputOutput':'Input'
+						},
+					'Static':{#fixed keys
+						'VariableName':'n',
+						'Type':'n',
+						'Display':'Options',
+						'DisplayType':'n',
+						'subtype':['s','t'],
+						'DefaultValue':'',
+						'InputOutput':'Output'
+						}
+					}
+				}
+			}
+		},
+	
+	}
 signal LibraryElementStructure_Constructed
 var current_project_filePath = ''
 var current_project = {} setget current_Project_changed
@@ -27,7 +69,7 @@ func _ready():
 func create_newProject():
 	current_project = {
 		'Version' : '0.0.1.Dev',
-		'FileState' : 'Flow',#Flow,App -->'App' filestate is reserved for deployed clients
+		'FileState' : 'Flow',#Library,Flow,App -->'App' filestate is reserved for deployed clients
 		'LibrariesVersion' :{#loop-able keys are not fixed
 			'built-in': '0.0.1.Alfa',
 			},
@@ -39,7 +81,6 @@ func create_newProject():
 			},
 		'Flows': {#loop-able, keys are not fixed
 		'main' : {},
-		'mainb' : {},
 		},
 		'ElementStructures':{}, # if FileState is Flow flowElementslist only include used elements
 		'ElementUpdatePatterns':{#loop-able keys are not fixed
@@ -51,12 +92,14 @@ func create_newProject():
 func create_Update_flow(flowname,changes):
 	if current_project.Flows.has(flowname) and typeof(changes) == TYPE_DICTIONARY:
 		current_project.Flows[flowname] = changes
+		emit_signal("current_Project_changed")
 		return OK
 	return FAILED
 	
 func add_NewFlow(flowname):
 	current_project.Flows[flowname] ={}
 	selected_flow = flowname
+	emit_signal("current_Project_changed")
 	return OK
 	
 func rename_flow(flowname,_changes):
@@ -67,6 +110,7 @@ func rename_flow(flowname,_changes):
 		emit_signal("current_Project_changed")
 		return OK
 	return FAILED
+	
 func delete_flow(flowname):
 	if current_project.Flows.has(flowname):
 		current_project.Flows.erase(flowname)
@@ -87,11 +131,10 @@ func current_Project_changed(newvalue):
 func highlighted_element_changed(newvalue):
 	highlighted_element = newvalue
 	emit_signal("highlighted_element_changed")
-
+	
 func selected_flow_changed(newvalue):
 	selected_flow = newvalue
 	emit_signal("current_Project_changed")
-
 	
 func get_LibraryElementStructure():
 	var contents = dir_contents('user://Library').files

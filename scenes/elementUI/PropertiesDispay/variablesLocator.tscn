@@ -1,9 +1,22 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://addons/MaxSizeContainer/max_size_container.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
-[ext_resource path="res://assets/theme/menubutton.tres" type="Theme" id=3]
 [ext_resource path="res://scenes/elementUI/PropertiesDispay/variablesLocator.gd" type="Script" id=4]
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.113725, 0.113725, 0.113725, 1 )
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="DynamicFontData" id=7]
+font_path = "res://assets/fonts/Roboto-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=9]
+size = 31
+use_filter = true
+font_data = SubResource( 7 )
 
 [node name="variablesLocator" type="Panel"]
 margin_right = 26.0
@@ -12,19 +25,7 @@ rect_min_size = Vector2( 26, 26 )
 size_flags_vertical = 0
 script = ExtResource( 4 )
 
-[node name="variablesLocator" type="MarginContainer" parent="."]
-margin_right = 26.0
-margin_bottom = 26.0
-rect_min_size = Vector2( 26, 26 )
-custom_constants/margin_right = 0
-custom_constants/margin_top = 0
-custom_constants/margin_left = 0
-custom_constants/margin_bottom = 0
-script = ExtResource( 1 )
-max_size = Vector2( 26, 26 )
-constant_size = true
-
-[node name="TextureRect" type="TextureRect" parent="variablesLocator"]
+[node name="TextureRect" type="TextureRect" parent="."]
 margin_right = 26.0
 margin_bottom = 26.0
 size_flags_horizontal = 3
@@ -32,12 +33,30 @@ size_flags_vertical = 5
 texture = ExtResource( 2 )
 expand = true
 
-[node name="PopupMenu" type="PopupMenu" parent="variablesLocator/TextureRect"]
+[node name="GlobalsPopup" type="WindowDialog" parent="."]
 unique_name_in_owner = true
-margin_top = 27.0
-margin_right = 250.0
-margin_bottom = 277.0
-rect_min_size = Vector2( 120, 250 )
-theme = ExtResource( 3 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -292.0
+margin_top = -173.0
+margin_right = 288.0
+margin_bottom = 146.0
+size_flags_vertical = 6
+custom_styles/panel = SubResource( 8 )
 
-[connection signal="gui_input" from="variablesLocator/TextureRect" to="." method="_on_TextureRect_gui_input"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="GlobalsPopup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="title" type="Label" parent="GlobalsPopup/VBoxContainer2"]
+margin_right = 580.0
+margin_bottom = 37.0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 9 )
+text = "Globals"
+align = 1
+clip_text = true
+
+[connection signal="gui_input" from="TextureRect" to="." method="_on_TextureRect_gui_input"]

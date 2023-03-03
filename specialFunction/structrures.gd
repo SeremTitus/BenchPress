@@ -47,7 +47,7 @@ var ElementProperties :Dictionary = {#loop-able keys are not fixed
 		'Properties':{#loop-able keys are not fixed
 			#'Edited_Properties_Name' :'Value'#set_values
 			},
-		'FlowVariable':{#loop-able keys are not fixed
+		'ElementVariable':{#loop-able keys are not fixed
 			#'Edited_Properties_Name' :'Name'#set_values
 			},
 		'errorhandlers':{#loop-able keys are not fixed
@@ -83,6 +83,50 @@ var BenchPress :Dictionary = {
 		},
 	'Flows': FlowStructure,
 	'ElementStructures':flowElementslist, # if FileState is Flow flowElementslist only include used elements
+	'Schedule':{#loop-able keys are not fixed
+		'file path':{ 
+			'single/repeat':{
+				'day/date':{
+					'Active':true,
+					'ActivationRule':{
+						'startDate': '',
+						'endDate': '',
+						'pattern':{
+							0 :{
+								'Active':true,
+								'deactivateSchedule':false,
+								'deactivateScheduleValue':[],
+								'deactivatePattern':false,
+								'deactivatePatternValue':[],
+								'name':'even/odd/skip/prime',
+								'skipValue':0,
+								'based':false,
+								},
+						},
+					},
+					'DeactivationRule':{
+						'startDate': '',
+						'endDate': '',
+						'pattern':{
+							0 :{
+								'Active':true,
+								'deactivateSchedule':false,
+								'deactivateScheduleValue':[],
+								'deactivatePattern':false,
+								'deactivatePatternValue':[],
+								'name':'even/odd/skip/prime',
+								'skipValue':0,
+								'based':false,
+								},
+						},
+					},
+					'ActivationTimes':0,
+					'hour':'',
+					'min':'',
+				}
+			}
+		},
+	},
 	'ElementUpdatePatterns':{#loop-able keys are not fixed
 		#Intended for libraries to be able to be updated atleast in minorEditor releases
 		#TOBE DEFINED
@@ -93,9 +137,9 @@ var custom_user_folders={
 		'user://Library' : {
 			"built_in.benchpress":"res://Library/builtIn.benchpress",
 			},
-		'user://Editor' : {},
-		'user://enve':{},
-		'user://Flows' : {},
+		'user://Editor' : {},#Editor settings
+		'user://enve':{},#python enveronment
+		'user://Flows' : {},#created project folders:::('user://Flows/'+uniquefoldername+'/projectname.benchpress') ,('user://Flows/'+uniquefoldername+'/Runfile') 
 		'user://Running' : {},
 	}
 	
@@ -114,4 +158,3 @@ func some_notes():
 	#visible in in FlowElementProprertiesEdit Dock 
 	#and Constructor.ElementManager
 	
-

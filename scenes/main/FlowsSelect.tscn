@@ -10,19 +10,20 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
 
-[node name="content" type="ScrollContainer" parent="."]
+[node name="scroll" type="ScrollContainer" parent="."]
 margin_right = 1024.0
 margin_bottom = 576.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="content" type="VBoxContainer" parent="content"]
+[node name="Content" type="VBoxContainer" parent="scroll"]
 unique_name_in_owner = true
 margin_right = 1024.0
 margin_bottom = 22.0
 size_flags_horizontal = 3
 
-[node name="FlowSelectName" parent="content/content" instance=ExtResource( 2 )]
+[node name="FlowSelectName" parent="scroll/Content" instance=ExtResource( 2 )]
+unique_name_in_owner = false
 
 [node name="Button" type="Button" parent="."]
 margin_top = 580.0

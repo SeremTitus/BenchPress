@@ -40,7 +40,7 @@ func rename_file(file:String,newName:String):
 func verify_blenchpress_data(testdata):
 	#Ensures blenchpress file adhire to file structure defined in structure.gd
 	if typeof(testdata) != TYPE_DICTIONARY  or testdata.empty(): return FAILED
-	var structures = preload("res://structrures.gd").new()
+	var structures = preload("res://specialFunction/structrures.gd").new()
 	var level_1 = structures.BenchPress.keys()
 	for key in testdata:
 		if ! level_1.has(key): return FAILED

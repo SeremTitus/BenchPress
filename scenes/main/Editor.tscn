@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://scenes/main/topbar.gd" type="Script" id=1]
 [ext_resource path="res://assets/icons/debug/Record.svg" type="Texture" id=2]
@@ -36,16 +36,23 @@ use_mipmaps = true
 use_filter = true
 font_data = SubResource( 1 )
 
-[sub_resource type="Resource" id=5]
+[sub_resource type="StyleBoxFlat" id=13]
+content_margin_left = 2.0
+content_margin_right = 2.0
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[sub_resource type="Resource" id=11]
 resource_name = "Tabs"
 script = ExtResource( 13 )
 names = PoolStringArray( "Flows", "Properties" )
 current_tab = 0
 
-[sub_resource type="Resource" id=6]
+[sub_resource type="Resource" id=12]
 resource_name = "Layout"
 script = ExtResource( 12 )
-root = SubResource( 5 )
+root = SubResource( 11 )
 hidden_tabs = {
 }
 
@@ -56,13 +63,16 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="DynamicFontData" id=7]
+[sub_resource type="DynamicFontData" id=14]
 font_path = "res://assets/fonts/Roboto-Bold.ttf"
 
 [sub_resource type="DynamicFont" id=8]
 size = 31
 use_filter = true
-font_data = SubResource( 7 )
+font_data = SubResource( 14 )
+
+[sub_resource type="DynamicFontData" id=7]
+font_path = "res://assets/fonts/Roboto-Bold.ttf"
 
 [sub_resource type="DynamicFont" id=9]
 size = 15
@@ -164,9 +174,8 @@ margin_right = 727.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 
-[node name="Global" type="MenuButton" parent="layout/topbar/topbar/Center"]
-unique_name_in_owner = true
-margin_right = 66.0
+[node name="Global" type="Button" parent="layout/topbar/topbar/Center"]
+margin_right = 58.0
 margin_bottom = 30.0
 theme = ExtResource( 10 )
 custom_colors/font_color_disabled = Color( 0.341176, 0.811765, 0.290196, 1 )
@@ -175,16 +184,18 @@ custom_colors/font_color = Color( 0.341176, 0.811765, 0.290196, 1 )
 custom_colors/font_color_hover = Color( 0.25098, 0.603922, 0.211765, 1 )
 custom_colors/font_color_pressed = Color( 0.164706, 0.847059, 0.0901961, 1 )
 custom_fonts/font = SubResource( 2 )
+custom_styles/hover = SubResource( 13 )
+custom_styles/pressed = SubResource( 13 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/disabled = SubResource( 13 )
+custom_styles/normal = SubResource( 13 )
 text = "Globals"
 icon_align = 2
-switch_on_hover = true
 
-[node name="Schedule" type="MenuButton" parent="layout/topbar/topbar/Center"]
-unique_name_in_owner = true
-margin_left = 70.0
-margin_right = 147.0
+[node name="Schedule" type="Button" parent="layout/topbar/topbar/Center"]
+margin_left = 62.0
+margin_right = 131.0
 margin_bottom = 30.0
-focus_mode = 2
 theme = ExtResource( 10 )
 custom_colors/font_color_disabled = Color( 0.341176, 0.811765, 0.290196, 1 )
 custom_colors/font_color_focus = Color( 0.341176, 0.811765, 0.290196, 1 )
@@ -192,9 +203,13 @@ custom_colors/font_color = Color( 0.341176, 0.811765, 0.290196, 1 )
 custom_colors/font_color_hover = Color( 0.25098, 0.603922, 0.211765, 1 )
 custom_colors/font_color_pressed = Color( 0.164706, 0.847059, 0.0901961, 1 )
 custom_fonts/font = SubResource( 2 )
+custom_styles/hover = SubResource( 13 )
+custom_styles/pressed = SubResource( 13 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/disabled = SubResource( 13 )
+custom_styles/normal = SubResource( 13 )
 text = "Schedule"
 icon_align = 2
-switch_on_hover = true
 
 [node name="Right" type="HBoxContainer" parent="layout/topbar/topbar"]
 margin_left = 731.0
@@ -345,7 +360,7 @@ theme = ExtResource( 10 )
 script = ExtResource( 11 )
 tab_align = 0
 use_hidden_tabs_for_min_size = true
-layout = SubResource( 6 )
+layout = SubResource( 12 )
 clone_layout_on_ready = false
 
 [node name="Flows" parent="layout/body/rightDock/Dock" instance=ExtResource( 16 )]
@@ -356,7 +371,7 @@ margin_top = 28.0
 unique_name_in_owner = true
 visible = false
 margin_right = 197.0
-margin_bottom = 0.0
+margin_bottom = 5.0
 
 [node name="About" type="WindowDialog" parent="."]
 unique_name_in_owner = true
@@ -370,12 +385,6 @@ margin_right = 288.0
 margin_bottom = 146.0
 size_flags_vertical = 6
 custom_styles/panel = SubResource( 10 )
-
-[node name="bg" type="ColorRect" parent="About"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0.113725, 0.113725, 0.113725, 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="About"]
 anchor_right = 1.0
@@ -401,5 +410,60 @@ custom_fonts/font = SubResource( 9 )
 text = "0.0.1 Dev"
 align = 2
 clip_text = true
+
+[node name="GlobalsPopup" type="WindowDialog" parent="."]
+unique_name_in_owner = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -292.0
+margin_top = -173.0
+margin_right = 288.0
+margin_bottom = 146.0
+size_flags_vertical = 6
+custom_styles/panel = SubResource( 10 )
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="GlobalsPopup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="title" type="Label" parent="GlobalsPopup/VBoxContainer2"]
+margin_right = 580.0
+margin_bottom = 37.0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 8 )
+text = "Globals"
+align = 1
+clip_text = true
+
+[node name="SchedulePopup" type="WindowDialog" parent="."]
+unique_name_in_owner = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -292.0
+margin_top = -173.0
+margin_right = 288.0
+margin_bottom = 146.0
+size_flags_vertical = 6
+custom_styles/panel = SubResource( 10 )
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="SchedulePopup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="title" type="Label" parent="SchedulePopup/VBoxContainer3"]
+margin_right = 580.0
+margin_bottom = 37.0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 8 )
+text = "Schedule"
+align = 1
+clip_text = true
+
+[connection signal="button_down" from="layout/topbar/topbar/Center/Global" to="GlobalsPopup" method="popup"]
+[connection signal="button_down" from="layout/topbar/topbar/Center/Schedule" to="SchedulePopup" method="popup"]
 
 [editable path="layout/body/FlowPanel/FlowContainer"]
