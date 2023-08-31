@@ -5,3 +5,4 @@ builds
 android/build
 .gdignore
 exports
+.godot
