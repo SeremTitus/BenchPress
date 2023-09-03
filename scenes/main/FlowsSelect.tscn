@@ -1,34 +1,32 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://c3vfglq75isr"]
 
-[ext_resource path="res://scenes/main/FlowsSelect.gd" type="Script" id=1]
-[ext_resource path="res://scenes/main/FlowSelectName.tscn" type="PackedScene" id=2]
+[ext_resource type="Script" path="res://scenes/main/FlowsSelect.gd" id="1_cmeum"]
+[ext_resource type="PackedScene" uid="uid://c2ddhudkxr7te" path="res://scenes/main/FlowSelectName.tscn" id="2_tna60"]
 
 [node name="FlowsSelect" type="VBoxContainer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource( 1 )
+script = ExtResource("1_cmeum")
 
 [node name="scroll" type="ScrollContainer" parent="."]
-margin_right = 1024.0
-margin_bottom = 576.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Content" type="VBoxContainer" parent="scroll"]
 unique_name_in_owner = true
-margin_right = 1024.0
-margin_bottom = 22.0
+layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FlowSelectName" parent="scroll/Content" instance=ExtResource( 2 )]
+[node name="FlowSelectName" parent="scroll/Content" instance=ExtResource("2_tna60")]
 unique_name_in_owner = false
+layout_mode = 2
 
 [node name="Button" type="Button" parent="."]
-margin_top = 580.0
-margin_right = 1024.0
-margin_bottom = 600.0
+layout_mode = 2
 text = "ADD FLOW"
 
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

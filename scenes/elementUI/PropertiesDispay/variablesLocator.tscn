@@ -1,62 +1,31 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://cwr0xqwu842ad"]
 
-[ext_resource path="res://icon.png" type="Texture" id=2]
-[ext_resource path="res://scenes/elementUI/PropertiesDispay/variablesLocator.gd" type="Script" id=4]
-
-[sub_resource type="StyleBoxFlat" id=8]
-bg_color = Color( 0.113725, 0.113725, 0.113725, 1 )
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="DynamicFontData" id=7]
-font_path = "res://assets/fonts/Roboto-Bold.ttf"
-
-[sub_resource type="DynamicFont" id=9]
-size = 31
-use_filter = true
-font_data = SubResource( 7 )
+[ext_resource type="Texture2D" uid="uid://deqa82u4ia1j4" path="res://icon.png" id="2"]
+[ext_resource type="Script" path="res://scenes/elementUI/PropertiesDispay/variablesLocator.gd" id="4"]
 
 [node name="variablesLocator" type="Panel"]
-margin_right = 26.0
-margin_bottom = 26.0
-rect_min_size = Vector2( 26, 26 )
 size_flags_vertical = 0
-script = ExtResource( 4 )
+script = ExtResource("4")
 
 [node name="TextureRect" type="TextureRect" parent="."]
-margin_right = 26.0
-margin_bottom = 26.0
+layout_mode = 0
 size_flags_horizontal = 3
 size_flags_vertical = 5
-texture = ExtResource( 2 )
-expand = true
+texture = ExtResource("2")
+expand_mode = 1
 
-[node name="GlobalsPopup" type="WindowDialog" parent="."]
+[node name="GlobalsPopup" type="Popup" parent="."]
 unique_name_in_owner = true
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -292.0
-margin_top = -173.0
-margin_right = 288.0
-margin_bottom = 146.0
-size_flags_vertical = 6
-custom_styles/panel = SubResource( 8 )
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="GlobalsPopup"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="title" type="Label" parent="GlobalsPopup/VBoxContainer2"]
-margin_right = 580.0
-margin_bottom = 37.0
+layout_mode = 2
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 9 )
 text = "Globals"
-align = 1
 clip_text = true
 
 [connection signal="gui_input" from="TextureRect" to="." method="_on_TextureRect_gui_input"]

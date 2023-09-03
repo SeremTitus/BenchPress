@@ -1,10 +1,10 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=15 format=3]
 
-[ext_resource path="res://scenes/elementUI/element.gd" type="Script" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
-[ext_resource path="res://scenes/elementUI/elementSelect.gd" type="Script" id=3]
-[ext_resource path="res://scenes/main/FlowContainer.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/elementUI/elementProperties.tscn" type="PackedScene" id=5]
+[ext_resource type="Script" path="res://scenes/elementUI/element.gd" id="1"]
+[ext_resource type="Texture" uid="uid://deqa82u4ia1j4" path="res://icon.png" id="2"]
+[ext_resource type="Script" path="res://scenes/elementUI/elementSelect.gd" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/main/FlowContainer.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://cqr1uqt34stgn" path="res://scenes/elementUI/elementProperties.tscn" id="5"]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 0.0

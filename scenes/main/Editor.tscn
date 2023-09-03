@@ -1,466 +1,1072 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=19 format=3 uid="uid://dq3jey2r0wwhv"]
 
-[ext_resource path="res://scenes/main/topbar.gd" type="Script" id=1]
-[ext_resource path="res://assets/icons/debug/Record.svg" type="Texture" id=2]
-[ext_resource path="res://assets/icons/debug/Stop.svg" type="Texture" id=3]
-[ext_resource path="res://assets/icons/debug/SkipInto.svg" type="Texture" id=4]
-[ext_resource path="res://scenes/main/ElementContainer/ElementsContainer.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/elementUI/elementProperties.tscn" type="PackedScene" id=6]
-[ext_resource path="res://assets/icons/debug/Pause.svg" type="Texture" id=7]
-[ext_resource path="res://assets/icons/debug/play.svg" type="Texture" id=8]
-[ext_resource path="res://assets/icons/debug/breakPoint.svg" type="Texture" id=9]
-[ext_resource path="res://assets/theme/menubutton.tres" type="Theme" id=10]
-[ext_resource path="res://addons/dockable_container/dockable_container.gd" type="Script" id=11]
-[ext_resource path="res://addons/dockable_container/layout.gd" type="Script" id=12]
-[ext_resource path="res://addons/dockable_container/layout_panel.gd" type="Script" id=13]
-[ext_resource path="res://scenes/main/FlowContainer.tscn" type="PackedScene" id=14]
-[ext_resource path="res://scenes/main/Editor.gd" type="Script" id=15]
-[ext_resource path="res://scenes/main/FlowsSelect.tscn" type="PackedScene" id=16]
+[ext_resource type="Script" path="res://scenes/main/Editor.gd" id="1_3prtb"]
+[ext_resource type="Texture2D" uid="uid://cnyecue6loxdc" path="res://assets/icons/debug/Record.svg" id="2"]
+[ext_resource type="Script" path="res://scenes/main/topbar.gd" id="2_4wgw6"]
+[ext_resource type="Texture2D" uid="uid://cdma5nt84osjo" path="res://assets/icons/debug/Stop.svg" id="3"]
+[ext_resource type="Texture2D" uid="uid://ckagj02aygcv1" path="res://assets/icons/debug/SkipInto.svg" id="4"]
+[ext_resource type="PackedScene" uid="uid://cqr1uqt34stgn" path="res://scenes/elementUI/elementProperties.tscn" id="6"]
+[ext_resource type="Texture2D" uid="uid://b2og6enhoa1kq" path="res://assets/icons/debug/Pause.svg" id="7"]
+[ext_resource type="Texture2D" uid="uid://b3nxmfc1jnsuv" path="res://assets/icons/debug/play.svg" id="8"]
+[ext_resource type="Texture2D" uid="uid://dv83v1runlrjs" path="res://assets/icons/debug/breakPoint.svg" id="9"]
+[ext_resource type="Theme" uid="uid://dc0il7m7ryfbx" path="res://assets/theme/menubutton.tres" id="10"]
+[ext_resource type="PackedScene" uid="uid://ctft7yedvi6u4" path="res://scenes/main/ElementContainer/ElementsContainer.tscn" id="10_qt1ee"]
+[ext_resource type="PackedScene" path="res://scenes/main/FlowContainer.tscn" id="11_imqnq"]
+[ext_resource type="PackedScene" uid="uid://c3vfglq75isr" path="res://scenes/main/FlowsSelect.tscn" id="12_a7kox"]
 
-[sub_resource type="StyleBoxFlat" id=4]
-content_margin_left = 3.0
-content_margin_right = 3.0
-content_margin_top = 3.0
-content_margin_bottom = 3.0
-bg_color = Color( 0.133333, 0.133333, 0.133333, 1 )
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+[sub_resource type="GDScript" id="GDScript_m2d7k"]
+script/source = "extends Container
 
-[sub_resource type="DynamicFontData" id=1]
-font_path = "res://assets/fonts/Roboto-Regular.ttf"
+const SplitHandle = preload(\"split_handle.gd\")
+const DockablePanel = preload(\"dockable_panel.gd\")
+const ReferenceControl = preload(\"dockable_panel_reference_control.gd\")
+const DragNDropPanel = preload(\"drag_n_drop_panel.gd\")
+const Layout = preload(\"layout.gd\")
 
-[sub_resource type="DynamicFont" id=2]
-use_mipmaps = true
-use_filter = true
-font_data = SubResource( 1 )
+# gdlint: ignore=max-line-length
+export(int, \"Left\", \"Center\", \"Right\") var tab_align = TabContainer.ALIGN_CENTER setget set_tab_align, get_tab_align
+export(bool) var tabs_visible := true setget set_tabs_visible, get_tabs_visible
+# gdlint: ignore=max-line-length
+export(bool) var use_hidden_tabs_for_min_size: bool setget set_use_hidden_tabs_for_min_size, get_use_hidden_tabs_for_min_size
+export(int) var rearrange_group = 0
+export(Resource) var layout = Layout.new() setget set_layout, get_layout
+# If `clone_layout_on_ready` is true, `layout` will be cloned on `_ready`.
+# This is useful for leaving layout Resources untouched in case you want to
+# restore layout to its default later.
+export(bool) var clone_layout_on_ready = true
 
-[sub_resource type="StyleBoxFlat" id=13]
-content_margin_left = 2.0
-content_margin_right = 2.0
-content_margin_top = 2.0
-content_margin_bottom = 2.0
-bg_color = Color( 0.6, 0.6, 0.6, 0 )
+var _layout = Layout.new()
+var _panel_container = Container.new()
+var _split_container = Container.new()
+var _drag_n_drop_panel = DragNDropPanel.new()
+var _drag_panel: DockablePanel
+var _tab_align = TabContainer.ALIGN_CENTER
+var _tabs_visible = true
+var _use_hidden_tabs_for_min_size = false
+var _current_panel_index = 0
+var _current_split_index = 0
+var _children_names = {}
+var _layout_dirty = false
 
-[sub_resource type="Resource" id=11]
+
+func _ready() -> void:
+	set_process_input(false)
+	_panel_container.name = \"_panel_container\"
+	.add_child(_panel_container)
+	move_child(_panel_container, 0)
+	_split_container.name = \"_split_container\"
+	_split_container.mouse_filter = MOUSE_FILTER_PASS
+	_panel_container.add_child(_split_container)
+
+	_drag_n_drop_panel.name = \"_drag_n_drop_panel\"
+	_drag_n_drop_panel.mouse_filter = MOUSE_FILTER_PASS
+	_drag_n_drop_panel.set_drag_forwarding(self)
+	_drag_n_drop_panel.visible = false
+	.add_child(_drag_n_drop_panel)
+
+	if not _layout:
+		set_layout(null)
+	elif clone_layout_on_ready and not Engine.editor_hint:
+		set_layout(_layout.clone())
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_SORT_CHILDREN:
+		_resort()
+	elif (
+		what == NOTIFICATION_DRAG_BEGIN
+		and _can_handle_drag_data(get_viewport().gui_get_drag_data())
+	):
+		_drag_n_drop_panel.set_enabled(true, not _layout.root.empty())
+		set_process_input(true)
+	elif what == NOTIFICATION_DRAG_END:
+		_drag_n_drop_panel.set_enabled(false)
+		set_process_input(false)
+
+
+func _input(event: InputEvent) -> void:
+	assert(get_viewport().gui_is_dragging(), \"FIXME: should only be called when dragging\")
+	if event is InputEventMouseMotion:
+		var local_position = get_local_mouse_position()
+		var panel
+		for i in range(1, _panel_container.get_child_count()):
+			var p = _panel_container.get_child(i)
+			if p.get_rect().has_point(local_position):
+				panel = p
+				break
+		_drag_panel = panel
+		if not panel:
+			return
+		fit_child_in_rect(_drag_n_drop_panel, panel.get_child_rect())
+
+
+func add_child(node: Node, legible_unique_name: bool = false) -> void:
+	.add_child(node, legible_unique_name)
+	_drag_n_drop_panel.raise()
+	_track_and_add_node(node)
+
+
+func add_child_below_node(node: Node, child_node: Node, legible_unique_name: bool = false) -> void:
+	.add_child_below_node(node, child_node, legible_unique_name)
+	_drag_n_drop_panel.raise()
+	_track_and_add_node(child_node)
+
+
+func remove_child(node: Node) -> void:
+	.remove_child(node)
+	_untrack_node(node)
+
+
+func can_drop_data_fw(_position: Vector2, data, from_control) -> bool:
+	return from_control == _drag_n_drop_panel and _can_handle_drag_data(data)
+
+
+func drop_data_fw(_position: Vector2, data, from_control) -> void:
+	assert(from_control == _drag_n_drop_panel, \"FIXME\")
+
+	var from_node: TabContainer = get_node(data.from_path)
+	if from_node == _drag_panel and _drag_panel.get_child_count() == 1:
+		return
+
+	var moved_tab = from_node.get_tab_control(data.tabc_element)
+	if moved_tab is ReferenceControl:
+		moved_tab = moved_tab.reference_to
+	if not _is_managed_node(moved_tab):
+		moved_tab.get_parent().remove_child(moved_tab)
+		add_child(moved_tab)
+
+	if _drag_panel != null:
+		var margin = _drag_n_drop_panel.get_hover_margin()
+		_layout.split_leaf_with_node(_drag_panel.leaf, moved_tab, margin)
+
+	_layout_dirty = true
+	queue_sort()
+
+
+func set_control_as_current_tab(control: Control) -> void:
+	assert(
+		control.get_parent_control() == self,
+		\"Trying to focus a control not managed by this container\"
+	)
+	if is_control_hidden(control):
+		push_warning(\"Trying to focus a hidden control\")
+		return
+	var leaf = _layout.get_leaf_for_node(control)
+	if not leaf:
+		return
+	var position_in_leaf = leaf.find_node(control)
+	if position_in_leaf < 0:
+		return
+	var panel
+	for i in range(1, _panel_container.get_child_count()):
+		var p = _panel_container.get_child(i)
+		if p.leaf == leaf:
+			panel = p
+			break
+	if not panel:
+		return
+	panel.current_tab = clamp(position_in_leaf, 0, panel.get_tab_count() - 1)
+
+
+func set_layout(value: Layout) -> void:
+	if value == null:
+		value = Layout.new()
+	if value == _layout:
+		return
+	if _layout and _layout.is_connected(\"changed\", self, \"queue_sort\"):
+		_layout.disconnect(\"changed\", self, \"queue_sort\")
+	_layout = value
+	_layout.connect(\"changed\", self, \"queue_sort\")
+	_layout_dirty = true
+	queue_sort()
+
+
+func get_layout() -> Layout:
+	return _layout
+
+
+func set_tab_align(value: int) -> void:
+	_tab_align = value
+	for i in range(1, _panel_container.get_child_count()):
+		var panel = _panel_container.get_child(i)
+		panel.tab_align = value
+
+
+func get_tab_align() -> int:
+	return _tab_align
+
+
+func set_tabs_visible(value: bool) -> void:
+	_tabs_visible = value
+	for i in range(1, _panel_container.get_child_count()):
+		var panel = _panel_container.get_child(i)
+		panel.tabs_visible = value
+
+
+func get_tabs_visible() -> bool:
+	return _tabs_visible
+
+
+func set_use_hidden_tabs_for_min_size(value: bool) -> void:
+	_use_hidden_tabs_for_min_size = value
+	for i in range(1, _panel_container.get_child_count()):
+		var panel = _panel_container.get_child(i)
+		panel.use_hidden_tabs_for_min_size = value
+
+
+func get_use_hidden_tabs_for_min_size() -> bool:
+	return _use_hidden_tabs_for_min_size
+
+
+func set_control_hidden(child: Control, hidden: bool) -> void:
+	_layout.set_node_hidden(child, hidden)
+
+
+func is_control_hidden(child: Control) -> bool:
+	return _layout.is_node_hidden(child)
+
+
+func get_tabs() -> Array:
+	var tabs = []
+	for i in get_child_count():
+		var child = get_child(i)
+		if _is_managed_node(child):
+			tabs.append(child)
+	return tabs
+
+
+func get_tab_count() -> int:
+	var count = 0
+	for i in get_child_count():
+		var child = get_child(i)
+		if _is_managed_node(child):
+			count += 1
+	return count
+
+
+func _can_handle_drag_data(data):
+	if data is Dictionary and data.get(\"type\") == \"tabc_element\":
+		var tabc = get_node_or_null(data.get(\"from_path\"))
+		return (
+			tabc
+			and tabc.has_method(\"get_tabs_rearrange_group\")
+			and tabc.get_tabs_rearrange_group() == rearrange_group
+		)
+	return false
+
+
+func _is_managed_node(node: Node) -> bool:
+	return (
+		node.get_parent() == self
+		and node != _panel_container
+		and node != _drag_n_drop_panel
+		and node is Control
+		and not node.is_set_as_toplevel()
+	)
+
+
+func _update_layout_with_children() -> void:
+	var names = PoolStringArray()
+	_children_names.clear()
+	for i in range(1, get_child_count() - 1):
+		var c = get_child(i)
+		if _track_node(c):
+			names.append(c.name)
+	_layout.update_nodes(names)
+	_layout_dirty = false
+
+
+func _track_node(node: Node) -> bool:
+	if not _is_managed_node(node):
+		return false
+	_children_names[node] = node.name
+	_children_names[node.name] = node
+	if not node.is_connected(\"renamed\", self, \"_on_child_renamed\"):
+		node.connect(\"renamed\", self, \"_on_child_renamed\", [node])
+	if not node.is_connected(\"tree_exiting\", self, \"_untrack_node\"):
+		node.connect(\"tree_exiting\", self, \"_untrack_node\", [node])
+	return true
+
+
+func _track_and_add_node(node: Node) -> void:
+	var tracked_name = _children_names.get(node)
+	if not _track_node(node):
+		return
+	if tracked_name and tracked_name != node.name:
+		_layout.rename_node(tracked_name, node.name)
+	_layout_dirty = true
+
+
+func _untrack_node(node: Node) -> void:
+	_children_names.erase(node)
+	_children_names.erase(node.name)
+	if node.is_connected(\"renamed\", self, \"_on_child_renamed\"):
+		node.disconnect(\"renamed\", self, \"_on_child_renamed\")
+	if node.is_connected(\"tree_exiting\", self, \"_untrack_node\"):
+		node.disconnect(\"tree_exiting\", self, \"_untrack_node\")
+	_layout_dirty = true
+
+
+func _resort() -> void:
+	assert(_panel_container, \"FIXME: resorting without _panel_container\")
+	if _panel_container.get_position_in_parent() != 0:
+		move_child(_panel_container, 0)
+	if _drag_n_drop_panel.get_position_in_parent() < get_child_count() - 1:
+		_drag_n_drop_panel.raise()
+
+	if _layout_dirty:
+		_update_layout_with_children()
+
+	var rect = Rect2(Vector2.ZERO, rect_size)
+	fit_child_in_rect(_panel_container, rect)
+	_panel_container.fit_child_in_rect(_split_container, rect)
+
+	_current_panel_index = 1
+	_current_split_index = 0
+
+	var children_list = []
+	_calculate_panel_and_split_list(children_list, _layout.root)
+	_fit_panel_and_split_list_to_rect(children_list, rect)
+
+	_untrack_children_after(_panel_container, _current_panel_index)
+	_untrack_children_after(_split_container, _current_split_index)
+
+
+# Calculate DockablePanel and SplitHandle minimum sizes, skipping empty
+# branches.
+#
+# Returns a DockablePanel on non-empty leaves, a SplitHandle on non-empty
+# splits, `null` if the whole branch is empty and no space should be used.
+#
+# `result` will be filled with the non-empty nodes in this post-order tree
+# traversal.
+func _calculate_panel_and_split_list(result: Array, layout_node: Layout.LayoutNode):
+	if layout_node is Layout.LayoutPanel:
+		var nodes = []
+		for n in layout_node.names:
+			var node: Control = _children_names.get(n)
+			if node:
+				assert(node is Control, \"FIXME: node is not a control %s\" % node)
+				assert(
+					node.get_parent_control() == self,
+					\"FIXME: node is not child of container %s\" % node
+				)
+				if is_control_hidden(node):
+					node.visible = false
+				else:
+					nodes.append(node)
+		if nodes.empty():
+			return null
+		else:
+			var panel = _get_panel(_current_panel_index)
+			_current_panel_index += 1
+			panel.track_nodes(nodes, layout_node)
+			result.append(panel)
+			return panel
+	elif layout_node is Layout.LayoutSplit:
+		# by processing `second` before `first`, traversing `result` from back
+		# to front yields a nice pre-order tree traversal
+		var second_result = _calculate_panel_and_split_list(result, layout_node.second)
+		var first_result = _calculate_panel_and_split_list(result, layout_node.first)
+		if first_result and second_result:
+			var split = _get_split(_current_split_index)
+			_current_split_index += 1
+			split.layout_split = layout_node
+			split.first_minimum_size = first_result.get_layout_minimum_size()
+			split.second_minimum_size = second_result.get_layout_minimum_size()
+			result.append(split)
+			return split
+		elif first_result:
+			return first_result
+		else:  # NOTE: this returns null if `second_result` is null
+			return second_result
+	else:
+		push_warning(\"FIXME: invalid Resource, should be branch or leaf, found %s\" % layout_node)
+
+
+# Traverse list from back to front fitting controls where they belong.
+#
+# Be sure to call this with the result from `_calculate_split_minimum_sizes`.
+func _fit_panel_and_split_list_to_rect(panel_and_split_list: Array, rect: Rect2) -> void:
+	var control = panel_and_split_list.pop_back()
+	if control is DockablePanel:
+		_panel_container.fit_child_in_rect(control, rect)
+	elif control is SplitHandle:
+		var split_rects = control.get_split_rects(rect)
+		_split_container.fit_child_in_rect(control, split_rects.self)
+		_fit_panel_and_split_list_to_rect(panel_and_split_list, split_rects.first)
+		_fit_panel_and_split_list_to_rect(panel_and_split_list, split_rects.second)
+
+
+func _get_panel(idx: int) -> DockablePanel:
+	\"\"\"Get the idx'th DockablePanel, reusing an instanced one if possible\"\"\"
+	assert(_panel_container, \"FIXME: creating panel without _panel_container\")
+	if idx < _panel_container.get_child_count():
+		return _panel_container.get_child(idx)
+	var panel = DockablePanel.new()
+	panel.tab_align = _tab_align
+	panel.tabs_visible = _tabs_visible
+	panel.use_hidden_tabs_for_min_size = _use_hidden_tabs_for_min_size
+	panel.set_tabs_rearrange_group(max(0, rearrange_group))
+	_panel_container.add_child(panel)
+	panel.connect(\"tab_layout_changed\", self, \"_on_panel_tab_layout_changed\", [panel])
+	return panel
+
+
+func _get_split(idx: int) -> SplitHandle:
+	\"\"\"Get the idx'th SplitHandle, reusing an instanced one if possible\"\"\"
+	assert(_split_container, \"FIXME: creating split without _split_container\")
+	if idx < _split_container.get_child_count():
+		return _split_container.get_child(idx)
+	var split = SplitHandle.new()
+	_split_container.add_child(split)
+	return split
+
+
+static func _untrack_children_after(node, idx: int) -> void:
+	\"\"\"Helper for removing and freeing all remaining children from node\"\"\"
+	for i in range(idx, node.get_child_count()):
+		var child = node.get_child(idx)
+		node.remove_child(child)
+		child.queue_free()
+
+
+func _on_panel_tab_layout_changed(tab: int, panel: DockablePanel) -> void:
+	\"\"\"Handler for `DockablePanel.tab_layout_changed`, update its LayoutPanel\"\"\"
+	_layout_dirty = true
+	var control = panel.get_tab_control(tab)
+	if control is ReferenceControl:
+		control = control.reference_to
+	if not _is_managed_node(control):
+		control.get_parent().remove_child(control)
+		add_child(control)
+	_layout.move_node_to_leaf(control, panel.leaf, tab)
+	queue_sort()
+
+
+func _on_child_renamed(child: Node) -> void:
+	\"\"\"Handler for `Node.renamed` signal, updates tracked name for node\"\"\"
+	var old_name = _children_names.get(child)
+	if not old_name:
+		return
+	_children_names.erase(old_name)
+	_children_names[child] = child.name
+	_children_names[child.name] = child
+	_layout.rename_node(old_name, child.name)
+"
+
+[sub_resource type="GDScript" id="GDScript_64gb7"]
+script/source = "tool
+extends \"layout_node.gd\"
+# Layout leaf nodes, defining tabs
+
+export(PoolStringArray) var names: PoolStringArray setget set_names, get_names
+export(int) var current_tab: int setget set_current_tab, get_current_tab
+
+var _names := PoolStringArray()
+var _current_tab := 0
+
+
+func _init() -> void:
+	resource_name = \"Tabs\"
+
+
+func clone():
+	var new_panel = get_script().new()
+	new_panel._names = _names
+	new_panel._current_tab = _current_tab
+	return new_panel
+
+
+func set_current_tab(value: int) -> void:
+	if value != _current_tab:
+		_current_tab = value
+		emit_tree_changed()
+
+
+func get_current_tab() -> int:
+	return int(clamp(_current_tab, 0, _names.size() - 1))
+
+
+func set_names(value: PoolStringArray) -> void:
+	_names = value
+	emit_tree_changed()
+
+
+func get_names() -> PoolStringArray:
+	return _names
+
+
+func push_name(name: String) -> void:
+	_names.append(name)
+	emit_tree_changed()
+
+
+func insert_node(position: int, node: Node) -> void:
+	_names.insert(position, node.name)
+	emit_tree_changed()
+
+
+func find_name(node_name: String) -> int:
+	for i in _names.size():
+		if _names[i] == node_name:
+			return i
+	return -1
+
+
+func find_node(node: Node):
+	return find_name(node.name)
+
+
+func remove_node(node: Node) -> void:
+	var i = find_node(node)
+	if i >= 0:
+		_names.remove(i)
+		emit_tree_changed()
+	else:
+		push_warning(\"Remove failed, node '%s' was not found\" % node)
+
+
+func rename_node(previous_name: String, new_name: String) -> void:
+	var i = find_name(previous_name)
+	if i >= 0:
+		_names.set(i, new_name)
+		emit_tree_changed()
+	else:
+		push_warning(\"Rename failed, name '%s' was not found\" % previous_name)
+
+
+func empty() -> bool:
+	return _names.empty()
+
+
+func update_nodes(node_names: PoolStringArray, data: Dictionary):
+	var i = 0
+	var removed_any = false
+	while i < _names.size():
+		var current = _names[i]
+		if not current in node_names or data.has(current):
+			_names.remove(i)
+			removed_any = true
+		else:
+			data[current] = self
+			i += 1
+	if removed_any:
+		emit_tree_changed()
+"
+
+[sub_resource type="Resource" id="11"]
 resource_name = "Tabs"
-script = ExtResource( 13 )
-names = PoolStringArray( "Flows", "Properties" )
+script = SubResource("GDScript_64gb7")
+names = PackedStringArray("Flows", "Properties")
 current_tab = 0
 
-[sub_resource type="Resource" id=12]
+[sub_resource type="GDScript" id="GDScript_e28ri"]
+script/source = "tool
+extends Resource
+# Layout Resource definition, holding the root LayoutNode and hidden tabs.
+#
+# LayoutSplit are binary trees with nested LayoutSplit subtrees and LayoutPanel
+# leaves. Both of them inherit from LayoutNode to help with type annotation and
+# define common funcionality.
+#
+# Hidden tabs are marked in the `hidden_tabs` Dictionary by name.
+
+const LayoutNode = preload(\"layout_node.gd\")
+const LayoutPanel = preload(\"layout_panel.gd\")
+const LayoutSplit = preload(\"layout_split.gd\")
+
+export(Resource) var root = LayoutPanel.new() setget set_root, get_root
+export(Dictionary) var hidden_tabs = {} setget set_hidden_tabs, get_hidden_tabs
+
+var _changed_signal_queued = false
+var _first_leaf: LayoutPanel
+var _hidden_tabs: Dictionary
+var _leaf_by_node_name: Dictionary
+var _root: LayoutNode = LayoutPanel.new()
+
+
+func _init() -> void:
+	resource_name = \"Layout\"
+
+
+func set_root(value: LayoutNode, should_emit_changed = true) -> void:
+	if not value:
+		value = LayoutPanel.new()
+	if _root == value:
+		return
+	if _root and _root.is_connected(\"changed\", self, \"_on_root_changed\"):
+		_root.disconnect(\"changed\", self, \"_on_root_changed\")
+	_root = value
+	_root.parent = null
+	_root.connect(\"changed\", self, \"_on_root_changed\")
+	if should_emit_changed:
+		_on_root_changed()
+
+
+func get_root() -> LayoutNode:
+	return _root
+
+
+func set_hidden_tabs(value: Dictionary) -> void:
+	if value != _hidden_tabs:
+		_hidden_tabs = value
+		emit_signal(\"changed\")
+
+
+func get_hidden_tabs() -> Dictionary:
+	return _hidden_tabs
+
+
+func clone():
+	var new_layout = get_script().new()
+	new_layout.root = _root.clone()
+	new_layout._hidden_tabs = _hidden_tabs.duplicate()
+	return new_layout
+
+
+func get_names() -> PoolStringArray:
+	return _root.get_names()
+
+
+# Add missing nodes on first leaf and remove nodes outside indices from leaves.
+#
+# _leaf_by_node_name = {
+#     (string keys) = respective Leaf that holds the node name,
+# }
+func update_nodes(names: PoolStringArray) -> void:
+	_leaf_by_node_name.clear()
+	_first_leaf = null
+	var empty_leaves = []
+	_ensure_names_in_node(_root, names, empty_leaves)
+	for l in empty_leaves:
+		_remove_leaf(l)
+	if not _first_leaf:
+		_first_leaf = LayoutPanel.new()
+		set_root(_first_leaf)
+	for n in names:
+		if not _leaf_by_node_name.has(n):
+			_first_leaf.push_name(n)
+			_leaf_by_node_name[n] = _first_leaf
+	_on_root_changed()
+
+
+func move_node_to_leaf(node: Node, leaf: LayoutPanel, relative_position: int) -> void:
+	var node_name = node.name
+	var previous_leaf = _leaf_by_node_name.get(node_name)
+	if previous_leaf:
+		previous_leaf.remove_node(node)
+		if previous_leaf.empty():
+			_remove_leaf(previous_leaf)
+
+	leaf.insert_node(relative_position, node)
+	_leaf_by_node_name[node_name] = leaf
+	_on_root_changed()
+
+
+func get_leaf_for_node(node: Node) -> LayoutPanel:
+	return _leaf_by_node_name.get(node.name)
+
+
+func split_leaf_with_node(leaf, node: Node, margin: int) -> void:
+	var root_branch = leaf.parent
+	var new_leaf = LayoutPanel.new()
+	var new_branch = LayoutSplit.new()
+	if margin == MARGIN_LEFT or margin == MARGIN_RIGHT:
+		new_branch.direction = LayoutSplit.Direction.HORIZONTAL
+	else:
+		new_branch.direction = LayoutSplit.Direction.VERTICAL
+	if margin == MARGIN_LEFT or margin == MARGIN_TOP:
+		new_branch.first = new_leaf
+		new_branch.second = leaf
+	else:
+		new_branch.first = leaf
+		new_branch.second = new_leaf
+	if _root == leaf:
+		set_root(new_branch, false)
+	elif root_branch:
+		if leaf == root_branch.first:
+			root_branch.first = new_branch
+		else:
+			root_branch.second = new_branch
+
+	move_node_to_leaf(node, new_leaf, 0)
+
+
+func add_node(node: Node) -> void:
+	var node_name = node.name
+	if _leaf_by_node_name.has(node_name):
+		return
+	_first_leaf.push_name(node_name)
+	_leaf_by_node_name[node_name] = _first_leaf
+	_on_root_changed()
+
+
+func remove_node(node: Node) -> void:
+	var node_name = node.name
+	var leaf: LayoutPanel = _leaf_by_node_name.get(node_name)
+	if not leaf:
+		return
+	leaf.remove_node(node)
+	_leaf_by_node_name.erase(node_name)
+	if leaf.empty():
+		_remove_leaf(leaf)
+	_on_root_changed()
+
+
+func rename_node(previous_name: String, new_name: String) -> void:
+	var leaf = _leaf_by_node_name.get(previous_name)
+	if not leaf:
+		return
+	leaf.rename_node(previous_name, new_name)
+	_leaf_by_node_name.erase(previous_name)
+	_leaf_by_node_name[new_name] = leaf
+	_on_root_changed()
+
+
+func set_tab_hidden(name: String, hidden: bool) -> void:
+	if not _leaf_by_node_name.has(name):
+		return
+	if hidden:
+		_hidden_tabs[name] = true
+	else:
+		_hidden_tabs.erase(name)
+	_on_root_changed()
+
+
+func is_tab_hidden(name: String) -> bool:
+	return _hidden_tabs.get(name, false)
+
+
+func set_node_hidden(node: Node, hidden: bool) -> void:
+	set_tab_hidden(node.name, hidden)
+
+
+func is_node_hidden(node: Node) -> bool:
+	return is_tab_hidden(node.name)
+
+
+func _on_root_changed() -> void:
+	if _changed_signal_queued:
+		return
+	_changed_signal_queued = true
+	set_deferred(\"_changed_signal_queued\", false)
+	call_deferred(\"emit_signal\", \"changed\")
+
+
+func _ensure_names_in_node(node: LayoutNode, names: PoolStringArray, empty_leaves: Array) -> void:
+	if node is LayoutPanel:
+		node.update_nodes(names, _leaf_by_node_name)
+		if node.empty():
+			empty_leaves.append(node)
+		if not _first_leaf:
+			_first_leaf = node
+	elif node is LayoutSplit:
+		_ensure_names_in_node(node.first, names, empty_leaves)
+		_ensure_names_in_node(node.second, names, empty_leaves)
+	else:
+		assert(false, \"Invalid Resource, should be branch or leaf, found %s\" % node)
+
+
+func _remove_leaf(leaf: LayoutPanel) -> void:
+	assert(leaf.empty(), \"FIXME: trying to remove a leaf with nodes\")
+	if _root == leaf:
+		return
+	var collapsed_branch = leaf.parent
+	assert(collapsed_branch is LayoutSplit, \"FIXME: leaf is not a child of branch\")
+	var kept_branch = (
+		collapsed_branch.first
+		if leaf == collapsed_branch.second
+		else collapsed_branch.second
+	)
+	var root_branch = collapsed_branch.parent
+	if collapsed_branch == _root:
+		set_root(kept_branch, true)
+	elif root_branch:
+		if collapsed_branch == root_branch.first:
+			root_branch.first = kept_branch
+		else:
+			root_branch.second = kept_branch
+
+
+func _print_tree() -> void:
+	print(\"TREE\")
+	_print_tree_step(_root, 0, 0)
+	print(\"\")
+
+
+func _print_tree_step(tree_or_leaf, level, idx) -> void:
+	if tree_or_leaf is LayoutPanel:
+		print(\" |\".repeat(level), \"- (%d) = \" % idx, tree_or_leaf.names)
+	else:
+		print(
+			\" |\".repeat(level),
+			\"-+ (%d) = \" % idx,
+			tree_or_leaf.direction,
+			\" \",
+			tree_or_leaf.percent
+		)
+		_print_tree_step(tree_or_leaf.first, level + 1, 1)
+		_print_tree_step(tree_or_leaf.second, level + 1, 2)
+"
+
+[sub_resource type="Resource" id="12"]
 resource_name = "Layout"
-script = ExtResource( 12 )
-root = SubResource( 11 )
-hidden_tabs = {
-}
-
-[sub_resource type="StyleBoxFlat" id=10]
-bg_color = Color( 0.113725, 0.113725, 0.113725, 1 )
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="DynamicFontData" id=14]
-font_path = "res://assets/fonts/Roboto-Bold.ttf"
-
-[sub_resource type="DynamicFont" id=8]
-size = 31
-use_filter = true
-font_data = SubResource( 14 )
-
-[sub_resource type="DynamicFontData" id=7]
-font_path = "res://assets/fonts/Roboto-Bold.ttf"
-
-[sub_resource type="DynamicFont" id=9]
-size = 15
-use_filter = true
-font_data = SubResource( 7 )
+script = SubResource("GDScript_e28ri")
+root = SubResource("11")
+hidden_tabs = {}
 
 [node name="editor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 15 )
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3prtb")
 __meta__ = {
-"_edit_vertical_guides_": [ 1024.0, -298.0, -297.0, -298.0, -297.0 ]
+"_edit_vertical_guides_": [1024.0, -298.0, -297.0, -298.0, -297.0]
 }
 
 [node name="bg" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0.207843, 0.207843, 0.207843, 1 )
+offset_top = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.207843, 0.207843, 0.207843, 1)
 
 [node name="layout" type="VBoxContainer" parent="."]
-modulate = Color( 1, 1, 1, 0.796078 )
+modulate = Color(1, 1, 1, 0.796078)
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="topbar" type="PanelContainer" parent="layout"]
-margin_right = 1024.0
-margin_bottom = 36.0
-rect_min_size = Vector2( 250, 0 )
+layout_mode = 2
 size_flags_horizontal = 3
-custom_styles/panel = SubResource( 4 )
 
 [node name="topbar" type="HBoxContainer" parent="layout/topbar"]
-margin_left = 3.0
-margin_top = 3.0
-margin_right = 1021.0
-margin_bottom = 33.0
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_lock_": true
-}
+layout_mode = 2
+script = ExtResource("2_4wgw6")
 
 [node name="Left" type="HBoxContainer" parent="layout/topbar/topbar"]
-margin_right = 361.0
-margin_bottom = 30.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="file" type="MenuButton" parent="layout/topbar/topbar/Left"]
 unique_name_in_owner = true
-margin_right = 37.0
-margin_bottom = 30.0
-theme = ExtResource( 10 )
-custom_fonts/font = SubResource( 2 )
+layout_mode = 2
+theme = ExtResource("10")
 text = "File"
 switch_on_hover = true
 
 [node name="edit" type="MenuButton" parent="layout/topbar/topbar/Left"]
 unique_name_in_owner = true
-margin_left = 41.0
-margin_right = 80.0
-margin_bottom = 30.0
-theme = ExtResource( 10 )
-custom_fonts/font = SubResource( 2 )
+layout_mode = 2
+theme = ExtResource("10")
 text = "Edit"
 switch_on_hover = true
 
 [node name="debug" type="MenuButton" parent="layout/topbar/topbar/Left"]
 unique_name_in_owner = true
-margin_left = 84.0
-margin_right = 142.0
-margin_bottom = 30.0
-theme = ExtResource( 10 )
-custom_fonts/font = SubResource( 2 )
+layout_mode = 2
+theme = ExtResource("10")
 text = "Debug"
 switch_on_hover = true
 
 [node name="editor" type="MenuButton" parent="layout/topbar/topbar/Left"]
 unique_name_in_owner = true
-margin_left = 146.0
-margin_right = 199.0
-margin_bottom = 30.0
-theme = ExtResource( 10 )
-custom_fonts/font = SubResource( 2 )
+layout_mode = 2
+theme = ExtResource("10")
 text = "Editor"
 switch_on_hover = true
 
 [node name="help" type="MenuButton" parent="layout/topbar/topbar/Left"]
 unique_name_in_owner = true
-margin_left = 203.0
-margin_right = 247.0
-margin_bottom = 30.0
-theme = ExtResource( 10 )
-custom_fonts/font = SubResource( 2 )
+layout_mode = 2
+theme = ExtResource("10")
 text = "Help"
 switch_on_hover = true
 
 [node name="Center" type="HBoxContainer" parent="layout/topbar/topbar"]
-margin_left = 365.0
-margin_right = 727.0
-margin_bottom = 30.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Global" type="Button" parent="layout/topbar/topbar/Center"]
-margin_right = 58.0
-margin_bottom = 30.0
-theme = ExtResource( 10 )
-custom_colors/font_color_disabled = Color( 0.341176, 0.811765, 0.290196, 1 )
-custom_colors/font_color_focus = Color( 0.341176, 0.811765, 0.290196, 1 )
-custom_colors/font_color = Color( 0.341176, 0.811765, 0.290196, 1 )
-custom_colors/font_color_hover = Color( 0.25098, 0.603922, 0.211765, 1 )
-custom_colors/font_color_pressed = Color( 0.164706, 0.847059, 0.0901961, 1 )
-custom_fonts/font = SubResource( 2 )
-custom_styles/hover = SubResource( 13 )
-custom_styles/pressed = SubResource( 13 )
-custom_styles/focus = SubResource( 13 )
-custom_styles/disabled = SubResource( 13 )
-custom_styles/normal = SubResource( 13 )
+layout_mode = 2
+theme = ExtResource("10")
 text = "Globals"
-icon_align = 2
 
 [node name="Schedule" type="Button" parent="layout/topbar/topbar/Center"]
-margin_left = 62.0
-margin_right = 131.0
-margin_bottom = 30.0
-theme = ExtResource( 10 )
-custom_colors/font_color_disabled = Color( 0.341176, 0.811765, 0.290196, 1 )
-custom_colors/font_color_focus = Color( 0.341176, 0.811765, 0.290196, 1 )
-custom_colors/font_color = Color( 0.341176, 0.811765, 0.290196, 1 )
-custom_colors/font_color_hover = Color( 0.25098, 0.603922, 0.211765, 1 )
-custom_colors/font_color_pressed = Color( 0.164706, 0.847059, 0.0901961, 1 )
-custom_fonts/font = SubResource( 2 )
-custom_styles/hover = SubResource( 13 )
-custom_styles/pressed = SubResource( 13 )
-custom_styles/focus = SubResource( 13 )
-custom_styles/disabled = SubResource( 13 )
-custom_styles/normal = SubResource( 13 )
+layout_mode = 2
+theme = ExtResource("10")
 text = "Schedule"
-icon_align = 2
 
 [node name="Right" type="HBoxContainer" parent="layout/topbar/topbar"]
-margin_left = 731.0
-margin_right = 1018.0
-margin_bottom = 30.0
+layout_mode = 2
 
 [node name="RunRerun" type="Button" parent="layout/topbar/topbar/Right"]
 unique_name_in_owner = true
-margin_right = 37.0
-margin_bottom = 30.0
+layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 6
-icon = ExtResource( 8 )
+icon = ExtResource("8")
 flat = true
 
 [node name="Pause" type="Button" parent="layout/topbar/topbar/Right"]
 unique_name_in_owner = true
-modulate = Color( 1, 1, 1, 0.352941 )
-margin_left = 41.0
-margin_right = 77.0
-margin_bottom = 30.0
+modulate = Color(1, 1, 1, 0.352941)
+layout_mode = 2
 size_flags_vertical = 6
-icon = ExtResource( 7 )
+icon = ExtResource("7")
 flat = true
 
 [node name="Stop" type="Button" parent="layout/topbar/topbar/Right"]
 unique_name_in_owner = true
-modulate = Color( 1, 1, 1, 0.352941 )
-margin_left = 81.0
-margin_right = 117.0
-margin_bottom = 30.0
+modulate = Color(1, 1, 1, 0.352941)
+layout_mode = 2
 size_flags_vertical = 6
-icon = ExtResource( 3 )
+icon = ExtResource("3")
 flat = true
 
 [node name="SkipInto" type="Button" parent="layout/topbar/topbar/Right"]
 unique_name_in_owner = true
-modulate = Color( 1, 1, 1, 0.352941 )
-margin_left = 121.0
-margin_right = 157.0
-margin_bottom = 30.0
+modulate = Color(1, 1, 1, 0.352941)
+layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 6
-icon = ExtResource( 4 )
+icon = ExtResource("4")
 flat = true
 
 [node name="SkipBreakpoint" type="Button" parent="layout/topbar/topbar/Right"]
 unique_name_in_owner = true
-modulate = Color( 1, 1, 1, 0.352941 )
-margin_left = 161.0
-margin_right = 196.0
-margin_bottom = 30.0
+modulate = Color(1, 1, 1, 0.352941)
+layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 6
-icon = ExtResource( 9 )
+icon = ExtResource("9")
 flat = true
-icon_align = 1
 
 [node name="Record" type="Button" parent="layout/topbar/topbar/Right"]
 unique_name_in_owner = true
-modulate = Color( 1, 0.278431, 0.278431, 0.352941 )
-margin_left = 200.0
-margin_right = 232.0
-margin_bottom = 30.0
-icon = ExtResource( 2 )
+modulate = Color(1, 0.278431, 0.278431, 0.352941)
+layout_mode = 2
+icon = ExtResource("2")
 flat = true
 
 [node name="device" type="MenuButton" parent="layout/topbar/topbar/Right"]
 unique_name_in_owner = true
-margin_left = 236.0
-margin_right = 287.0
-margin_bottom = 30.0
-theme = ExtResource( 10 )
-custom_colors/font_color_disabled = Color( 0.290196, 0.8, 0.811765, 1 )
-custom_colors/font_color_focus = Color( 0.290196, 0.8, 0.811765, 1 )
-custom_colors/font_color = Color( 0.290196, 0.8, 0.811765, 1 )
-custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
-custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
-custom_fonts/font = SubResource( 2 )
+layout_mode = 2
+theme = ExtResource("10")
 text = "Local"
-icon_align = 2
 switch_on_hover = true
 
 [node name="body" type="HBoxContainer" parent="layout"]
-margin_top = 40.0
-margin_right = 1024.0
-margin_bottom = 600.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/separation = 4
 
 [node name="SelectElementPanel" type="PanelContainer" parent="layout/body"]
-margin_right = 250.0
-margin_bottom = 560.0
-rect_min_size = Vector2( 250, 0 )
-custom_styles/panel = SubResource( 4 )
+layout_mode = 2
 
-[node name="ElementsContainer" parent="layout/body/SelectElementPanel" instance=ExtResource( 5 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 3.0
-margin_top = 3.0
-margin_right = 247.0
-margin_bottom = 557.0
+[node name="ElementsContainer" parent="layout/body/SelectElementPanel" instance=ExtResource("10_qt1ee")]
+layout_mode = 2
 
 [node name="FlowPanel" type="PanelContainer" parent="layout/body"]
-margin_left = 254.0
-margin_right = 770.0
-margin_bottom = 560.0
-rect_min_size = Vector2( 250, 0 )
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 4 )
 
-[node name="FlowContainer" parent="layout/body/FlowPanel" instance=ExtResource( 14 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 3.0
-margin_top = 3.0
-margin_right = 513.0
-margin_bottom = 557.0
+[node name="FlowContainer" parent="layout/body/FlowPanel" instance=ExtResource("11_imqnq")]
+layout_mode = 2
 
 [node name="ScrollContainer" parent="layout/body/FlowPanel/FlowContainer" index="0"]
-margin_right = 510.0
-margin_bottom = 554.0
+layout_mode = 2
 
 [node name="content" parent="layout/body/FlowPanel/FlowContainer/ScrollContainer" index="0"]
-margin_right = 510.0
-margin_bottom = 554.0
+layout_mode = 2
+
+[node name="spacer" parent="layout/body/FlowPanel/FlowContainer/ScrollContainer/content" index="0"]
+layout_mode = 2
 
 [node name="rightDock" type="PanelContainer" parent="layout/body"]
-margin_left = 774.0
-margin_right = 1024.0
-margin_bottom = 560.0
-rect_min_size = Vector2( 250, 0 )
-custom_styles/panel = SubResource( 4 )
+layout_mode = 2
 
 [node name="Dock" type="Container" parent="layout/body/rightDock"]
 unique_name_in_owner = true
-margin_left = 3.0
-margin_top = 3.0
-margin_right = 247.0
-margin_bottom = 557.0
-input_pass_on_modal_close_click = false
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = ExtResource( 10 )
-script = ExtResource( 11 )
+theme = ExtResource("10")
+script = SubResource("GDScript_m2d7k")
 tab_align = 0
 use_hidden_tabs_for_min_size = true
-layout = SubResource( 12 )
+layout = SubResource("12")
 clone_layout_on_ready = false
 
-[node name="Flows" parent="layout/body/rightDock/Dock" instance=ExtResource( 16 )]
+[node name="Flows" parent="layout/body/rightDock/Dock" instance=ExtResource("12_a7kox")]
 unique_name_in_owner = true
+layout_mode = 2
 margin_top = 28.0
 
-[node name="Properties" parent="layout/body/rightDock/Dock" instance=ExtResource( 6 )]
+[node name="Properties" parent="layout/body/rightDock/Dock" instance=ExtResource("6")]
 unique_name_in_owner = true
-visible = false
+layout_mode = 2
 margin_right = 197.0
 margin_bottom = 5.0
 
-[node name="About" type="WindowDialog" parent="."]
+[node name="About" type="Popup" parent="."]
 unique_name_in_owner = true
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -292.0
-margin_top = -173.0
-margin_right = 288.0
-margin_bottom = 146.0
-size_flags_vertical = 6
-custom_styles/panel = SubResource( 10 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="About"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="title" type="Label" parent="About/VBoxContainer"]
 unique_name_in_owner = true
-margin_right = 580.0
-margin_bottom = 37.0
+layout_mode = 2
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 8 )
 text = "Benchpress"
-align = 1
 clip_text = true
 
 [node name="version" type="Label" parent="About/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 41.0
-margin_right = 580.0
-margin_bottom = 59.0
+layout_mode = 2
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 9 )
 text = "0.0.1 Dev"
-align = 2
 clip_text = true
 
-[node name="GlobalsPopup" type="WindowDialog" parent="."]
+[node name="GlobalsPopup" type="Popup" parent="."]
 unique_name_in_owner = true
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -292.0
-margin_top = -173.0
-margin_right = 288.0
-margin_bottom = 146.0
-size_flags_vertical = 6
-custom_styles/panel = SubResource( 10 )
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="GlobalsPopup"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="title" type="Label" parent="GlobalsPopup/VBoxContainer2"]
-margin_right = 580.0
-margin_bottom = 37.0
+layout_mode = 2
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 8 )
 text = "Globals"
-align = 1
 clip_text = true
 
-[node name="SchedulePopup" type="WindowDialog" parent="."]
+[node name="SchedulePopup" type="Popup" parent="."]
 unique_name_in_owner = true
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -292.0
-margin_top = -173.0
-margin_right = 288.0
-margin_bottom = 146.0
-size_flags_vertical = 6
-custom_styles/panel = SubResource( 10 )
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="SchedulePopup"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="title" type="Label" parent="SchedulePopup/VBoxContainer3"]
-margin_right = 580.0
-margin_bottom = 37.0
+layout_mode = 2
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 8 )
 text = "Schedule"
-align = 1
 clip_text = true
 
 [connection signal="button_down" from="layout/topbar/topbar/Center/Global" to="GlobalsPopup" method="popup"]
