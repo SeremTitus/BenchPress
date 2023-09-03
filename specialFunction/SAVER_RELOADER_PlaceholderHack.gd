@@ -1,5 +1,5 @@
 extends Resource
-export var data:Dictionary
+@export var data:Dictionary
 
 #File  is saved as .res but the file is renamed to .benchpress
 #ToBe: reimplimented using ResourceFormatLoader and  ResourceFormatSaver
@@ -11,7 +11,7 @@ func _save(path,newdata = {}):
 			return FAILED
 	rename_file(path,change_extention(path,'res'))
 	path = change_extention(path,'res')
-	var result  =  ResourceSaver.save(path,self,1)
+	var result  =  ResourceSaver.save(self,path,1)
 	rename_file(path,change_extention(path,'benchpress'))
 	return result
 	
@@ -32,8 +32,8 @@ func change_extention(file:String,newextention:String):
 	return filerename
 	
 func rename_file(file:String,newName:String):
-	var dir = Directory.new()
-	if dir.file_exists(file):
+	if  FileAccess.file_exists(file):
+		var dir = DirAccess.open(file)
 		dir.rename(file,newName)
 
 
