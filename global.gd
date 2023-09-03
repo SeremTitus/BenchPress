@@ -1,9 +1,6 @@
 extends Node
-
-
-var saverReloader=preload("res://specialFunction/SAVER_RELOADER_PlaceholderHack.gd").new()
+var saverReloader = preload("res://specialFunction/SAVER_RELOADER_PlaceholderHack.gd").new()
 var structures = preload("res://specialFunction/structrures.gd").new()
-
 var LibraryElementStructure = {
 	'uniwu/item/variable/New_variable':{
 		'Library' : '',
@@ -51,14 +48,14 @@ var LibraryElementStructure = {
 	}
 signal LibraryElementStructure_Constructed
 var current_project_filePath = ''
-var current_project = {} setget current_Project_changed
-signal current_Project_changed
+var current_project = {} : set = current_Project_changed
+signal s_current_Project_changed
 var GlobalVariables = {}
 var FlowVariables = []
 
-var highlighted_element = null setget highlighted_element_changed
-signal highlighted_element_changed
-var selected_flow = 'main' setget selected_flow_changed
+var highlighted_element = null : set =highlighted_element_changed
+signal s_highlighted_element_changed
+var selected_flow = 'main' : set = selected_flow_changed
 
 func _ready():
 	create_dir()
@@ -158,9 +155,9 @@ func dir_contents(path):
 		'directories':[],
 		'files':[],
 	}
-	var directory = Directory.new()
-	if directory.open(path) == OK:
-		directory.list_dir_begin(true)
+	var directory = DirAccess.open(path)
+	if directory == OK:
+		directory.list_dir_begin()
 		var file_name = directory.get_next()
 		while file_name != "":
 			if directory.current_is_dir():
@@ -171,23 +168,25 @@ func dir_contents(path):
 	return contents
 	
 func create_dir(dirAndFiles = structures.custom_user_folders):
-	var directory = Directory.new()
 	for dir in dirAndFiles:
+		var directory = DirAccess.open("user://")
+		if directory == null:
+			printerr(error_string(DirAccess.get_open_error()))
+			return
 		if  ! directory.dir_exists(dir):
 			directory.make_dir_recursive(dir)
 		for copyfile in dirAndFiles[dir]:
 			if ! directory.file_exists(dir +'/'+copyfile) and directory.file_exists(dirAndFiles[dir][copyfile]):
 				directory.copy(dirAndFiles[dir][copyfile],dir+'/'+copyfile)
-			var file = File.new()
-			if file.get_sha256(dir +'/'+copyfile) != file.get_sha256(dirAndFiles[dir][copyfile]):
+			if FileAccess.get_sha256(dir +'/'+copyfile) != FileAccess.get_sha256(dirAndFiles[dir][copyfile]):
 				directory.copy(dirAndFiles[dir][copyfile],dir+'/'+copyfile)
 	
-func unique_name(names:PoolStringArray,newName:String):
+func unique_name(names:PackedStringArray,newName:String):
 	if ! names.has(newName): return newName
 	#remove any numerals ends on newName
 	var newName_CharacterIndex =range(len(newName))
 	newName_CharacterIndex.invert()
-	var arrayNumbers = PoolStringArray(range(10))
+	var arrayNumbers = PackedStringArray(range(10))
 	var countnumbers = 0
 	for chr in newName_CharacterIndex:
 		if ! arrayNumbers.has(newName[chr]): break

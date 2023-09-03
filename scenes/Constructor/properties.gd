@@ -1,6 +1,6 @@
 extends Node
 
-onready var item = preload("res://scenes/Constructor/properties_template.tscn")
+@onready var item = preload("res://scenes/Constructor/properties_template.tscn")
 
 
 func _on_Add_button_down():
@@ -16,7 +16,7 @@ func get_properties_data(morph):
 		var prop_list = property.callv('get_property_list',[])
 		if  not prop_list.empty() and morph == prop_list[2]:
 			prop_list.remove(2)
-			if properties_data.empty():
+			if properties_data.is_empty():
 				properties_data[0]= prop_list
 			else:
 				properties_data[properties_data.keys().back()+1]=prop_list

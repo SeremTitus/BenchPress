@@ -3,10 +3,9 @@ extends Control
 var element = preload("res://scenes/elementUI/element.tscn")
 var group = preload("res://scenes/main/ElementContainer/ElementsContainerGroup.tscn")
 
-
 func _ready():
 	# warning-ignore:return_value_discarded
-	Global.connect('LibraryElementStructure_Constructed',self,'filter_elements')
+	Global.connect('LibraryElementStructure_Constructed',Callable(self,'filter_elements'))
 	generate_list_Elements()
 	
 func generate_list_Elements(LibraryElementStructure = Global.LibraryElementStructure):

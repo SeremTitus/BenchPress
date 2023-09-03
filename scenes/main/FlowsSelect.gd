@@ -1,11 +1,11 @@
 extends Control
 
 
-onready var flowname = preload("res://scenes/main/FlowSelectName.tscn")
+@onready var flowname = preload("res://scenes/main/FlowSelectName.tscn")
 var content
 func _ready():
 	# warning-ignore:return_value_discarded
-	Global.connect("current_Project_changed",self,'generate_flow_select_list')
+	Global.connect("current_Project_changed",generate_flow_select_list)
 	generate_flow_select_list()
 	
 func generate_flow_select_list(current_project =Global.current_project):
