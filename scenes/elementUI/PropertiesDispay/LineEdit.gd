@@ -10,7 +10,7 @@ func displaytype(input):
 	if displayType != '':
 		var item = load("res://scenes/elementUI/PropertiesDispay/variablesLocator.tscn").instantiate()
 		item.displayType = displayType
-		item.connect('selectedvariable',self,'recivevalue')
+		item.connect('selectedvariable',recivevalue)
 		add_child(item)
 	
 func recivevalue(input):

@@ -17,7 +17,7 @@ func drop_data(_position,_data):
 				elementInstance.active_mode = elementInstance.mode['DISPLAY_IN_PARENT']
 			else:
 				elementInstance.active_mode = elementInstance.mode['DISPLAY']
-			elementInstance.get_node("%select").connect('highlighted',self,'highlight_element')
+			elementInstance.get_node("%select").connect('highlighted',highlight_element)
 			move_child(elementInstance,get_child_count()-2)
 			if  _data['origin'].active_mode == 3:
 				_data['origin'].queue_free()
@@ -27,7 +27,7 @@ func drop_data(_position,_data):
 				add_child(elementInstance)
 				elementInstance.active_mode = elementInstance.mode['DISPLAY_IN_PARENT']
 				_data['origin'].queue_free()
-				elementInstance.get_node("%select").connect('highlighted',self,'highlight_element')
+				elementInstance.get_node("%select").connect('highlighted',highlight_element)
 				move_child(elementInstance,get_child_count()-2)
 			else:
 				move_child(_data['origin'],get_child_count()-2)
