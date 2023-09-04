@@ -1,8 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=6 format=3]
 
-[ext_resource path="res://addons/MaxSizeContainer/max_size_container.gd" type="Script" id=1]
-[ext_resource path="res://assets/icons/bin.svg" type="Texture" id=2]
-[ext_resource path="res://scenes/Constructor/morph_template.gd" type="Script" id=3]
+[ext_resource type="Script" path="res://scenes/Constructor/new_script.gd" id="1"]
+[ext_resource type="Texture" uid="uid://k84n8mwp3fnp" path="res://assets/icons/bin.svg" id="2"]
+[ext_resource type="Script" path="res://scenes/Constructor/morph_template.gd" id="3"]
 
 [sub_resource type="DynamicFontData" id=29]
 font_path = "res://assets/fonts/noto_sans_ui_bold.ttf"

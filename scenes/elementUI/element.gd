@@ -1,12 +1,12 @@
 extends Control
 
-var ElementStructureReference = 'uniwu/item/variable/New_variable' setget setElementStructureReference
+var ElementStructureReference = 'uniwu/item/variable/New_variable' :set=setElementStructureReference
 var ElementProperties = Global.structures.ElementProperties.position_index.duplicate(true)
 enum mode{
 	SELECT = 1,
 	DISPLAY = 2,
 	DISPLAY_IN_PARENT = 3}
-var active_mode = mode['SELECT'] setget set_activemode
+var active_mode = mode['SELECT'] :set=set_activemode
 var view_properties = ProjectSettings.get_setting('benchpress/elements/display_with_properties') 
 var is_parent = false
 func _ready():

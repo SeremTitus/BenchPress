@@ -24,12 +24,12 @@ const DragNDropPanel = preload(\"drag_n_drop_panel.gd\")
 const Layout = preload(\"layout.gd\")
 
 # gdlint: ignore=max-line-length
-export(int, \"Left\", \"Center\", \"Right\") var tab_align = TabContainer.ALIGN_CENTER setget set_tab_align, get_tab_align
-export(bool) var tabs_visible := true setget set_tabs_visible, get_tabs_visible
+export(int, \"Left\", \"Center\", \"Right\") var tab_align = TabContainer.ALIGN_CENTER :set=set_tab_align, get_tab_align
+export(bool) var tabs_visible := true :set=set_tabs_visible, get_tabs_visible
 # gdlint: ignore=max-line-length
-export(bool) var use_hidden_tabs_for_min_size: bool setget set_use_hidden_tabs_for_min_size, get_use_hidden_tabs_for_min_size
+export(bool) var use_hidden_tabs_for_min_size: bool :set=set_use_hidden_tabs_for_min_size, get_use_hidden_tabs_for_min_size
 export(int) var rearrange_group = 0
-export(Resource) var layout = Layout.new() setget set_layout, get_layout
+export(Resource) var layout = Layout.new() :set=set_layout, get_layout
 # If `clone_layout_on_ready` is true, `layout` will be cloned on `_ready`.
 # This is useful for leaving layout Resources untouched in case you want to
 # restore layout to its default later.
@@ -460,8 +460,8 @@ script/source = "tool
 extends \"layout_node.gd\"
 # Layout leaf nodes, defining tabs
 
-export(PoolStringArray) var names: PoolStringArray setget set_names, get_names
-export(int) var current_tab: int setget set_current_tab, get_current_tab
+export(PoolStringArray) var names: PoolStringArray :set=set_names, get_names
+export(int) var current_tab: int :set=set_current_tab, get_current_tab
 
 var _names := PoolStringArray()
 var _current_tab := 0
@@ -576,8 +576,8 @@ const LayoutNode = preload(\"layout_node.gd\")
 const LayoutPanel = preload(\"layout_panel.gd\")
 const LayoutSplit = preload(\"layout_split.gd\")
 
-export(Resource) var root = LayoutPanel.new() setget set_root, get_root
-export(Dictionary) var hidden_tabs = {} setget set_hidden_tabs, get_hidden_tabs
+export(Resource) var root = LayoutPanel.new() :set=set_root, get_root
+export(Dictionary) var hidden_tabs = {} :set=set_hidden_tabs, get_hidden_tabs
 
 var _changed_signal_queued = false
 var _first_leaf: LayoutPanel
@@ -824,9 +824,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3prtb")
-__meta__ = {
-"_edit_vertical_guides_": [1024.0, -298.0, -297.0, -298.0, -297.0]
-}
 
 [node name="bg" type="ColorRect" parent="."]
 layout_mode = 1
@@ -1011,13 +1008,10 @@ clone_layout_on_ready = false
 [node name="Flows" parent="layout/body/rightDock/Dock" instance=ExtResource("12_a7kox")]
 unique_name_in_owner = true
 layout_mode = 2
-margin_top = 28.0
 
 [node name="Properties" parent="layout/body/rightDock/Dock" instance=ExtResource("6")]
 unique_name_in_owner = true
 layout_mode = 2
-margin_right = 197.0
-margin_bottom = 5.0
 
 [node name="About" type="Popup" parent="."]
 unique_name_in_owner = true

@@ -1,7 +1,7 @@
 extends Control
 
 
-var LabelName = 'ADD VARIABLE' setget set_lable
+var LabelName = 'ADD VARIABLE' :set=set_lable
 
 func set_lable(newvalue):
 	LabelName = newvalue

@@ -1,9 +1,9 @@
 extends Node
 
 var subtype = ''#not implimented
-var value = '' setget set_value
-var propertyName = '' setget setpropertyName
-var displayType = '' setget displaytype
+var value = '' :set=set_value
+var propertyName = '' :set=setpropertyName
+var displayType = '' :set=displaytype
 
 func displaytype(input):
 	displayType =input

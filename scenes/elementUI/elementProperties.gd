@@ -1,6 +1,6 @@
 extends Node
 #onready var content = $'Control/content'
-var ElementStructureReference = '' setget set_ElementStructureReference
+var ElementStructureReference = '' :set=set_ElementStructureReference
 var ElementProperties :Dictionary = {}
 
 func set_ElementStructureReference(newvalue):

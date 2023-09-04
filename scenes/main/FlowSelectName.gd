@@ -1,6 +1,6 @@
 extends Control
 
-var flowname :String = '' setget setflowname
+var flowname :String = '' :set=setflowname
 
 func setflowname(newvalue):
 	flowname = newvalue

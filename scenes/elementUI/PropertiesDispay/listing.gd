@@ -4,8 +4,8 @@ var listingitem = preload("res://scenes/elementUI/PropertiesDispay/ListingItem.t
 var listingItemSiblingNo =-1
 
 var subtype = 'List'#'Dictionary'
-var value = {} setget set_value
-var propertyName = '' setget setpropertyName
+var value = {} :set=set_value
+var propertyName = '' :set=setpropertyName
 var displayType =''
 
 func setpropertyName(newvalue):

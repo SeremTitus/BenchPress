@@ -1,10 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=9 format=3]
 
-[ext_resource path="res://addons/MaxSizeContainer/max_size_container.gd" type="Script" id=1]
-[ext_resource path="res://scenes/Constructor/OptionButtonExtend.gd" type="Script" id=2]
-[ext_resource path="res://scenes/Constructor/id.gd" type="Script" id=3]
-[ext_resource path="res://assets/icons/bin.svg" type="Texture" id=4]
-[ext_resource path="res://scenes/Constructor/property_template.gd" type="Script" id=5]
+
+[ext_resource type="Script" path="res://scenes/Constructor/OptionButtonExtend.gd" id="2"]
+[ext_resource type="Script" path="res://scenes/Constructor/id.gd" id="3"]
+[ext_resource type="Texture" uid="uid://k84n8mwp3fnp" path="res://assets/icons/bin.svg" id="4"]
+[ext_resource type="Script" path="res://scenes/Constructor/property_template.gd" id="5"]
 
 [sub_resource type="DynamicFontData" id=29]
 font_path = "res://assets/fonts/noto_sans_ui_bold.ttf"
@@ -56,7 +56,6 @@ custom_constants/margin_right = 0
 custom_constants/margin_top = 0
 custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
-script = ExtResource( 1 )
 max_size = Vector2( 100, -1 )
 constant_size = true
 
@@ -80,7 +79,6 @@ custom_constants/margin_right = 0
 custom_constants/margin_top = 0
 custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
-script = ExtResource( 1 )
 max_size = Vector2( 100, -1 )
 constant_size = true
 
@@ -103,7 +101,6 @@ custom_constants/margin_right = 0
 custom_constants/margin_top = 0
 custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
-script = ExtResource( 1 )
 max_size = Vector2( 90, -1 )
 constant_size = true
 
@@ -127,7 +124,6 @@ custom_constants/margin_right = 0
 custom_constants/margin_top = 0
 custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
-script = ExtResource( 1 )
 max_size = Vector2( 123, -1 )
 constant_size = true
 
@@ -151,7 +147,6 @@ custom_constants/margin_right = 0
 custom_constants/margin_top = 0
 custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
-script = ExtResource( 1 )
 max_size = Vector2( 198, -1 )
 constant_size = true
 
@@ -174,7 +169,6 @@ custom_constants/margin_right = 0
 custom_constants/margin_top = 0
 custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
-script = ExtResource( 1 )
 max_size = Vector2( 123, -1 )
 constant_size = true
 
@@ -197,7 +191,6 @@ custom_constants/margin_right = 0
 custom_constants/margin_top = 0
 custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
-script = ExtResource( 1 )
 max_size = Vector2( 96, -1 )
 constant_size = true
 
@@ -221,7 +214,6 @@ custom_constants/margin_right = 0
 custom_constants/margin_top = 0
 custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
-script = ExtResource( 1 )
 max_size = Vector2( 26, 26 )
 constant_size = true
 

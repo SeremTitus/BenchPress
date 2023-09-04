@@ -1,9 +1,9 @@
 extends Node
 
-var subtype = [] setget add_item
-var value = '' setget set_value
-var propertyName = '' setget setpropertyName
-var displayType = '' setget displaytype
+var subtype = [] :set=add_item
+var value = '' :set=set_value
+var propertyName = '' :set=setpropertyName
+var displayType = '' :set=displaytype
 
 func displaytype(input):
 	displayType = input

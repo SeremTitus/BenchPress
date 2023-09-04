@@ -1,7 +1,7 @@
 extends Node
 
-var morph = '' setget set_subtitle
-var active = false setget _on_active_toggled
+var morph = '' :set=set_subtitle
+var active = false :set=_on_active_toggled
 var Properties_set_values = {#loop-able keys are not fixed
 				'Edited_Properties_Name' :'Value'#set_values
 				}
@@ -16,7 +16,7 @@ var Properties= {#loop-able keys are not fixed
 					'DefaultValue':'',
 					'InputOutput':''
 					}
-				} setget  adding_properties
+				} :set=adding_properties
 
 var propertiesDisplay ={
 'LineEdit' :'res://scenes/elementUI/PropertiesDispay/LineEdit.tscn',

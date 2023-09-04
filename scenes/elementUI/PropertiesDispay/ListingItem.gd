@@ -3,7 +3,7 @@ extends Node
 signal ListingItemChangeMade
 
 var subtype  = 'List'
-var displayType = '' setget displaytype
+var displayType = '' :set=displaytype
 
 func displaytype(value):
 	displayType = value
