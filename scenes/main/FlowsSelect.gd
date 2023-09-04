@@ -13,7 +13,7 @@ func generate_flow_select_list(current_project =Global.current_project):
 		child.queue_free()
 	var flowNames = current_project.Flows.keys()
 	for i in flowNames:
-		var newflow = flowname.instance()
+		var newflow = flowname.instantiate()
 		newflow.flowname = i
 		$"%Content".add_child(newflow)
 

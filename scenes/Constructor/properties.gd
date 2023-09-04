@@ -4,7 +4,7 @@ extends Node
 
 
 func _on_Add_button_down():
-	var propitem = item.instance()
+	var propitem = item.instantiate()
 	propitem.connect("changesmade",$"../../../../../../../../../../..","changesmade")
 	add_child(propitem)
 	morph_temp_list()

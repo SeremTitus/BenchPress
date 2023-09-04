@@ -5,8 +5,8 @@ onready var code_temp = preload("res://scenes/Constructor/code_template.tscn")
 onready var pyEditor =$"%PyEditor"
 
 func _on_Add_button_down():
-	var code = code_temp.instance()
-	var morph = morph_temp.instance()
+	var code = code_temp.instantiate()
+	var morph = morph_temp.instantiate()
 	morph.connect("morph_renamed",code,"renamed")
 	morph.connect("morph_freed",code,"freed")
 	morph.connect("changesmade",$"../../../../../../../../../../../..",'changesmade')

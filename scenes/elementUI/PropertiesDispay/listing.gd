@@ -19,7 +19,7 @@ func set_value(newvalue):
 			if child.name == 'lable':continue
 			child.queue_free()
 		for i in value:
-			var item = listingitem.instance()
+			var item = listingitem.instantiate()
 			item.subtype  = subtype
 			if displayType != '':
 				item.displayType = displayType
@@ -38,7 +38,7 @@ func get_value():
 	return  setvalue
 	
 func _on_add_button_down():
-	var item = listingitem.instance()
+	var item = listingitem.instantiate()
 	item.subtype  = subtype
 	if displayType != '':
 		item.displayType = displayType
@@ -46,7 +46,7 @@ func _on_add_button_down():
 		listingItemSiblingNo+=1
 		item.get_child(0).text = str(listingItemSiblingNo)
 		item.get_child(0).editable = false	
-	item.connect("ListingItemChangeMade",self,'on_itemchanged')
+	item.connect("ListingItemChangeMade",on_itemchanged)
 	$"%listing".add_child(item)
 	
 func on_itemchanged(_new_text):

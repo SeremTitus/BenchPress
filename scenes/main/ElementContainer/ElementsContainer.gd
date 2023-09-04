@@ -24,7 +24,7 @@ func generate_list_Elements(LibraryElementStructure = Global.LibraryElementStruc
 			if listExistinggroups.has(newCommulativePath):
 				addItemHere = listExistinggroups[newCommulativePath]
 			else:
-				var newgroup = group.instance() 
+				var newgroup = group.instantiate()
 				newgroup.LabelName = groupname
 				if addItemHere != null:
 					addItemHere.add_item(newgroup)
@@ -32,7 +32,7 @@ func generate_list_Elements(LibraryElementStructure = Global.LibraryElementStruc
 					$"%elements".add_child(newgroup)
 				addItemHere = newgroup
 				listExistinggroups[newCommulativePath] = newgroup
-		var newitem = element.instance()
+		var newitem = element.instantiate()
 		newitem.ElementStructureReference = ElementStructureReference
 		if addItemHere != null:
 			addItemHere.add_item(newitem)

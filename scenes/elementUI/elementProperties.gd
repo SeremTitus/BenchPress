@@ -13,7 +13,7 @@ func create_prop(ElementStructure = Global.LibraryElementStructure[ElementStruct
 	$"%Title".text = ElementStructure['Title']
 	$"%doc".text = ElementStructure['Doc']
 	for morphkey in ElementStructure['Morphs']:
-		var morph_data =load("res://scenes/elementUI/morph_data.tscn").instance()
+		var morph_data =load("res://scenes/elementUI/morph_data.tscn").instantiate()
 		morph_data.morph = morphkey
 		morph_data.active = false
 		for i in ElementProperties['ActiveMorphs']:

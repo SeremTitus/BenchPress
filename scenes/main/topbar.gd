@@ -176,7 +176,7 @@ func add_item(topbar:Dictionary):
 						menubutton.get_popup().add_radio_check_item(itemName,itemIndex)
 					'connect':
 						pressed_signal_redirect[itemName]={itemIndex:instructionValue}
-						menubutton.get_popup().connect('index_pressed',self,'pressed',[itemName])
+						menubutton.get_popup().connect('index_pressed',pressed)
 			itemIndex += 1
 
 func pressed(itemIndex,itemName):

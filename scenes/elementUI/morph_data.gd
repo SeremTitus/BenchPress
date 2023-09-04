@@ -58,7 +58,7 @@ func _on_active_toggled(button_pressed):
 	$"%content".visible = button_pressed
 
 func add_item(instpath,propertyName,displayType,defaultvalue='',value='',subtype=''):
-	var item = load(instpath).instance()
+	var item = load(instpath).instantiate()
 	item.propertyName = propertyName
 	item.displayType = displayType
 	item.subtype = subtype

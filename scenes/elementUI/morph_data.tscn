@@ -58,8 +58,5 @@ margin_bottom = 226.0
 
 [node name="list" parent="content" instance=ExtResource("1")]
 layout_mode = 2
-margin_top = 230.0
-margin_right = 1024.0
-margin_bottom = 279.0
 
 [connection signal="toggled" from="title/active" to="." method="_on_active_toggled"]
