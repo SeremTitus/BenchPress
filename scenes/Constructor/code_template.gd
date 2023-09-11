@@ -1,4 +1,4 @@
-extends Node
+extends Control
 signal emit_code
 func renamed(text):
 	name = text

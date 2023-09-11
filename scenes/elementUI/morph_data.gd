@@ -1,4 +1,4 @@
-extends Node
+extends VBoxContainer
 
 var morph = '' :set=set_subtitle
 var active = false :set=_on_active_toggled

@@ -1,4 +1,4 @@
-extends Node
+extends HBoxContainer
 
 var listingitem = preload("res://scenes/elementUI/PropertiesDispay/ListingItem.tscn")
 var listingItemSiblingNo =-1

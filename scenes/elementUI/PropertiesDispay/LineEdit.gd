@@ -1,4 +1,4 @@
-extends Node
+extends HBoxContainer
 
 var subtype = ''#not implimented
 var value = '' :set=set_value

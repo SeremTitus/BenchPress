@@ -1,4 +1,4 @@
-extends Node
+extends Control
 
 
 @export var executablePath:String ='python.exe'# 'cmd.exe'

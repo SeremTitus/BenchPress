@@ -1,4 +1,4 @@
-extends Node
+extends MarginContainer
 #onready var content = $'Control/content'
 var ElementStructureReference = '' :set=set_ElementStructureReference
 var ElementProperties :Dictionary = {}
@@ -19,7 +19,7 @@ func create_prop(ElementStructure = Global.LibraryElementStructure[ElementStruct
 		for i in ElementProperties['ActiveMorphs']:
 			if i == morphkey:
 				morph_data.active=true
-		morph_data.Properties_set_values = ElementProperties['FlowVariable']
+		morph_data.Properties_set_values = ElementProperties['Properties']
 		morph_data.Properties = ElementStructure['Morphs'][morphkey]['Properties']
 		$"%parameter".add_child(morph_data)
 		createOutputVar(ElementStructure)
@@ -39,7 +39,7 @@ func createOutputVar(ElementStructure=Global.LibraryElementStructure[ElementStru
 				for glovar in Global.FlowVariables:
 					if propertyName == glovar: 
 						propertyName = glovar
-				if ElementProperties['FlowVariable'].has(propertyName):
+				if ElementProperties['Properties'].has(propertyName):
 					propertyName = ElementProperties['FlowVariable'][propertyName]
 				item.text = propertyName
 				$"%OutputVar".add_child(item)

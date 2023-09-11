@@ -1,14 +1,13 @@
-extends Control
+extends VBoxContainer
 
-
-func can_drop_data(_position, data):
+func _can_drop_data(_position, data):
 	#var scroll = find_parent('FlowPanelScroll')
 	# impliment scroll
-	if typeof(data) != 18 or not(data.has('origin')):
+	if typeof(data) != TYPE_DICTIONARY or not(data.has('origin')):
 		return false
 	return true
-
-func drop_data(_position,_data):
+	
+func _drop_data(_position,_data):
 	if _data['origin'].active_mode == 1 or _data['origin'].active_mode == 3:
 			var elementInstance = _data['origin'].duplicate()
 			add_child(elementInstance)
@@ -36,7 +35,7 @@ func highlight_element(_data):
 	if typeof(Global.highlighted_element) == TYPE_OBJECT and (Global.highlighted_element) != null:
 		if not Global.highlighted_element.is_queued_for_deletion():
 			Global.highlighted_element.call('toggle_highlight')
-	if typeof(_data) == 17 and (_data) != null:
+	if typeof(_data) == TYPE_DICTIONARY and (_data) != null:
 		_data.call('toggle_highlight')
 		Global.highlighted_element =_data
 	

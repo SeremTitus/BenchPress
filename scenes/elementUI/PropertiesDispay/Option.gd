@@ -1,4 +1,4 @@
-extends Node
+extends HBoxContainer
 
 var subtype = [] :set=add_item
 var value = '' :set=set_value
