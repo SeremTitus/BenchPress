@@ -1,6 +1,5 @@
 [gd_scene load_steps=9 format=3]
 
-
 [ext_resource type="Script" path="res://scenes/Constructor/OptionButtonExtend.gd" id="2"]
 [ext_resource type="Script" path="res://scenes/Constructor/id.gd" id="3"]
 [ext_resource type="Texture" uid="uid://k84n8mwp3fnp" path="res://assets/icons/bin.svg" id="4"]

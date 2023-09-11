@@ -48,13 +48,13 @@ var LibraryElementStructure = {
 	}
 signal LibraryElementStructure_Constructed
 var current_project_filePath = ''
-var current_project = {} : set = current_Project_changed
-signal s_current_Project_changed
+var current_project = {} : set = current_Project_set
+signal current_Project_changed
 var GlobalVariables = {}
 var FlowVariables = []
 
-var highlighted_element = null : set =highlighted_element_changed
-signal s_highlighted_element_changed
+var highlighted_element = null : set =highlighted_element_set
+signal highlighted_element_changed
 var selected_flow = 'main' : set = selected_flow_changed
 
 func _ready():
@@ -121,11 +121,11 @@ func run_current_flow(_params):
 func save_current_benchpress():
 	pass
 	
-func current_Project_changed(newvalue):
+func current_Project_set(newvalue):
 	current_project = newvalue
 	emit_signal("current_Project_changed")
 	
-func highlighted_element_changed(newvalue):
+func highlighted_element_set(newvalue):
 	highlighted_element = newvalue
 	emit_signal("highlighted_element_changed")
 	
@@ -185,7 +185,7 @@ func unique_name(names:PackedStringArray,newName:String):
 	if ! names.has(newName): return newName
 	#remove any numerals ends on newName
 	var newName_CharacterIndex =range(len(newName))
-	newName_CharacterIndex.invert()
+	newName_CharacterIndex.reverse()
 	var arrayNumbers = PackedStringArray(range(10))
 	var countnumbers = 0
 	for chr in newName_CharacterIndex:

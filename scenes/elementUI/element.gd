@@ -11,7 +11,6 @@ var view_properties = ProjectSettings.get_setting('benchpress/elements/display_w
 var is_parent = false
 func _ready():
 	$"%ElementProperties".visible =false
-	$"%ChildElements".visible = false
 	$"%selectColor".visible = false
 	
 func setElementStructureReference(value):
@@ -23,8 +22,6 @@ func setElementStructureReference(value):
 func set_activemode(newvalue):
 	active_mode = newvalue
 	if active_mode >1:
-		if is_parent:
-			$"%ChildElements".visible = true
 		$"%ElementProperties".ElementProperties = ElementProperties
 		$"%ElementProperties".ElementStructureReference = ElementStructureReference
 		$"%ElementProperties".visible = true

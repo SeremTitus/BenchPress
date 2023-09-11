@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dq3jey2r0wwhv"]
+[gd_scene load_steps=14 format=3 uid="uid://dq3jey2r0wwhv"]
 
 [ext_resource type="Script" path="res://scenes/main/Editor.gd" id="1_3prtb"]
 [ext_resource type="Texture2D" uid="uid://cnyecue6loxdc" path="res://assets/icons/debug/Record.svg" id="2"]
@@ -11,810 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://dv83v1runlrjs" path="res://assets/icons/debug/breakPoint.svg" id="9"]
 [ext_resource type="Theme" uid="uid://dc0il7m7ryfbx" path="res://assets/theme/menubutton.tres" id="10"]
 [ext_resource type="PackedScene" uid="uid://ctft7yedvi6u4" path="res://scenes/main/ElementContainer/ElementsContainer.tscn" id="10_qt1ee"]
-[ext_resource type="PackedScene" path="res://scenes/main/FlowContainer.tscn" id="11_imqnq"]
+[ext_resource type="PackedScene" uid="uid://dr6olo2r3sdmv" path="res://scenes/main/FlowContainer.tscn" id="11_imqnq"]
 [ext_resource type="PackedScene" uid="uid://c3vfglq75isr" path="res://scenes/main/FlowsSelect.tscn" id="12_a7kox"]
-
-[sub_resource type="GDScript" id="GDScript_m2d7k"]
-script/source = "extends Container
-
-const SplitHandle = preload(\"split_handle.gd\")
-const DockablePanel = preload(\"dockable_panel.gd\")
-const ReferenceControl = preload(\"dockable_panel_reference_control.gd\")
-const DragNDropPanel = preload(\"drag_n_drop_panel.gd\")
-const Layout = preload(\"layout.gd\")
-
-# gdlint: ignore=max-line-length
-export(int, \"Left\", \"Center\", \"Right\") var tab_align = TabContainer.ALIGN_CENTER :set=set_tab_align, get_tab_align
-export(bool) var tabs_visible := true :set=set_tabs_visible, get_tabs_visible
-# gdlint: ignore=max-line-length
-export(bool) var use_hidden_tabs_for_min_size: bool :set=set_use_hidden_tabs_for_min_size, get_use_hidden_tabs_for_min_size
-export(int) var rearrange_group = 0
-export(Resource) var layout = Layout.new() :set=set_layout, get_layout
-# If `clone_layout_on_ready` is true, `layout` will be cloned on `_ready`.
-# This is useful for leaving layout Resources untouched in case you want to
-# restore layout to its default later.
-export(bool) var clone_layout_on_ready = true
-
-var _layout = Layout.new()
-var _panel_container = Container.new()
-var _split_container = Container.new()
-var _drag_n_drop_panel = DragNDropPanel.new()
-var _drag_panel: DockablePanel
-var _tab_align = TabContainer.ALIGN_CENTER
-var _tabs_visible = true
-var _use_hidden_tabs_for_min_size = false
-var _current_panel_index = 0
-var _current_split_index = 0
-var _children_names = {}
-var _layout_dirty = false
-
-
-func _ready() -> void:
-	set_process_input(false)
-	_panel_container.name = \"_panel_container\"
-	.add_child(_panel_container)
-	move_child(_panel_container, 0)
-	_split_container.name = \"_split_container\"
-	_split_container.mouse_filter = MOUSE_FILTER_PASS
-	_panel_container.add_child(_split_container)
-
-	_drag_n_drop_panel.name = \"_drag_n_drop_panel\"
-	_drag_n_drop_panel.mouse_filter = MOUSE_FILTER_PASS
-	_drag_n_drop_panel.set_drag_forwarding(self)
-	_drag_n_drop_panel.visible = false
-	.add_child(_drag_n_drop_panel)
-
-	if not _layout:
-		set_layout(null)
-	elif clone_layout_on_ready and not Engine.editor_hint:
-		set_layout(_layout.clone())
-
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_SORT_CHILDREN:
-		_resort()
-	elif (
-		what == NOTIFICATION_DRAG_BEGIN
-		and _can_handle_drag_data(get_viewport().gui_get_drag_data())
-	):
-		_drag_n_drop_panel.set_enabled(true, not _layout.root.empty())
-		set_process_input(true)
-	elif what == NOTIFICATION_DRAG_END:
-		_drag_n_drop_panel.set_enabled(false)
-		set_process_input(false)
-
-
-func _input(event: InputEvent) -> void:
-	assert(get_viewport().gui_is_dragging(), \"FIXME: should only be called when dragging\")
-	if event is InputEventMouseMotion:
-		var local_position = get_local_mouse_position()
-		var panel
-		for i in range(1, _panel_container.get_child_count()):
-			var p = _panel_container.get_child(i)
-			if p.get_rect().has_point(local_position):
-				panel = p
-				break
-		_drag_panel = panel
-		if not panel:
-			return
-		fit_child_in_rect(_drag_n_drop_panel, panel.get_child_rect())
-
-
-func add_child(node: Node, legible_unique_name: bool = false) -> void:
-	.add_child(node, legible_unique_name)
-	_drag_n_drop_panel.raise()
-	_track_and_add_node(node)
-
-
-func add_child_below_node(node: Node, child_node: Node, legible_unique_name: bool = false) -> void:
-	.add_child_below_node(node, child_node, legible_unique_name)
-	_drag_n_drop_panel.raise()
-	_track_and_add_node(child_node)
-
-
-func remove_child(node: Node) -> void:
-	.remove_child(node)
-	_untrack_node(node)
-
-
-func can_drop_data_fw(_position: Vector2, data, from_control) -> bool:
-	return from_control == _drag_n_drop_panel and _can_handle_drag_data(data)
-
-
-func drop_data_fw(_position: Vector2, data, from_control) -> void:
-	assert(from_control == _drag_n_drop_panel, \"FIXME\")
-
-	var from_node: TabContainer = get_node(data.from_path)
-	if from_node == _drag_panel and _drag_panel.get_child_count() == 1:
-		return
-
-	var moved_tab = from_node.get_tab_control(data.tabc_element)
-	if moved_tab is ReferenceControl:
-		moved_tab = moved_tab.reference_to
-	if not _is_managed_node(moved_tab):
-		moved_tab.get_parent().remove_child(moved_tab)
-		add_child(moved_tab)
-
-	if _drag_panel != null:
-		var margin = _drag_n_drop_panel.get_hover_margin()
-		_layout.split_leaf_with_node(_drag_panel.leaf, moved_tab, margin)
-
-	_layout_dirty = true
-	queue_sort()
-
-
-func set_control_as_current_tab(control: Control) -> void:
-	assert(
-		control.get_parent_control() == self,
-		\"Trying to focus a control not managed by this container\"
-	)
-	if is_control_hidden(control):
-		push_warning(\"Trying to focus a hidden control\")
-		return
-	var leaf = _layout.get_leaf_for_node(control)
-	if not leaf:
-		return
-	var position_in_leaf = leaf.find_node(control)
-	if position_in_leaf < 0:
-		return
-	var panel
-	for i in range(1, _panel_container.get_child_count()):
-		var p = _panel_container.get_child(i)
-		if p.leaf == leaf:
-			panel = p
-			break
-	if not panel:
-		return
-	panel.current_tab = clamp(position_in_leaf, 0, panel.get_tab_count() - 1)
-
-
-func set_layout(value: Layout) -> void:
-	if value == null:
-		value = Layout.new()
-	if value == _layout:
-		return
-	if _layout and _layout.is_connected(\"changed\", self, \"queue_sort\"):
-		_layout.disconnect(\"changed\", self, \"queue_sort\")
-	_layout = value
-	_layout.connect(\"changed\", self, \"queue_sort\")
-	_layout_dirty = true
-	queue_sort()
-
-
-func get_layout() -> Layout:
-	return _layout
-
-
-func set_tab_align(value: int) -> void:
-	_tab_align = value
-	for i in range(1, _panel_container.get_child_count()):
-		var panel = _panel_container.get_child(i)
-		panel.tab_align = value
-
-
-func get_tab_align() -> int:
-	return _tab_align
-
-
-func set_tabs_visible(value: bool) -> void:
-	_tabs_visible = value
-	for i in range(1, _panel_container.get_child_count()):
-		var panel = _panel_container.get_child(i)
-		panel.tabs_visible = value
-
-
-func get_tabs_visible() -> bool:
-	return _tabs_visible
-
-
-func set_use_hidden_tabs_for_min_size(value: bool) -> void:
-	_use_hidden_tabs_for_min_size = value
-	for i in range(1, _panel_container.get_child_count()):
-		var panel = _panel_container.get_child(i)
-		panel.use_hidden_tabs_for_min_size = value
-
-
-func get_use_hidden_tabs_for_min_size() -> bool:
-	return _use_hidden_tabs_for_min_size
-
-
-func set_control_hidden(child: Control, hidden: bool) -> void:
-	_layout.set_node_hidden(child, hidden)
-
-
-func is_control_hidden(child: Control) -> bool:
-	return _layout.is_node_hidden(child)
-
-
-func get_tabs() -> Array:
-	var tabs = []
-	for i in get_child_count():
-		var child = get_child(i)
-		if _is_managed_node(child):
-			tabs.append(child)
-	return tabs
-
-
-func get_tab_count() -> int:
-	var count = 0
-	for i in get_child_count():
-		var child = get_child(i)
-		if _is_managed_node(child):
-			count += 1
-	return count
-
-
-func _can_handle_drag_data(data):
-	if data is Dictionary and data.get(\"type\") == \"tabc_element\":
-		var tabc = get_node_or_null(data.get(\"from_path\"))
-		return (
-			tabc
-			and tabc.has_method(\"get_tabs_rearrange_group\")
-			and tabc.get_tabs_rearrange_group() == rearrange_group
-		)
-	return false
-
-
-func _is_managed_node(node: Node) -> bool:
-	return (
-		node.get_parent() == self
-		and node != _panel_container
-		and node != _drag_n_drop_panel
-		and node is Control
-		and not node.is_set_as_toplevel()
-	)
-
-
-func _update_layout_with_children() -> void:
-	var names = PoolStringArray()
-	_children_names.clear()
-	for i in range(1, get_child_count() - 1):
-		var c = get_child(i)
-		if _track_node(c):
-			names.append(c.name)
-	_layout.update_nodes(names)
-	_layout_dirty = false
-
-
-func _track_node(node: Node) -> bool:
-	if not _is_managed_node(node):
-		return false
-	_children_names[node] = node.name
-	_children_names[node.name] = node
-	if not node.is_connected(\"renamed\", self, \"_on_child_renamed\"):
-		node.connect(\"renamed\", self, \"_on_child_renamed\", [node])
-	if not node.is_connected(\"tree_exiting\", self, \"_untrack_node\"):
-		node.connect(\"tree_exiting\", self, \"_untrack_node\", [node])
-	return true
-
-
-func _track_and_add_node(node: Node) -> void:
-	var tracked_name = _children_names.get(node)
-	if not _track_node(node):
-		return
-	if tracked_name and tracked_name != node.name:
-		_layout.rename_node(tracked_name, node.name)
-	_layout_dirty = true
-
-
-func _untrack_node(node: Node) -> void:
-	_children_names.erase(node)
-	_children_names.erase(node.name)
-	if node.is_connected(\"renamed\", self, \"_on_child_renamed\"):
-		node.disconnect(\"renamed\", self, \"_on_child_renamed\")
-	if node.is_connected(\"tree_exiting\", self, \"_untrack_node\"):
-		node.disconnect(\"tree_exiting\", self, \"_untrack_node\")
-	_layout_dirty = true
-
-
-func _resort() -> void:
-	assert(_panel_container, \"FIXME: resorting without _panel_container\")
-	if _panel_container.get_position_in_parent() != 0:
-		move_child(_panel_container, 0)
-	if _drag_n_drop_panel.get_position_in_parent() < get_child_count() - 1:
-		_drag_n_drop_panel.raise()
-
-	if _layout_dirty:
-		_update_layout_with_children()
-
-	var rect = Rect2(Vector2.ZERO, rect_size)
-	fit_child_in_rect(_panel_container, rect)
-	_panel_container.fit_child_in_rect(_split_container, rect)
-
-	_current_panel_index = 1
-	_current_split_index = 0
-
-	var children_list = []
-	_calculate_panel_and_split_list(children_list, _layout.root)
-	_fit_panel_and_split_list_to_rect(children_list, rect)
-
-	_untrack_children_after(_panel_container, _current_panel_index)
-	_untrack_children_after(_split_container, _current_split_index)
-
-
-# Calculate DockablePanel and SplitHandle minimum sizes, skipping empty
-# branches.
-#
-# Returns a DockablePanel on non-empty leaves, a SplitHandle on non-empty
-# splits, `null` if the whole branch is empty and no space should be used.
-#
-# `result` will be filled with the non-empty nodes in this post-order tree
-# traversal.
-func _calculate_panel_and_split_list(result: Array, layout_node: Layout.LayoutNode):
-	if layout_node is Layout.LayoutPanel:
-		var nodes = []
-		for n in layout_node.names:
-			var node: Control = _children_names.get(n)
-			if node:
-				assert(node is Control, \"FIXME: node is not a control %s\" % node)
-				assert(
-					node.get_parent_control() == self,
-					\"FIXME: node is not child of container %s\" % node
-				)
-				if is_control_hidden(node):
-					node.visible = false
-				else:
-					nodes.append(node)
-		if nodes.empty():
-			return null
-		else:
-			var panel = _get_panel(_current_panel_index)
-			_current_panel_index += 1
-			panel.track_nodes(nodes, layout_node)
-			result.append(panel)
-			return panel
-	elif layout_node is Layout.LayoutSplit:
-		# by processing `second` before `first`, traversing `result` from back
-		# to front yields a nice pre-order tree traversal
-		var second_result = _calculate_panel_and_split_list(result, layout_node.second)
-		var first_result = _calculate_panel_and_split_list(result, layout_node.first)
-		if first_result and second_result:
-			var split = _get_split(_current_split_index)
-			_current_split_index += 1
-			split.layout_split = layout_node
-			split.first_minimum_size = first_result.get_layout_minimum_size()
-			split.second_minimum_size = second_result.get_layout_minimum_size()
-			result.append(split)
-			return split
-		elif first_result:
-			return first_result
-		else:  # NOTE: this returns null if `second_result` is null
-			return second_result
-	else:
-		push_warning(\"FIXME: invalid Resource, should be branch or leaf, found %s\" % layout_node)
-
-
-# Traverse list from back to front fitting controls where they belong.
-#
-# Be sure to call this with the result from `_calculate_split_minimum_sizes`.
-func _fit_panel_and_split_list_to_rect(panel_and_split_list: Array, rect: Rect2) -> void:
-	var control = panel_and_split_list.pop_back()
-	if control is DockablePanel:
-		_panel_container.fit_child_in_rect(control, rect)
-	elif control is SplitHandle:
-		var split_rects = control.get_split_rects(rect)
-		_split_container.fit_child_in_rect(control, split_rects.self)
-		_fit_panel_and_split_list_to_rect(panel_and_split_list, split_rects.first)
-		_fit_panel_and_split_list_to_rect(panel_and_split_list, split_rects.second)
-
-
-func _get_panel(idx: int) -> DockablePanel:
-	\"\"\"Get the idx'th DockablePanel, reusing an instanced one if possible\"\"\"
-	assert(_panel_container, \"FIXME: creating panel without _panel_container\")
-	if idx < _panel_container.get_child_count():
-		return _panel_container.get_child(idx)
-	var panel = DockablePanel.new()
-	panel.tab_align = _tab_align
-	panel.tabs_visible = _tabs_visible
-	panel.use_hidden_tabs_for_min_size = _use_hidden_tabs_for_min_size
-	panel.set_tabs_rearrange_group(max(0, rearrange_group))
-	_panel_container.add_child(panel)
-	panel.connect(\"tab_layout_changed\", self, \"_on_panel_tab_layout_changed\", [panel])
-	return panel
-
-
-func _get_split(idx: int) -> SplitHandle:
-	\"\"\"Get the idx'th SplitHandle, reusing an instanced one if possible\"\"\"
-	assert(_split_container, \"FIXME: creating split without _split_container\")
-	if idx < _split_container.get_child_count():
-		return _split_container.get_child(idx)
-	var split = SplitHandle.new()
-	_split_container.add_child(split)
-	return split
-
-
-static func _untrack_children_after(node, idx: int) -> void:
-	\"\"\"Helper for removing and freeing all remaining children from node\"\"\"
-	for i in range(idx, node.get_child_count()):
-		var child = node.get_child(idx)
-		node.remove_child(child)
-		child.queue_free()
-
-
-func _on_panel_tab_layout_changed(tab: int, panel: DockablePanel) -> void:
-	\"\"\"Handler for `DockablePanel.tab_layout_changed`, update its LayoutPanel\"\"\"
-	_layout_dirty = true
-	var control = panel.get_tab_control(tab)
-	if control is ReferenceControl:
-		control = control.reference_to
-	if not _is_managed_node(control):
-		control.get_parent().remove_child(control)
-		add_child(control)
-	_layout.move_node_to_leaf(control, panel.leaf, tab)
-	queue_sort()
-
-
-func _on_child_renamed(child: Node) -> void:
-	\"\"\"Handler for `Node.renamed` signal, updates tracked name for node\"\"\"
-	var old_name = _children_names.get(child)
-	if not old_name:
-		return
-	_children_names.erase(old_name)
-	_children_names[child] = child.name
-	_children_names[child.name] = child
-	_layout.rename_node(old_name, child.name)
-"
-
-[sub_resource type="GDScript" id="GDScript_64gb7"]
-script/source = "tool
-extends \"layout_node.gd\"
-# Layout leaf nodes, defining tabs
-
-export(PoolStringArray) var names: PoolStringArray :set=set_names, get_names
-export(int) var current_tab: int :set=set_current_tab, get_current_tab
-
-var _names := PoolStringArray()
-var _current_tab := 0
-
-
-func _init() -> void:
-	resource_name = \"Tabs\"
-
-
-func clone():
-	var new_panel = get_script().new()
-	new_panel._names = _names
-	new_panel._current_tab = _current_tab
-	return new_panel
-
-
-func set_current_tab(value: int) -> void:
-	if value != _current_tab:
-		_current_tab = value
-		emit_tree_changed()
-
-
-func get_current_tab() -> int:
-	return int(clamp(_current_tab, 0, _names.size() - 1))
-
-
-func set_names(value: PoolStringArray) -> void:
-	_names = value
-	emit_tree_changed()
-
-
-func get_names() -> PoolStringArray:
-	return _names
-
-
-func push_name(name: String) -> void:
-	_names.append(name)
-	emit_tree_changed()
-
-
-func insert_node(position: int, node: Node) -> void:
-	_names.insert(position, node.name)
-	emit_tree_changed()
-
-
-func find_name(node_name: String) -> int:
-	for i in _names.size():
-		if _names[i] == node_name:
-			return i
-	return -1
-
-
-func find_node(node: Node):
-	return find_name(node.name)
-
-
-func remove_node(node: Node) -> void:
-	var i = find_node(node)
-	if i >= 0:
-		_names.remove(i)
-		emit_tree_changed()
-	else:
-		push_warning(\"Remove failed, node '%s' was not found\" % node)
-
-
-func rename_node(previous_name: String, new_name: String) -> void:
-	var i = find_name(previous_name)
-	if i >= 0:
-		_names.set(i, new_name)
-		emit_tree_changed()
-	else:
-		push_warning(\"Rename failed, name '%s' was not found\" % previous_name)
-
-
-func empty() -> bool:
-	return _names.empty()
-
-
-func update_nodes(node_names: PoolStringArray, data: Dictionary):
-	var i = 0
-	var removed_any = false
-	while i < _names.size():
-		var current = _names[i]
-		if not current in node_names or data.has(current):
-			_names.remove(i)
-			removed_any = true
-		else:
-			data[current] = self
-			i += 1
-	if removed_any:
-		emit_tree_changed()
-"
-
-[sub_resource type="Resource" id="11"]
-resource_name = "Tabs"
-script = SubResource("GDScript_64gb7")
-names = PackedStringArray("Flows", "Properties")
-current_tab = 0
-
-[sub_resource type="GDScript" id="GDScript_e28ri"]
-script/source = "tool
-extends Resource
-# Layout Resource definition, holding the root LayoutNode and hidden tabs.
-#
-# LayoutSplit are binary trees with nested LayoutSplit subtrees and LayoutPanel
-# leaves. Both of them inherit from LayoutNode to help with type annotation and
-# define common funcionality.
-#
-# Hidden tabs are marked in the `hidden_tabs` Dictionary by name.
-
-const LayoutNode = preload(\"layout_node.gd\")
-const LayoutPanel = preload(\"layout_panel.gd\")
-const LayoutSplit = preload(\"layout_split.gd\")
-
-export(Resource) var root = LayoutPanel.new() :set=set_root, get_root
-export(Dictionary) var hidden_tabs = {} :set=set_hidden_tabs, get_hidden_tabs
-
-var _changed_signal_queued = false
-var _first_leaf: LayoutPanel
-var _hidden_tabs: Dictionary
-var _leaf_by_node_name: Dictionary
-var _root: LayoutNode = LayoutPanel.new()
-
-
-func _init() -> void:
-	resource_name = \"Layout\"
-
-
-func set_root(value: LayoutNode, should_emit_changed = true) -> void:
-	if not value:
-		value = LayoutPanel.new()
-	if _root == value:
-		return
-	if _root and _root.is_connected(\"changed\", self, \"_on_root_changed\"):
-		_root.disconnect(\"changed\", self, \"_on_root_changed\")
-	_root = value
-	_root.parent = null
-	_root.connect(\"changed\", self, \"_on_root_changed\")
-	if should_emit_changed:
-		_on_root_changed()
-
-
-func get_root() -> LayoutNode:
-	return _root
-
-
-func set_hidden_tabs(value: Dictionary) -> void:
-	if value != _hidden_tabs:
-		_hidden_tabs = value
-		emit_signal(\"changed\")
-
-
-func get_hidden_tabs() -> Dictionary:
-	return _hidden_tabs
-
-
-func clone():
-	var new_layout = get_script().new()
-	new_layout.root = _root.clone()
-	new_layout._hidden_tabs = _hidden_tabs.duplicate()
-	return new_layout
-
-
-func get_names() -> PoolStringArray:
-	return _root.get_names()
-
-
-# Add missing nodes on first leaf and remove nodes outside indices from leaves.
-#
-# _leaf_by_node_name = {
-#     (string keys) = respective Leaf that holds the node name,
-# }
-func update_nodes(names: PoolStringArray) -> void:
-	_leaf_by_node_name.clear()
-	_first_leaf = null
-	var empty_leaves = []
-	_ensure_names_in_node(_root, names, empty_leaves)
-	for l in empty_leaves:
-		_remove_leaf(l)
-	if not _first_leaf:
-		_first_leaf = LayoutPanel.new()
-		set_root(_first_leaf)
-	for n in names:
-		if not _leaf_by_node_name.has(n):
-			_first_leaf.push_name(n)
-			_leaf_by_node_name[n] = _first_leaf
-	_on_root_changed()
-
-
-func move_node_to_leaf(node: Node, leaf: LayoutPanel, relative_position: int) -> void:
-	var node_name = node.name
-	var previous_leaf = _leaf_by_node_name.get(node_name)
-	if previous_leaf:
-		previous_leaf.remove_node(node)
-		if previous_leaf.empty():
-			_remove_leaf(previous_leaf)
-
-	leaf.insert_node(relative_position, node)
-	_leaf_by_node_name[node_name] = leaf
-	_on_root_changed()
-
-
-func get_leaf_for_node(node: Node) -> LayoutPanel:
-	return _leaf_by_node_name.get(node.name)
-
-
-func split_leaf_with_node(leaf, node: Node, margin: int) -> void:
-	var root_branch = leaf.parent
-	var new_leaf = LayoutPanel.new()
-	var new_branch = LayoutSplit.new()
-	if margin == MARGIN_LEFT or margin == MARGIN_RIGHT:
-		new_branch.direction = LayoutSplit.Direction.HORIZONTAL
-	else:
-		new_branch.direction = LayoutSplit.Direction.VERTICAL
-	if margin == MARGIN_LEFT or margin == MARGIN_TOP:
-		new_branch.first = new_leaf
-		new_branch.second = leaf
-	else:
-		new_branch.first = leaf
-		new_branch.second = new_leaf
-	if _root == leaf:
-		set_root(new_branch, false)
-	elif root_branch:
-		if leaf == root_branch.first:
-			root_branch.first = new_branch
-		else:
-			root_branch.second = new_branch
-
-	move_node_to_leaf(node, new_leaf, 0)
-
-
-func add_node(node: Node) -> void:
-	var node_name = node.name
-	if _leaf_by_node_name.has(node_name):
-		return
-	_first_leaf.push_name(node_name)
-	_leaf_by_node_name[node_name] = _first_leaf
-	_on_root_changed()
-
-
-func remove_node(node: Node) -> void:
-	var node_name = node.name
-	var leaf: LayoutPanel = _leaf_by_node_name.get(node_name)
-	if not leaf:
-		return
-	leaf.remove_node(node)
-	_leaf_by_node_name.erase(node_name)
-	if leaf.empty():
-		_remove_leaf(leaf)
-	_on_root_changed()
-
-
-func rename_node(previous_name: String, new_name: String) -> void:
-	var leaf = _leaf_by_node_name.get(previous_name)
-	if not leaf:
-		return
-	leaf.rename_node(previous_name, new_name)
-	_leaf_by_node_name.erase(previous_name)
-	_leaf_by_node_name[new_name] = leaf
-	_on_root_changed()
-
-
-func set_tab_hidden(name: String, hidden: bool) -> void:
-	if not _leaf_by_node_name.has(name):
-		return
-	if hidden:
-		_hidden_tabs[name] = true
-	else:
-		_hidden_tabs.erase(name)
-	_on_root_changed()
-
-
-func is_tab_hidden(name: String) -> bool:
-	return _hidden_tabs.get(name, false)
-
-
-func set_node_hidden(node: Node, hidden: bool) -> void:
-	set_tab_hidden(node.name, hidden)
-
-
-func is_node_hidden(node: Node) -> bool:
-	return is_tab_hidden(node.name)
-
-
-func _on_root_changed() -> void:
-	if _changed_signal_queued:
-		return
-	_changed_signal_queued = true
-	set_deferred(\"_changed_signal_queued\", false)
-	call_deferred(\"emit_signal\", \"changed\")
-
-
-func _ensure_names_in_node(node: LayoutNode, names: PoolStringArray, empty_leaves: Array) -> void:
-	if node is LayoutPanel:
-		node.update_nodes(names, _leaf_by_node_name)
-		if node.empty():
-			empty_leaves.append(node)
-		if not _first_leaf:
-			_first_leaf = node
-	elif node is LayoutSplit:
-		_ensure_names_in_node(node.first, names, empty_leaves)
-		_ensure_names_in_node(node.second, names, empty_leaves)
-	else:
-		assert(false, \"Invalid Resource, should be branch or leaf, found %s\" % node)
-
-
-func _remove_leaf(leaf: LayoutPanel) -> void:
-	assert(leaf.empty(), \"FIXME: trying to remove a leaf with nodes\")
-	if _root == leaf:
-		return
-	var collapsed_branch = leaf.parent
-	assert(collapsed_branch is LayoutSplit, \"FIXME: leaf is not a child of branch\")
-	var kept_branch = (
-		collapsed_branch.first
-		if leaf == collapsed_branch.second
-		else collapsed_branch.second
-	)
-	var root_branch = collapsed_branch.parent
-	if collapsed_branch == _root:
-		set_root(kept_branch, true)
-	elif root_branch:
-		if collapsed_branch == root_branch.first:
-			root_branch.first = kept_branch
-		else:
-			root_branch.second = kept_branch
-
-
-func _print_tree() -> void:
-	print(\"TREE\")
-	_print_tree_step(_root, 0, 0)
-	print(\"\")
-
-
-func _print_tree_step(tree_or_leaf, level, idx) -> void:
-	if tree_or_leaf is LayoutPanel:
-		print(\" |\".repeat(level), \"- (%d) = \" % idx, tree_or_leaf.names)
-	else:
-		print(
-			\" |\".repeat(level),
-			\"-+ (%d) = \" % idx,
-			tree_or_leaf.direction,
-			\" \",
-			tree_or_leaf.percent
-		)
-		_print_tree_step(tree_or_leaf.first, level + 1, 1)
-		_print_tree_step(tree_or_leaf.second, level + 1, 2)
-"
-
-[sub_resource type="Resource" id="12"]
-resource_name = "Layout"
-script = SubResource("GDScript_e28ri")
-root = SubResource("11")
-hidden_tabs = {}
 
 [node name="editor" type="Control"]
 layout_mode = 3
@@ -968,7 +166,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="SelectElementPanel" type="PanelContainer" parent="layout/body"]
+layout_direction = 1
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
 
 [node name="ElementsContainer" parent="layout/body/SelectElementPanel" instance=ExtResource("10_qt1ee")]
 layout_mode = 2
@@ -981,89 +182,88 @@ size_flags_vertical = 3
 [node name="FlowContainer" parent="layout/body/FlowPanel" instance=ExtResource("11_imqnq")]
 layout_mode = 2
 
-[node name="ScrollContainer" parent="layout/body/FlowPanel/FlowContainer" index="0"]
-layout_mode = 2
-
-[node name="content" parent="layout/body/FlowPanel/FlowContainer/ScrollContainer" index="0"]
-layout_mode = 2
-
-[node name="spacer" parent="layout/body/FlowPanel/FlowContainer/ScrollContainer/content" index="0"]
-layout_mode = 2
-
 [node name="rightDock" type="PanelContainer" parent="layout/body"]
-layout_mode = 2
-
-[node name="Dock" type="Container" parent="layout/body/rightDock"]
-unique_name_in_owner = true
+layout_direction = 1
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="layout/body/rightDock"]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="layout/body/rightDock/VBoxContainer"]
+layout_direction = 1
+layout_mode = 2
 size_flags_vertical = 3
-theme = ExtResource("10")
-script = SubResource("GDScript_m2d7k")
-tab_align = 0
-use_hidden_tabs_for_min_size = true
-layout = SubResource("12")
-clone_layout_on_ready = false
 
-[node name="Flows" parent="layout/body/rightDock/Dock" instance=ExtResource("12_a7kox")]
+[node name="Flows" parent="layout/body/rightDock/VBoxContainer/TabContainer" instance=ExtResource("12_a7kox")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Properties" parent="layout/body/rightDock/Dock" instance=ExtResource("6")]
+[node name="Properties" parent="layout/body/rightDock/VBoxContainer/TabContainer" instance=ExtResource("6")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
-[node name="About" type="Popup" parent="."]
-unique_name_in_owner = true
+[node name="popups" type="Node" parent="."]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="About"]
+[node name="About" type="Popup" parent="popups"]
+unique_name_in_owner = true
+initial_position = 2
+borderless = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="popups/About"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="title" type="Label" parent="About/VBoxContainer"]
+[node name="title" type="Label" parent="popups/About/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 text = "Benchpress"
 clip_text = true
 
-[node name="version" type="Label" parent="About/VBoxContainer"]
+[node name="version" type="Label" parent="popups/About/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 text = "0.0.1 Dev"
 clip_text = true
 
-[node name="GlobalsPopup" type="Popup" parent="."]
+[node name="GlobalsPopup" type="Popup" parent="popups"]
 unique_name_in_owner = true
+initial_position = 1
+borderless = false
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="GlobalsPopup"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="popups/GlobalsPopup"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="title" type="Label" parent="GlobalsPopup/VBoxContainer2"]
+[node name="title" type="Label" parent="popups/GlobalsPopup/VBoxContainer2"]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Globals"
 clip_text = true
 
-[node name="SchedulePopup" type="Popup" parent="."]
+[node name="SchedulePopup" type="Popup" parent="popups"]
 unique_name_in_owner = true
+initial_position = 1
+borderless = false
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="SchedulePopup"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="popups/SchedulePopup"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="title" type="Label" parent="SchedulePopup/VBoxContainer3"]
+[node name="title" type="Label" parent="popups/SchedulePopup/VBoxContainer3"]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Schedule"
 clip_text = true
 
-[connection signal="button_down" from="layout/topbar/topbar/Center/Global" to="GlobalsPopup" method="popup"]
-[connection signal="button_down" from="layout/topbar/topbar/Center/Schedule" to="SchedulePopup" method="popup"]
+[connection signal="button_down" from="layout/topbar/topbar/Center/Global" to="popups/GlobalsPopup" method="popup"]
+[connection signal="button_down" from="layout/topbar/topbar/Center/Schedule" to="popups/SchedulePopup" method="popup"]
 
 [editable path="layout/body/FlowPanel/FlowContainer"]

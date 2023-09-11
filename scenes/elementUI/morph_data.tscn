@@ -1,14 +1,19 @@
 [gd_scene load_steps=7 format=3 uid="uid://838mhv2d8ttv"]
 
-[ext_resource type="PackedScene" path="res://scenes/elementUI/PropertiesDispay/list.tscn" id="1"]
-[ext_resource type="PackedScene" path="res://scenes/elementUI/PropertiesDispay/Option.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://scenes/elementUI/PropertiesDispay/LineEdit.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://scenes/elementUI/PropertiesDispay/TextEdit.tscn" id="4"]
-[ext_resource type="PackedScene" path="res://scenes/elementUI/PropertiesDispay/RadioButton.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://c1w0eu76f273w" path="res://scenes/elementUI/PropertiesDispay/list.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://bwx28gy4aj2er" path="res://scenes/elementUI/PropertiesDispay/Option.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://cvj2mpc1bbgu3" path="res://scenes/elementUI/PropertiesDispay/LineEdit.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://l5n165clq53" path="res://scenes/elementUI/PropertiesDispay/TextEdit.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://t3k6oqa4mqex" path="res://scenes/elementUI/PropertiesDispay/RadioButton.tscn" id="5"]
 [ext_resource type="Script" path="res://scenes/elementUI/morph_data.gd" id="8"]
 
 [node name="morph_data" type="VBoxContainer"]
 unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("8")
@@ -34,27 +39,15 @@ size_flags_vertical = 3
 
 [node name="LineEdit" parent="content" instance=ExtResource("3")]
 layout_mode = 2
-margin_right = 1024.0
-margin_bottom = 26.0
 
 [node name="RadioButton" parent="content" instance=ExtResource("5")]
 layout_mode = 2
-margin_left = 0.0
-margin_top = 30.0
-margin_right = 1024.0
-margin_bottom = 70.0
 
 [node name="Option" parent="content" instance=ExtResource("2")]
 layout_mode = 2
-margin_top = 74.0
-margin_right = 1024.0
-margin_bottom = 102.0
 
 [node name="TextEdit" parent="content" instance=ExtResource("4")]
 layout_mode = 2
-margin_top = 106.0
-margin_right = 1024.0
-margin_bottom = 226.0
 
 [node name="list" parent="content" instance=ExtResource("1")]
 layout_mode = 2

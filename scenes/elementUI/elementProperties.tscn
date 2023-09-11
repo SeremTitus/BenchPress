@@ -1,54 +1,53 @@
 [gd_scene load_steps=3 format=3 uid="uid://cqr1uqt34stgn"]
 
 [ext_resource type="Script" path="res://scenes/elementUI/elementProperties.gd" id="1"]
-[ext_resource type="PackedScene" path="res://scenes/elementUI/morph_data.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://838mhv2d8ttv" path="res://scenes/elementUI/morph_data.tscn" id="3"]
 
-[node name="ElementProperties" type="VBoxContainer"]
+[node name="ElementProperties" type="MarginContainer"]
+layout_direction = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="content" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
+[node name="content" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Title" type="Label" parent="MarginContainer/ScrollContainer/content"]
+[node name="Title" type="Label" parent="ScrollContainer/content"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "ADD VARIABLE"
 uppercase = true
 
-[node name="doc" type="Label" parent="MarginContainer/ScrollContainer/content"]
+[node name="doc" type="Label" parent="ScrollContainer/content"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Doc Example"
 
-[node name="OutputVar" type="HFlowContainer" parent="MarginContainer/ScrollContainer/content"]
+[node name="OutputVar" type="HFlowContainer" parent="ScrollContainer/content"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="lable" type="Label" parent="MarginContainer/ScrollContainer/content/OutputVar"]
+[node name="lable" type="Label" parent="ScrollContainer/content/OutputVar"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Output > "
 
-[node name="flowVariables" type="LineEdit" parent="MarginContainer/ScrollContainer/content/OutputVar"]
+[node name="flowVariables" type="LineEdit" parent="ScrollContainer/content/OutputVar"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -59,11 +58,10 @@ editable = false
 expand_to_text_length = true
 caret_blink = true
 
-[node name="parameter" type="VBoxContainer" parent="MarginContainer/ScrollContainer/content"]
+[node name="parameter" type="VBoxContainer" parent="ScrollContainer/content"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="morph_data" parent="MarginContainer/ScrollContainer/content/parameter" instance=ExtResource("3")]
+[node name="morph_data" parent="ScrollContainer/content/parameter" instance=ExtResource("3")]
 layout_mode = 2
-margin_bottom = 321.0

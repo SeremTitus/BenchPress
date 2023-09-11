@@ -1,255 +1,85 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://ddm837gy7lncw"]
 
 [ext_resource type="Script" path="res://scenes/elementUI/element.gd" id="1"]
-[ext_resource type="Texture" uid="uid://deqa82u4ia1j4" path="res://icon.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://deqa82u4ia1j4" path="res://icon.png" id="2"]
 [ext_resource type="Script" path="res://scenes/elementUI/elementSelect.gd" id="3"]
-[ext_resource type="PackedScene" path="res://scenes/main/FlowContainer.tscn" id="4"]
 [ext_resource type="PackedScene" uid="uid://cqr1uqt34stgn" path="res://scenes/elementUI/elementProperties.tscn" id="5"]
 
-[sub_resource type="StyleBoxFlat" id=1]
-content_margin_left = 0.0
-content_margin_right = 0.0
-content_margin_top = 0.0
-content_margin_bottom = 0.0
-bg_color = Color( 0.207843, 0.207843, 0.207843, 1 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 0.760784, 0.760784, 0.760784, 1 )
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 10
-
-[sub_resource type="StyleBoxFlat" id=12]
-bg_color = Color( 0.6, 0.6, 0.6, 0 )
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color( 1, 0.756863, 0.113725, 1 )
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 10
-
-[sub_resource type="StyleBoxFlat" id=8]
-bg_color = Color( 0.180392, 0.439216, 0.545098, 0.372549 )
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 10
-
-[sub_resource type="DynamicFontData" id=11]
-font_path = "res://assets/fonts/Roboto-Bold.ttf"
-
-[sub_resource type="DynamicFont" id=4]
-size = 17
-use_filter = true
-font_data = SubResource( 11 )
-
-[sub_resource type="DynamicFontData" id=5]
-font_path = "res://assets/fonts/Roboto-Light.ttf"
-
-[sub_resource type="DynamicFont" id=6]
-size = 15
-use_filter = true
-font_data = SubResource( 5 )
-
-[sub_resource type="StyleBoxFlat" id=9]
-content_margin_left = 10.0
-content_margin_right = 10.0
-content_margin_top = 10.0
-content_margin_bottom = 10.0
-bg_color = Color( 0.133333, 0.133333, 0.133333, 1 )
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxFlat" id=13]
-bg_color = Color( 0.545098, 0.447059, 0.180392, 0 )
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 10
-
 [node name="Element" type="PanelContainer"]
+clip_contents = true
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-hint_tooltip = "test"
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
-custom_styles/panel = SubResource( 1 )
-script = ExtResource( 1 )
+size_flags_vertical = 3
+script = ExtResource("1")
+metadata/_edit_use_anchors_ = true
 
 [node name="highlight" type="PanelContainer" parent="."]
 unique_name_in_owner = true
 visible = false
-margin_right = 1024.0
-margin_bottom = 686.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 12 )
 
 [node name="selectColor" type="PanelContainer" parent="."]
 unique_name_in_owner = true
 visible = false
-margin_right = 1024.0
-margin_bottom = 50.944
-rect_min_size = Vector2( 0, 50.944 )
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 0
-custom_styles/panel = SubResource( 8 )
 
 [node name="margin" type="MarginContainer" parent="."]
-margin_right = 1024.0
-margin_bottom = 695.0
-custom_constants/margin_right = 4
-custom_constants/margin_top = 4
-custom_constants/margin_left = 4
-custom_constants/margin_bottom = 4
+layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="margin"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 1020.0
-margin_bottom = 691.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="margin/HBoxContainer"]
-margin_right = 30.0
-margin_bottom = 687.0
+layout_mode = 2
 focus_mode = 1
 
 [node name="icon" type="TextureRect" parent="margin/HBoxContainer/VBoxContainer2"]
-margin_right = 30.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 30, 30 )
+layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource( 2 )
-expand = true
+texture = ExtResource("2")
+expand_mode = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="margin/HBoxContainer"]
-margin_left = 34.0
-margin_right = 1016.0
-margin_bottom = 687.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Title" type="Label" parent="margin/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
-margin_right = 982.0
-margin_bottom = 21.0
+layout_mode = 2
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 4 )
 text = "ADD VARIABLE"
 clip_text = true
 
 [node name="Description" type="Label" parent="margin/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 25.0
-margin_right = 982.0
-margin_bottom = 43.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 6 )
 text = "Test description"
-autowrap = true
 
-[node name="ElementProperties" parent="margin/HBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
+[node name="ElementProperties" parent="margin/HBoxContainer/VBoxContainer" instance=ExtResource("5")]
 unique_name_in_owner = true
-margin_top = 47.0
-margin_right = 982.0
-margin_bottom = 433.0
+layout_mode = 2
 
-[node name="MarginContainer" parent="margin/HBoxContainer/VBoxContainer/ElementProperties" index="0"]
-margin_right = 982.0
-margin_bottom = 386.0
-
-[node name="ScrollContainer" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer" index="0"]
-margin_right = 982.0
-margin_bottom = 381.0
-scroll_vertical_enabled = false
-
-[node name="content" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer" index="0"]
-margin_right = 982.0
-margin_bottom = 381.0
-
-[node name="Title" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer/content" index="0"]
-visible = false
-margin_right = 982.0
-
-[node name="doc" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer/content" index="1"]
-margin_top = 0.0
-margin_right = 982.0
-margin_bottom = 24.0
-
-[node name="OutputVar" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer/content" index="2"]
-margin_top = 28.0
-margin_right = 982.0
-margin_bottom = 56.0
-
-[node name="lable" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer/content/OutputVar" index="0"]
-margin_top = 2.0
-margin_bottom = 26.0
-
-[node name="flowVariables" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer/content/OutputVar" index="1"]
-visible = true
-
-[node name="parameter" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer/content" index="3"]
-margin_top = 60.0
-margin_right = 982.0
-margin_bottom = 381.0
-
-[node name="morph_data" parent="margin/HBoxContainer/VBoxContainer/ElementProperties/MarginContainer/ScrollContainer/content/parameter" index="0"]
-margin_right = 982.0
-
-[node name="ChildElements" type="PanelContainer" parent="margin/HBoxContainer/VBoxContainer"]
+[node name="select" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
-margin_top = 437.0
-margin_right = 982.0
-margin_bottom = 687.0
-rect_min_size = Vector2( 0, 250 )
-rect_pivot_offset = Vector2( -281, 85 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/panel = SubResource( 9 )
-
-[node name="FlowContainer" parent="margin/HBoxContainer/VBoxContainer/ChildElements" instance=ExtResource( 4 )]
-unique_name_in_owner = false
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 972.0
-margin_bottom = 240.0
-
-[node name="ScrollContainer" parent="margin/HBoxContainer/VBoxContainer/ChildElements/FlowContainer" index="0"]
-margin_right = 962.0
-margin_bottom = 230.0
-scroll_vertical_enabled = false
-
-[node name="content" parent="margin/HBoxContainer/VBoxContainer/ChildElements/FlowContainer/ScrollContainer" index="0"]
-margin_right = 962.0
-margin_bottom = 230.0
-
-[node name="select" type="PanelContainer" parent="."]
-unique_name_in_owner = true
-margin_right = 1024.0
-margin_bottom = 50.944
-rect_min_size = Vector2( 0, 50.944 )
-size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 55)
+layout_direction = 1
+layout_mode = 2
 size_flags_vertical = 0
-custom_styles/panel = SubResource( 13 )
-script = ExtResource( 3 )
+script = ExtResource("3")
 
 [connection signal="gui_input" from="select" to="select" method="_on_select_gui_input"]
 
 [editable path="margin/HBoxContainer/VBoxContainer/ElementProperties"]
-[editable path="margin/HBoxContainer/VBoxContainer/ChildElements/FlowContainer"]
