@@ -1,4 +1,4 @@
-extends Control
+extends VBoxContainer
 
 var ElementStructureReference = 'uniwu/item/variable/New_variable' :set=setElementStructureReference
 var ElementProperties = Global.structures.ElementProperties.position_index.duplicate(true)
@@ -10,7 +10,6 @@ var active_mode = mode['SELECT'] :set=set_activemode
 var view_properties = ProjectSettings.get_setting('benchpress/elements/display_with_properties') 
 var is_parent = false
 func _ready():
-	$"%ElementProperties".visible =false
 	$"%selectColor".visible = false
 	
 func setElementStructureReference(value):
@@ -22,9 +21,6 @@ func setElementStructureReference(value):
 func set_activemode(newvalue):
 	active_mode = newvalue
 	if active_mode >1:
-		$"%ElementProperties".ElementProperties = ElementProperties
-		$"%ElementProperties".ElementStructureReference = ElementStructureReference
-		$"%ElementProperties".visible = true
 		$"%Description".visible = true
 		$"%selectColor".visible = true
 

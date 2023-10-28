@@ -22,9 +22,9 @@ func _drop_data(_position,_data):
 func _on_select_gui_input(event):
 	if event is  InputEventMouseButton and  event.get_button_index()==1:
 		if event.double_click:
-			if thisElement.active_mode >1:
+			if thisElement.active_mode > 1:
 				$"%ElementProperties".visible = not $"%ElementProperties".visible
 		elif event.pressed:
-			if thisElement.active_mode >1:
+			if thisElement.active_mode > 1:
 				emit_signal('highlighted',thisElement)
 		

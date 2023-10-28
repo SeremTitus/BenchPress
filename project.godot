@@ -15,7 +15,7 @@ config/description="BenchPress is a easy to use automation tool for the Web-brow
 BenchPress automations are cross-platform,shared,launched remotely and schedulable."
 run/main_scene="res://scenes/main/Editor.tscn"
 config/use_custom_user_dir=true
-config/features=PackedStringArray("4.1")
+config/features=PackedStringArray("4.2")
 run/low_processor_mode=true
 config/icon="res://icon.png"
 

@@ -1,78 +1,73 @@
-[gd_scene load_steps=5 format=3 uid="uid://ddm837gy7lncw"]
+[gd_scene load_steps=4 format=3 uid="uid://ddm837gy7lncw"]
 
 [ext_resource type="Script" path="res://scenes/elementUI/element.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://deqa82u4ia1j4" path="res://icon.png" id="2"]
 [ext_resource type="Script" path="res://scenes/elementUI/elementSelect.gd" id="3"]
-[ext_resource type="PackedScene" uid="uid://cqr1uqt34stgn" path="res://scenes/elementUI/elementProperties.tscn" id="5"]
 
-[node name="Element" type="PanelContainer"]
-clip_contents = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+[node name="Element" type="VBoxContainer"]
+offset_right = 1152.0
+offset_bottom = 59.0
 script = ExtResource("1")
-metadata/_edit_use_anchors_ = true
 
-[node name="highlight" type="PanelContainer" parent="."]
-unique_name_in_owner = true
-visible = false
+[node name="PanelContainer" type="PanelContainer" parent="."]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
 
-[node name="selectColor" type="PanelContainer" parent="."]
+[node name="selectColor" type="PanelContainer" parent="PanelContainer"]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="margin" type="MarginContainer" parent="."]
+[node name="margin" type="MarginContainer" parent="PanelContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="margin"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/margin"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="margin/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/margin/HBoxContainer"]
 layout_mode = 2
 focus_mode = 1
 
-[node name="icon" type="TextureRect" parent="margin/HBoxContainer/VBoxContainer2"]
+[node name="icon" type="TextureRect" parent="PanelContainer/margin/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_vertical = 4
 texture = ExtResource("2")
 expand_mode = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="margin/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/margin/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Title" type="Label" parent="margin/HBoxContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="PanelContainer/margin/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 text = "ADD VARIABLE"
 clip_text = true
 
-[node name="Description" type="Label" parent="margin/HBoxContainer/VBoxContainer"]
+[node name="Description" type="Label" parent="PanelContainer/margin/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "Test description"
 
-[node name="ElementProperties" parent="margin/HBoxContainer/VBoxContainer" instance=ExtResource("5")]
+[node name="highlight" type="PanelContainer" parent="PanelContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="select" type="VBoxContainer" parent="."]
+[node name="select" type="VBoxContainer" parent="PanelContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 55)
 layout_direction = 1
@@ -80,6 +75,4 @@ layout_mode = 2
 size_flags_vertical = 0
 script = ExtResource("3")
 
-[connection signal="gui_input" from="select" to="select" method="_on_select_gui_input"]
-
-[editable path="margin/HBoxContainer/VBoxContainer/ElementProperties"]
+[connection signal="gui_input" from="PanelContainer/select" to="PanelContainer/select" method="_on_select_gui_input"]

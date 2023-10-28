@@ -7,11 +7,11 @@ func set_lable(newvalue):
 	LabelName = newvalue
 	$"%Label".text =  LabelName.capitalize()
 	if $"%items".visible:
-		$"%icon".position.x =17
-		$"%icon".rotation =90
+		%icon.rotation=90
+		%icon.position.x=20
 	else:
-		$"%icon".position.x =0
-		$"%icon".rotation =0
+		%icon.rotation=0
+		%icon.position.x=0
 	
 func toggle_items(event):
 	if (event is  InputEventMouseButton and  event.get_button_index()==1) and event.pressed:

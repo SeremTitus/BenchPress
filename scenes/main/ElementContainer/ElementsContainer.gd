@@ -1,4 +1,4 @@
-extends Control
+extends VBoxContainer
 
 var element = preload("res://scenes/elementUI/element.tscn")
 var group = preload("res://scenes/main/ElementContainer/ElementsContainerGroup.tscn")
