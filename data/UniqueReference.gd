@@ -6,14 +6,14 @@ func assign(new_length:int = 4) -> String:
 	var length:int = new_length 
 	if len(assigned_names) > pow(10,new_length):
 		length = len(str(len(assigned_names)))
-	var assign_name:String = unique_name(length)
+	var assign_name:String = UniqueReference.unique_name(length)
 	var count:int = 0
 	var max_repeat:int = 100
 	while assign_name in assigned_names:
 		if count >= max_repeat:
 			length += 2
 			max_repeat += max_repeat
-		assign_name = unique_name(length)
+		assign_name = UniqueReference.unique_name(length)
 		count += 1
 	assigned_names.append(assign_name)
 	return assign_name
