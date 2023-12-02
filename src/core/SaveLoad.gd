@@ -1,22 +1,32 @@
 class_name  SaveLoad extends ConfigFile
-## Extends ConfigFile to save and load Objects that can be instantiate.
+## Extends ConfigFile to save and load Objects that can be instantiate.[br]
 ## Stores Objects, self contained signal(if emitor and connected object are stored),Callables
 
 #region user defined
-var deep = false ## If true all inherited properties are considered else only the defined in script are
-var objects_with_sections:Dictionary = {} ## constructor : base_section_name
-var objects_exclude_props:Dictionary = {} ## constructor : [prop_name,...]
+## If true all inherited properties are considered else only the defined in script are
+var deep = false 
+## constructor : base_section_name
+var objects_with_sections:Dictionary = {} 
+## constructor : [prop_name,...]
+var objects_exclude_props:Dictionary = {}
+## constructor : [prop_name,...]
+var objects_include_props:Dictionary = {} 
 #endregion
+
 var start_section:String = ""
 var meta_section_name:String = "SaveLoad"
 var ref:UniqueReference = UniqueReference.new()
-var ref_objects:Dictionary = {} ## Object : section_name
-var ref_callables:Dictionary = {} ## Callable : section_name
-var stored_objects_constructor:Dictionary ={} ## section_name : constructor
+ ## Object : section_name
+var ref_objects:Dictionary = {}
+## Callable : section_name
+var ref_callables:Dictionary = {}
+## section_name : constructor
+var stored_objects_constructor:Dictionary ={}
 
 func _init(is_deep = false):
 	deep = is_deep
-
+	
+#region setters snd getters
 func  add_section(owner:Object,section_name:String) -> void:
 	if not section_name == meta_section_name:
 		objects_with_sections[get_objects_constructor(owner)] = section_name
@@ -39,6 +49,36 @@ func  remove_exclude_property_name(owner:Object,property_name:String) -> void:
 		var idx:int = objects_exclude_props[constructor].find(property_name)
 		objects_exclude_props[constructor].remove_at(idx)
 
+func  add_include_property_name(owner:Object,property_name:String) -> void:
+	var constructor = get_objects_constructor(owner)
+	if constructor in objects_include_props:
+		objects_include_props[constructor].append(property_name)
+	else:
+		objects_include_props[constructor] = PackedStringArray([property_name])
+
+func  remove_include_property_name(owner:Object,property_name:String) -> void:
+	var constructor = get_objects_constructor(owner)
+	if constructor in objects_include_props as PackedStringArray:
+		var idx:int = objects_include_props[constructor].find(property_name)
+		objects_include_props[constructor].remove_at(idx)
+
+#endregion
+
+#region donus function
+static func duplicate(this:Object) -> Object:
+	var access = SaveLoad.new()
+	var new_object: Object = access.object_from_constructor(access.get_objects_constructor(this))
+	if new_object == null : return null
+	var prop_value = access.default_values(this)
+	for prop in prop_value:
+		new_object.set(prop,prop_value[prop])
+	for sig in this.get_signal_list():
+		for conn in this.get_signal_connection_list(sig.name):
+			new_object.connect(sig.name ,conn.callable ,conn.flags)
+	return new_object
+#endregion
+
+#region shared
 func are_object_same_class(obj1:Object,obj2:Object) -> bool:
 	if obj1 == null and obj2 == null:
 		return true
@@ -93,6 +133,8 @@ func object_from_constructor(constructor:String) -> Object:
 		return ClassDB.instantiate(constructor)
 	return null
 
+#endregion
+
 #region Saving
 func generate_section_name(from:Object) -> String:
 	var object_script = from.get_script()
@@ -102,7 +144,7 @@ func generate_section_name(from:Object) -> String:
 	if section_name == "Built-in script":
 		return ''
 	section_name = section_name.trim_suffix(".gd")
-	if section_name == meta_section_name:## meta_section_name is reserved
+	if section_name == meta_section_name:# meta_section_name is reserved
 		section_name = meta_section_name +'_' + ref.assign()
 	return section_name
 
@@ -144,6 +186,9 @@ func props_list(from:Object) -> PackedStringArray:
 		var var_value = from.get(prop["name"])
 		if not default_props.is_empty() and var_value == default_props[prop["name"]]: continue
 		list_var.append(prop["name"])
+	if constructor in objects_include_props:
+		for include in objects_include_props[constructor]:
+			list_var.append(include)
 	return  list_var
 
 func store_objects_constructors(section_name:String,from:Object) -> void:
@@ -247,7 +292,8 @@ func construct_dir(file_path:String) -> void:
 		dir = DirAccess.open(new_path)
 	dir.make_dir_recursive(file_path)
 
-func save_to(save_file_path:String,store:Object,key = PackedByteArray()) -> Error:## Add key if  saving encrypted file
+## Add key if  saving encrypted file
+func save_to(save_file_path:String,store:Object,key = PackedByteArray()) -> Error:
 	clean_up()
 	construct_dir(save_file_path)
 	if get_objects_constructor(store) in objects_with_sections:
@@ -296,9 +342,6 @@ func restore_object(section_name:String,restore:Object = null):#-> object or cal
 			var new_value:Array = []
 			for item in value:
 				item = restore_object(item) if item is String else  item
-				var count:int = 0
-				if item is String:
-					count += 1
 				new_value.append(item)
 			value = new_value
 		elif value is Dictionary:
@@ -333,8 +376,9 @@ func restore_signals() -> void:
 				var signal_callables = restore_callable(conn["callable"])
 				object.connect(conn["name"],signal_callables ,conn["flags"])
 
+## Add key if loading encrypted file
 func can_load_from(file_path:String,restore:Object,key: PackedByteArray =  PackedByteArray(),\
-	loaded:bool = false) -> Error: ## Add key if loading encrypted file
+	loaded:bool = false) -> Error: 
 	if not loaded:
 		clean_up()
 		var err:Error
@@ -353,8 +397,9 @@ func can_load_from(file_path:String,restore:Object,key: PackedByteArray =  Packe
 	DirAccess.open(file_path)
 	return DirAccess.get_open_error()
 
+## Add key if loading encrypted file
 func load_from(load_file_path:String,restore:Object = null,key:PackedByteArray = PackedByteArray())\
-	 -> Object:## Add key if loading encrypted file
+	 -> Object:
 	clean_up()
 	if key == PackedByteArray():
 		self.load(load_file_path)

@@ -17,7 +17,7 @@ enum MergeMode{
 var is_excuting:bool = false
 
 func _input(event) -> void:
-	if event.is_action_pressed(&"redo"):
+	if event.is_action_pressed(&"ui_redo"):
 		if current.has_redo():
 			var action_name = current.get_action_name(current.get_current_action()+1) # +1 not sure if bug
 			is_excuting = true
@@ -25,7 +25,7 @@ func _input(event) -> void:
 			is_excuting = false
 			redo_excuted.emit(action_name,context_current)
 			get_viewport().set_input_as_handled()
-	elif event.is_action_pressed(&"undo"):
+	elif event.is_action_pressed(&"ui_undo"):
 		if current.has_undo():
 			var action_name = current.get_current_action_name()
 			is_excuting = true
