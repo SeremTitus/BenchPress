@@ -13,9 +13,9 @@ var references:UniqueReference
 func emit_attribute_changed():
 	element_properties_changed.emit()
 
-func add_property(new_property_name:String,new_attribute:Attribute):
+func add_property(new_attribute:Attribute):
 	new_attribute.attribute_value_changed.connect(emit_attribute_changed)
-	properties[new_property_name] = new_attribute
+	properties.append(new_attribute)
 
 func get_child_count() -> int:
 	var count = children_element.size()

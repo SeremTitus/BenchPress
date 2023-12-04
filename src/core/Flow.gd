@@ -3,10 +3,13 @@ class_name Flow extends Element
 var title: StringName
 var orphan_elements:Array[Element] = []
 
+func _init(new_title:StringName) -> void:
+	rename_flow(new_title)
+
 func emit_flow_element_attribute_changed():
 	pass
 
-func rename_flow(new_title:StringName):
+func rename_flow(new_title:StringName) -> void:
 	title = new_title
 
 func add_orphan_child(children:Array[Element]) -> void:
