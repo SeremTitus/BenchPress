@@ -4,11 +4,11 @@ signal element_properties_changed
 
 var owner:Element
 var properties:Array[Attribute]
-var structure:ElementStructure
+var structure:Structure
 var is_enabled:bool = true
 var children_element:Array[Element] = []
 var graph_position:Vector2
-var references:UniqueReference
+var references:Unique
 
 func emit_attribute_changed():
 	element_properties_changed.emit()

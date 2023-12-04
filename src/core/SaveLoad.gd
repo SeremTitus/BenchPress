@@ -15,7 +15,7 @@ var objects_include_props:Dictionary = {}
 
 var start_section:String = ""
 var meta_section_name:String = "SaveLoad"
-var ref:UniqueReference = UniqueReference.new()
+var ref:Unique = Unique.new()
  ## Object : section_name
 var ref_objects:Dictionary = {}
 ## Callable : section_name

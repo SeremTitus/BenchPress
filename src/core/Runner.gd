@@ -1,4 +1,4 @@
-class_name PyRunner extends Node
+class_name Runner extends Node
 
 signal py_packet_recieved(packet:Variant)
 const UDP_port = 9574
@@ -7,7 +7,7 @@ var server:UDPServer = UDPServer.new()
 var is_broadcasting := false
 var python_path:String ='python.exe'
 var running:Dictionary = {}#unique_name:[pID,filePath]
-var unique_ref:UniqueReference = UniqueReference.new()
+var unique_ref:Unique = Unique.new()
 
 func _process(delta):
 	server.poll()

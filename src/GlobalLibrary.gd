@@ -1,6 +1,6 @@
 class_name GlobalLibrary extends RefCounted
 
-var library:Array[ElementStructure]
+var library:Array[Structure]
 var external_library_file_path: Array[String] = []
 var external_library_folder_path: Array[String] = []
 

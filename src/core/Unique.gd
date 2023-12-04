@@ -1,4 +1,4 @@
-class_name UniqueReference extends RefCounted
+class_name Unique extends RefCounted
 
 ## profile_name>StringName : assigned_names>PackedStringArray
 var assigned_names_profile:Dictionary = {}
@@ -10,14 +10,14 @@ func assign(new_length:int = 4,profile_name = "base") -> StringName:
 		assigned_names = assigned_names_profile[profile_name]
 	if len(assigned_names) > pow(10,new_length):
 		length = len(str(len(assigned_names)))
-	var assign_name:StringName = UniqueReference.unique_name(length)
+	var assign_name:StringName = Unique.unique_name(length)
 	var count:int = 0
 	var max_repeat:int = 100
 	while assign_name in assigned_names:
 		if count >= max_repeat:
 			length += 2
 			max_repeat += max_repeat
-		assign_name = UniqueReference.unique_name(length)
+		assign_name = Unique.unique_name(length)
 		count += 1
 	save_name(assign_name,profile_name)
 	return assign_name
