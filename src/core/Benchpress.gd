@@ -1,13 +1,16 @@
 class_name Benchpress extends RefCounted
 
 var file_path:String = ""
+var project_name:String = ""
 var benchpress_version:String = "1"
+var globals:Array[Attribute]
+var element_globals:Array[Attribute]
 var main_flow = Flow.new("Main")
 var flows: Array[Flow] = [main_flow]
 var library:Array[Structure]
 var schedules: Array[Schedule]
 var remote_devices: Array
-# Profiles -> variable_names,flows_name
+## profiles -> flow_name, globals_name
 var references:Unique = Unique.new()
 
 

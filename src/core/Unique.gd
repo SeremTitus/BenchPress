@@ -3,7 +3,7 @@ class_name Unique extends RefCounted
 ## profile_name>StringName : assigned_names>PackedStringArray
 var assigned_names_profile:Dictionary = {}
 
-func assign(new_length:int = 4,profile_name = "base") -> StringName:
+func assign(new_length:int = 4,profile_name:String = "base") -> StringName:
 	var length:int = new_length
 	var assigned_names:PackedStringArray = PackedStringArray([])
 	if profile_name in assigned_names_profile:
@@ -22,7 +22,7 @@ func assign(new_length:int = 4,profile_name = "base") -> StringName:
 	save_name(assign_name,profile_name)
 	return assign_name
 
-func assign_guided(base:StringName,profile_name = "base") -> StringName:
+func assign_guided(base:StringName,profile_name:String = "base") -> StringName:
 	var assign_name:StringName = base
 	var count:int = 1
 	if profile_name in assigned_names_profile:
@@ -33,7 +33,7 @@ func assign_guided(base:StringName,profile_name = "base") -> StringName:
 	save_name(assign_name,profile_name)
 	return assign_name
 
-func unassign(assign_name:StringName,profile_name = "base") -> void:
+func unassign(assign_name:StringName,profile_name:String = "base") -> void:
 	if not profile_name in assigned_names_profile:
 		return
 	var assigned_names:PackedStringArray = assigned_names_profile[profile_name]
@@ -41,13 +41,13 @@ func unassign(assign_name:StringName,profile_name = "base") -> void:
 	if assigned_names.is_empty():
 		assigned_names_profile.erase(profile_name)
 
-func save_name(assign_name:StringName,profile_name = "base") -> void:
+func save_name(assign_name:StringName,profile_name:String = "base") -> void:
 	if profile_name in assigned_names_profile:
 		assigned_names_profile[profile_name].append(assign_name)
 	else:
 		assigned_names_profile[profile_name] = PackedStringArray([assign_name])
 
-func has(assign_name:StringName,profile_name = "base") -> bool:
+func has(assign_name:StringName,profile_name:String = "base") -> bool:
 	if profile_name in assigned_names_profile and\
 		assign_name in assigned_names_profile[profile_name]:
 			return true
@@ -63,3 +63,16 @@ static func unique_name(length:int = 5) -> StringName:
 	to_rand.shuffle()
 	var begin_int = randi() % len(alfa_num)
 	return StringName("".join(to_rand.slice(begin_int,begin_int + length)))
+
+func append(assign_name:StringName, profile_name:String = "base") -> void:
+	if not has(assign_name, profile_name):
+		save_name(assign_name,profile_name)
+
+func append_array(assign_names:PackedStringArray, profile_name:String = "base") -> void:
+	for assign_name in assign_names:
+		append(assign_name, profile_name)
+
+func get_profile(profile_name:String = "base") -> PackedStringArray:
+	if assigned_names_profile.has(profile_name):
+		return assigned_names_profile[profile_name]
+	return PackedStringArray()

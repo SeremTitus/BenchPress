@@ -23,17 +23,17 @@ func get_child_count() -> int:
 		count += child.get_child_count()
 	return count
 
-func add_chirdren(children:Array[Element],to:Element) -> void:
+func add_chidren(children:Array[Element],to:Element = self) -> void:
 	for child in children:
 		child.owner = to
-		to.append(child)
+		to.children_element.append(child)
 
-func delete_chirdren(children:Array[Element]) -> void:
+func delete_chidren(children:Array[Element]) -> void:
 	for child in children:
 		var child_pos:int = child.owner.children_element.find(child)
 		child.owner.children_element.pop_at(child_pos)
 
-func move_chirdren(children:Array[Element],to:Element,pos:int = -1) -> void:
+func move_chidren(children:Array[Element],to:Element,pos:int = -1) -> void:
 	var shift :int = 0
 	for child in children:
 		var child_pos:int = child.owner.children_element.find(child)
