@@ -18,5 +18,3 @@ var end_date:DateTime
 var interval_date:DateTime
 var on_app_Start:String
 var cron_rule:String
-
-

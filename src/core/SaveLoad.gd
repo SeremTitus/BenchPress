@@ -68,11 +68,12 @@ func  remove_include_property_name(owner:Object,property_name:String) -> void:
 static func duplicate(this:Object) -> Object:
 	var access = SaveLoad.new()
 	var new_object: Object = access.object_from_constructor(access.get_objects_constructor(this))
-	if new_object == null : return null
-	var prop_value = access.default_values(this)
-	for prop in prop_value:
-		var new_prop = duplicate_var(prop_value[prop]) if not prop_value[prop] is Object else duplicate(prop_value[prop])
-		new_object.set(prop,new_prop)
+	if not new_object: return null
+	var props:Dictionary = access.default_values(new_object)
+	for prop in props:
+		var orignal_value = this.get(prop)
+		var new_value = duplicate_var(orignal_value) if not orignal_value is Object else duplicate(orignal_value)
+		new_object.set(prop,new_value)
 	for sig in this.get_signal_list():
 		for conn in this.get_signal_connection_list(sig.name):
 			new_object.connect(sig.name ,conn.callable ,conn.flags)
@@ -96,8 +97,10 @@ static func duplicate_var(this:Variant) -> Variant:
 				key = duplicate_var(key) if not key is Object else duplicate(key)
 				new_dict[key] = item
 			new_var = new_dict
-		TYPE_INT, TYPE_STRING, TYPE_FLOAT:
+		TYPE_INT, TYPE_STRING, TYPE_FLOAT, TYPE_STRING_NAME, TYPE_BOOL, TYPE_CALLABLE:
 			new_var = this
+		TYPE_NIL:
+			new_var = null
 		_:
 			new_var = this.duplicate()
 	return new_var
@@ -105,15 +108,15 @@ static func duplicate_var(this:Variant) -> Variant:
 
 #region shared
 func are_object_same_class(obj1:Object,obj2:Object) -> bool:
-	if obj1 == null and obj2 == null:
-		return true
-	elif obj1 == null or obj2 == null:
+	if  not obj1 and not obj2:
+		return false
+	elif not obj1 or not obj2:
 		return false
 	var script1 = obj1.get_script()
 	var script2 = obj2.get_script()
-	if script1 == null and script2 == null:
+	if not script1 and not script2:
 		return obj1.get_class() == obj2.get_class()
-	elif script1 == null or script2 == null:
+	elif script1 or script2:
 		return false
 	elif  script1 == script2:
 		return true
@@ -128,10 +131,10 @@ func clean_up() -> void:
 
 func get_objects_constructor(from:Object) -> String:
 	var object_script = from.get_script()
-	if object_script == null:
+	if not object_script:
 		return from.get_class()
 	var script_path = object_script.resource_path
-	if script_path == "":
+	if script_path.is_empty():
 		return "Built-in script"
 	else:
 		return script_path
@@ -163,7 +166,7 @@ func object_from_constructor(constructor:String) -> Object:
 #region Saving
 func generate_section_name(from:Object) -> String:
 	var object_script = from.get_script()
-	if object_script == null:
+	if not object_script:
 		return from.get_class()
 	var section_name:String = object_script.get_script_property_list()[0]["name"]
 	if section_name == "Built-in script":
@@ -182,7 +185,7 @@ func get_section_name(from:Object) -> String:
 
 func default_values(from:Object) -> Dictionary:
 	var new:Object = object_from_constructor(get_objects_constructor(from))
-	new = Object.new() if new == null else new
+	new = Object.new() if not new else new
 	var props:Array = new.get_property_list()
 	var exclude_props:PackedStringArray = ["script"]
 	var default_props_values:Dictionary = {} #name:variant
@@ -194,7 +197,7 @@ func default_values(from:Object) -> Dictionary:
 func props_list(from:Object) -> PackedStringArray:
 	var script = from.get_script()
 	var props:Array = []
-	props = from.get_property_list() if script == null else from.get_property_list() if deep\
+	props = from.get_property_list() if not script else from.get_property_list() if deep\
 		 else script.get_script_property_list()
 	var exclude_props:PackedStringArray = ["script"]
 	if from is Node:
@@ -222,10 +225,10 @@ func store_objects_constructors(section_name:String,from:Object) -> void:
 	stored_objects_constructor[section_name] = get_objects_constructor(from)
 
 func store_object(store:Object, attach_ref:bool = false):# -> object or string
-	if store == null:
+	if not store:
 		return null
 	var section_name:String = get_section_name(store)
-	if section_name != '':
+	if not section_name.is_empty():
 		if attach_ref:
 			store_objects_constructors(section_name,store)
 			if not store in ref_objects:
@@ -306,13 +309,13 @@ func  store_meta() -> void:
 	set_value(section_name,section_name,start_section)
 
 func construct_dir(file_path:String) -> void:
-	if not file_path.get_extension() == "":
+	if not file_path.get_extension().is_empty():
 		file_path = file_path.get_base_dir()
 	var dir:DirAccess = DirAccess.open(file_path)
 	var new_path:String = file_path
-	while  dir == null:
+	while not dir:
 		new_path = new_path.get_base_dir()
-		if new_path == "":
+		if new_path.is_empty():
 			continue
 		dir = DirAccess.open(new_path)
 	dir.make_dir_recursive(file_path)
@@ -325,8 +328,8 @@ func save_to(save_file_path:String,store:Object,key = PackedByteArray()) -> Erro
 		start_section = objects_with_sections[store]
 	else:
 		start_section = get_section_name(store)
-		start_section = generate_section_name(store) if start_section == "" else start_section
-		start_section = ref.assign() if start_section == "" else start_section
+		start_section = generate_section_name(store) if start_section.is_empty() else start_section
+		start_section = start_section if not start_section.is_empty() else String(ref.assign())
 		objects_with_sections[get_objects_constructor(store)] = start_section
 	store_object(store)
 	if not has_section(start_section):
@@ -357,7 +360,7 @@ func restore_object(section_name:String,restore:Object = null):#-> object or cal
 	var stored:Object = object_from_constructor(get_object_from_constructor(section_name))
 	if are_object_same_class(stored,restore):
 		stored = restore
-	if stored == null:
+	if not stored:
 		stored = Object.new()
 	ref_objects[stored] = section_name
 	for key in get_section_keys(section_name):
@@ -415,9 +418,9 @@ func can_load_from(file_path:String,restore:Object,key: PackedByteArray =  Packe
 	var constructor_key = get_value(meta_section_name,meta_section_name,"")
 	var constructor = get_value(meta_section_name,constructor_key,"")
 	var stored = object_from_constructor(constructor)
-	if not restore == null and not are_object_same_class(stored,restore):
+	if not restore and not are_object_same_class(stored,restore):
 		return FAILED
-	if not file_path.get_extension() == "":
+	if not file_path.get_extension().is_empty():
 		file_path = file_path.get_base_dir()
 	DirAccess.open(file_path)
 	return DirAccess.get_open_error()

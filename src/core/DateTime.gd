@@ -24,32 +24,30 @@ enum DaysInWeek {
 	Saturday
 }
 
-var year:int
+var year:float
 var month:MonthName:set = set_month
 var weekday:DaysInWeek:set = set_weekday
-var day:int:set = set_day
-var hour:int:set = set_hour
-var minute:int:set = set_minute
-var second:int:set = set_sec
-var microsecond:int:set = set_microsecond
+var day:float:set = set_day
+var hour:float:set = set_hour
+var minute:float:set = set_minute
+var second:float:set = set_sec
+var microsecond:float:set = set_microsecond
 
 func set_month(new_value:int) -> void:
 	if new_value > 12:
 		month = new_value - 12 * floor(float(new_value) / 12.0)
 		year += floor(float(new_value) / 12.0)
 	else:
-		@warning_ignore("int_as_enum_without_cast")
-		month = new_value
+		month = new_value as MonthName
 
 func set_weekday(new_value:int) -> void:
 	if new_value > 7:
 		weekday = new_value - 7 * floor(float(new_value) / 7.0)
 		day += floor(float(new_value) / 7.0)
 	else:
-		@warning_ignore("int_as_enum_without_cast")
-		weekday = new_value
+		weekday = new_value as DaysInWeek
 
-func set_day(new_value:int) -> void:
+func set_day(new_value:float) -> void:
 	if month > 12: set_month(month)
 	if month == MonthName.January and new_value > 28:
 		new_value = new_value - 28 * floor(float(new_value) / 28.0)
@@ -63,28 +61,28 @@ func set_day(new_value:int) -> void:
 		month += floor(float(new_value) / 31.0)
 	day = new_value
 
-func set_hour(new_value:int) -> void:
+func set_hour(new_value:float) -> void:
 	if new_value > 24:
 		hour = new_value - 24 * floor(float(new_value) / 24.0)
 		day += floor(float(new_value) / 24.0)
 	else:
 		hour = new_value
 
-func set_minute(new_value:int) -> void:
+func set_minute(new_value:float) -> void:
 	if new_value > 60:
 		minute = new_value - 60 * floor(float(new_value) / 60.0)
 		hour += floor(float(new_value) / 60.0)
 	else:
 		minute = new_value
 
-func set_sec(new_value:int) -> void:
+func set_sec(new_value:float) -> void:
 	if new_value > 60:
 		second = new_value - 60 * floor(float(new_value) / 60.0)
 		minute += floor(float(new_value) / 60.0)
 	else:
 		second = new_value
 
-func set_microsecond(new_value:int) -> void:
+func set_microsecond(new_value:float) -> void:
 	if new_value > pow(10,6):
 		microsecond = new_value - pow(10,6) * floor(float(new_value) / pow(10,6))
 		second += floor(float(new_value) / pow(10,6))
@@ -148,27 +146,46 @@ func is_greater(compare_date_time:DateTime) -> bool:
 func  is_lesser(compare_date_time:DateTime) -> bool:
 	return not is_greater(compare_date_time)
 
-func get_difference(compare_date_time:DateTime) -> DateTime:
-	var multiplier:int = 1 if is_greater(compare_date_time) else -1
+func get_difference(sub_date_time:DateTime) -> DateTime:
 	var new_date_time:DateTime = DateTime.new()
-	if not compare_date_time.year == null and not year == null:
-		new_date_time.year = multiplier + year - compare_date_time.year
-	if not compare_date_time.month == null and not month == null:
+	if not sub_date_time.year == null and not year == null:
+		new_date_time.year = abs(year - sub_date_time.year)
+	if not sub_date_time.month == null and not month == null:
+		new_date_time.month = abs(month - sub_date_time.month)
+	if not sub_date_time.weekday == null and not weekday == null:
+		new_date_time.weekday = abs(weekday - sub_date_time.weekday)
+	if not sub_date_time.day == null and not day == null:
+		new_date_time.day = abs(day - sub_date_time.day)
+	if not sub_date_time.hour == null and not hour == null:
+		new_date_time.hour = abs(hour - sub_date_time.hour)
+	if not sub_date_time.minute == null and not minute == null:
+		new_date_time.minute = abs(minute - sub_date_time.minute)
+	if not sub_date_time.second == null and not second == null:
+		new_date_time.second = abs(second - sub_date_time.second)
+	if not sub_date_time.microsecond == null and not microsecond == null:
+		new_date_time.microsecond = abs(microsecond - sub_date_time.microsecond)
+	return new_date_time
+
+func get_cummulate(add_date_time:DateTime) -> DateTime:
+	var new_date_time:DateTime = DateTime.new()
+	if not add_date_time.year == null and not year == null:
+		new_date_time.year = year + add_date_time.year
+	if not add_date_time.month == null and not month == null:
 		@warning_ignore("int_as_enum_without_cast")
-		new_date_time.month = multiplier + month - compare_date_time.month
-	if not compare_date_time.weekday == null and not weekday == null:
+		new_date_time.month = month + add_date_time.month
+	if not add_date_time.weekday == null and not weekday == null:
 		@warning_ignore("int_as_enum_without_cast")
-		new_date_time.weekday = multiplier + weekday - compare_date_time.weekday
-	if not compare_date_time.day == null and not day == null:
-		new_date_time.day = multiplier + day - compare_date_time.day
-	if not compare_date_time.hour == null and not hour == null:
-		new_date_time.hour = multiplier + hour - compare_date_time.hour
-	if not compare_date_time.minute == null and not minute == null:
-		new_date_time.minute = multiplier + minute - compare_date_time.minute
-	if not compare_date_time.second == null and not second == null:
-		new_date_time.second = multiplier + second - compare_date_time.second
-	if not compare_date_time.microsecond == null and not microsecond == null:
-		new_date_time.microsecond = multiplier + microsecond - compare_date_time.microsecond
+		new_date_time.weekday = weekday + add_date_time.weekday
+	if not add_date_time.day == null and not day == null:
+		new_date_time.day = day + add_date_time.day
+	if not add_date_time.hour == null and not hour == null:
+		new_date_time.hour = hour + add_date_time.hour
+	if not add_date_time.minute == null and not minute == null:
+		new_date_time.minute = minute + add_date_time.minute
+	if not add_date_time.second == null and not second == null:
+		new_date_time.second = second + add_date_time.second
+	if not add_date_time.microsecond == null and not microsecond == null:
+		new_date_time.microsecond = microsecond + add_date_time.microsecond
 	return new_date_time
 
 static func now() -> DateTime:
@@ -182,3 +199,29 @@ static func now() -> DateTime:
 	new_date_time.minute = system_date_time.minute
 	new_date_time.second = system_date_time.second
 	return new_date_time
+
+static func zero() -> DateTime:
+	var new_date_time:DateTime = DateTime.new()
+	new_date_time.year = 0
+	@warning_ignore("int_as_enum_without_cast", "int_as_enum_without_match")
+	new_date_time.month = 0
+	@warning_ignore("int_as_enum_without_cast", "int_as_enum_without_match")
+	new_date_time.weekday = 0
+	new_date_time.day = 0
+	new_date_time.hour = 0
+	new_date_time.minute = 0
+	new_date_time.second = 0
+	new_date_time.microsecond = 0
+	return new_date_time
+
+func _to_string() -> String:
+	var output:String  = "{"
+	output += "year : " + str(year) + ","  
+	output += "month : " + str(month) + "," 
+	output += "weekday : " + str(weekday) + "," 
+	output += "day : " + str(day) + "," 
+	output += "hour : " + str(hour) + "," 
+	output += "minute : " + str(minute) + "," 
+	output += "second : " + str(second) + "," 
+	output += "microsecond : " + str(microsecond) + ","
+	return output

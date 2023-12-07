@@ -14,9 +14,9 @@ var remote_devices: Array
 var references:Unique = Unique.new()
 
 
-func _init(new_file_path:String = "",load:bool = true) -> void:
+func _init(new_file_path:String = "",do_load:bool = true) -> void:
 	file_path = new_file_path
-	if load:
+	if do_load:
 		load_from()
 
 func create_new_flow(unique_name:String) -> Flow:

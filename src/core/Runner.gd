@@ -1,46 +1,72 @@
-class_name Runner extends Node
+class_name Runner extends RefCounted
 
 signal py_packet_recieved(packet:Variant)
-const UDP_port = 9574
+const UDP_port:int = 9574
 
 var server:UDPServer = UDPServer.new()
-var is_broadcasting := false
 var python_path:String ='python.exe'
-var running:Dictionary = {}#unique_name:[pID,filePath]
-var unique_ref:Unique = Unique.new()
+var running:Dictionary = {} # filePath : pID
+var console_output:Dictionary = {} # filePath : output
+var process:bool = true
+var process_timer:TrueTimmer = TrueTimmer.new()
+var address:String = "*"
+var threads:Array[Thread] = []
 
-func _process(delta):
+func _init(new_address:String = "*") -> void:
+	address = new_address
+	process_timer.timeout.connect(start_timer)
+	start_listening()
+	start_timer()
+	
+func  start_timer():
+	process_tick()
+	process_timer.start(1.0)
+
+func process_tick() -> void:
+	end_dead_thread()
+	if not process:
+		return
 	server.poll()
 	if server.is_connection_available():
 		var peer:PacketPeerUDP = server.take_connection()
 		var packet_str:String = peer.get_packet().get_string_from_utf8()
 		var json:JSON = JSON.new()
 		var error:Error = json.parse(packet_str)
-		var packet:Array = []
+		var packet:Variant
 		if error == OK:
 			packet = json.data
-			if packet is Array:
-				running[packet[0].UniqueName].append(peer)
 			py_packet_recieved.emit(packet)
 
-func start_listening():
-	server.listen(UDP_port)
-	set_process(true)
-	is_broadcasting = true
+func start_listening() -> void:
+	server.listen(UDP_port,address)
+	process = true
 
-func stop_listening():
+func stop_listening() -> void:
 	server.stop()
-	set_process(false)
-	is_broadcasting = false
+	process = false
 
-func play(file_path:String) -> int:
-	if not file_path.get_extension() == ".py": return -1
-	var unique_name:String = unique_ref.assign()
-	var arg:Array = [unique_name]#pass unique_name,socket url
-	var pID:int = OS.create_process(python_path,arg)
-	if not pID == -1:
-		running[unique_name] = [pID, file_path]
-	return pID
+func play(file_path:String) -> Error:
+	if not file_path.get_extension() == "py": return ERR_FILE_BAD_PATH
+	file_path = ProjectSettings.globalize_path(file_path)
+	var socket_url:String = address + ":" + type_convert(UDP_port,TYPE_STRING)
+	var args:PackedStringArray = [file_path, socket_url]
+	var new_thread:Thread = Thread.new()
+	var error = new_thread.start(create_process.bindv([file_path,args]))
+	if error == OK:
+		threads.append(new_thread)
+		running[file_path] = int(new_thread.get_id())
+	return error
 
-func end(unique_name:String) -> void:
-	OS.kill(running[unique_name][0])
+func  end_dead_thread() -> void:
+	for thread in threads:
+		if not thread.is_alive():
+			thread.wait_to_finish()
+			threads.erase(thread)
+
+func create_process(file_path:String,args:PackedStringArray):
+	console_output[file_path] = []
+	OS.execute(python_path,args,console_output[file_path],true,false)
+	if not console_output[file_path].is_empty():
+		print(console_output[file_path][0].indent(String.chr(129302)))
+	running.erase(file_path)
+	console_output.erase(file_path)

@@ -16,24 +16,31 @@ static func construct(benchpress:Benchpress,folder_name:String,use_debugger:bool
 	else:
 		path = compile_to_path + "/" + folder_name
 	var dir = DirAccess.open(path)
-	if dir == null:
+	if dir:
 		DirAccess.make_dir_recursive_absolute(path)
 	references.assign_guided("main","files")
 	var structures:Array[Structure] = extract_flows(benchpress.flows)
-	var source:String ="# imports" + generate_imports()
-	source +="\n\n# user globals" + generate_globals(benchpress.globals)
-	source +="\n\n# element globals" + generate_globals(benchpress.element_globals)
-	source +="\n\n# Flows" + generate_flow_function(benchpress.main_flow)
+	var source:String = "# " + String.chr(9888) +" No need edit this file, modify in Benchpress Editor " + String.chr(129302)
+	if debugger and enabled_debugger :
+		references.append_array(debugger.get_required_imports(),"imports")
+	source += "\n\n# imports" + generate_imports()
+	source += "\n\n# user globals" + generate_globals(benchpress.globals)
+	source += "\n\n# element globals" + generate_globals(benchpress.element_globals)
+	if debugger and enabled_debugger and not debugger.get_required_globals().is_empty():
+		source += "\n\n# debugger globals" + generate_globals(debugger.get_required_globals())
+	source += "\n\n# Flows" + generate_flow_function(benchpress.main_flow)
 	for flow in benchpress.flows:
 		if flow == benchpress.main_flow: continue
-		source +="\n\n" + generate_flow_function(flow)
-	source +="\n\n# Structures" + generate_functions(structures)
-	source +="\n\n# call main Flow" + generate_init_functions(benchpress.main_flow.title)
+		source += "\n\n" + generate_flow_function(flow)
+	source += "\n\n# Structures" + generate_functions(structures)
+	if debugger and enabled_debugger:
+		source += "\n\n# Debugger Structures" + generate_functions(debugger.get_required_structures(), false)
+	source += "\n\n# Call main Flow" + generate_init_functions(benchpress.main_flow.title)
 	generate_file("main", source)
 	return path + "/main.py"
 
 static func extract_flows(flows:Array[Flow]) -> Array[Structure]:
-	var structures:Array[Structure]
+	var structures:Array[Structure] = []
 	for flow in flows:
 		for child in flow.children_element:
 			extract_element(child, structures)
@@ -53,16 +60,19 @@ static func extract_element(element:Element,structures:Array[Structure] = []) ->
 	return structures
 
 static func  generate_imports() -> String:
-	var source:String
+	var source:String = ""
 	for include in references.get_profile("imports"):
 		source += "\nimport " + include
 	return source
 
 static func  generate_globals(globals:Array[Attribute]) -> String:
-	var source:String
+	var source:String = ""
 	for global in globals:
-		if not global.unique_name.is_empty():
-			source += "\nglobal " + global.unique_name
+		global.ensure_global()
+		if  not references.has(global.unique_name, "added_globals"):
+			global.ensure_global()
+			source += "\n" + global.unique_name + " = None"
+			references.assign_guided(global.unique_name, "added_globals")
 	return source
 
 static func  generate_flow_function(flow:Flow) -> String:
@@ -73,10 +83,14 @@ static func  generate_flow_function(flow:Flow) -> String:
 	for child in flow.children_element:
 		body += "\n" + generate_call(child)
 		if enabled_debugger and debugger:
-			var debugger_element = debugger.get_debug_flow(flow_name,step)
+			var changed_globals:PackedStringArray = []
+			for global in child.global_properties:
+				global.ensure_global()
+				changed_globals.append(global.unique_name)
+			var debugger_element:Element = debugger.get_debug_flow(flow_name,step,changed_globals)
 			body += "\n# debugger call \n" + generate_call(debugger_element)
 		step += 1
-	source += body.indent("\t")
+	source += "\n" + body.erase(0).indent("\t")
 	return source
 
 static  func generate_function_name(structure:Structure) -> String:
@@ -85,46 +99,65 @@ static  func generate_function_name(structure:Structure) -> String:
 	return lib_name + "_" + title
 
 static  func generate_call(element:Element) -> String:
-	if not element.structure:
+	if not element or not element.structure:
 		return ""
 	var source:String = ""
 	var call_name:String = generate_function_name(element.structure)
 	if element.structure.holds_child_element:
-		source += "\nif " + call_name + "("
+		source += "if " + call_name + "("
 		for property in element.properties:
-			var value = property.default_value if property.value == null else  property.value
-			source += property.original_name + "=" + value + ","
+			var value = property.default_value if property.get_value() == null else  property.get_value()
+			source += property.original_name + " = " + str(value) + ", "
+		if not element.structure.global_properties.is_empty():
+			source += "global_output = ["
+			for global in element.global_properties:
+				global.ensure_global()
+				source += '"' + global.unique_name + '", '
+			source += "]"
 		source += "):"
 		var body:String = "\n"
 		for child in element.children_element:
 			body += generate_call(child)
 		source += body.indent("\t")
 	else:
-		source += "\n" + call_name + "("
+		source += call_name + "("
 		for property in element.properties:
-			var value = property.default_value if property.value == null else  property.value
-			source += property.original_name + "=" + value + ","
+			var value:Variant = property.default_value if  property.get_value()  == null else  property.get_value()
+			if value == null:
+				value = "None"
+			source += property.original_name + " = " + str(value) + ", "
+		if not element.structure.global_properties.is_empty():
+			source += "global_output = ["
+			for global in element.global_properties:
+				global.ensure_global()
+				source += '"' + global.unique_name + '", '
+			source += "]"
 		source += ")"
 	return source
 
-static func  generate_functions(structures:Array[Structure]) -> String:
-	var source:String
+static func  generate_functions(structures:Array[Structure],use_try:bool = true) -> String:
+	var source:String = ""
 	for structure in structures:
 		if not structure.code.is_empty():
 			var function = "\ndef " + generate_function_name(structure) + "("
 			for property in structure.properties:
 				function += property.original_name + ","
+			if not structure.global_properties.is_empty():
+				function += "global_output = []"
 			function += "):"
-			var try_block:String = "try:"
-			try_block += String("\n" + structure.code).indent("\t")
-			try_block += "\nexcept Exception as e:"
-			try_block += '\n\tprint(f"An unexpected error occurred: {e}")'
-			if debugger and enabled_debugger:
-				var debugger_element = debugger.get_debug_structure( \
-					structure.library_name,structure.title)
-				try_block += "\n\t# debugger call \n\t" + generate_call(debugger_element)
-			function += String("\n" + try_block).indent("\t")
-			source += function
+			if use_try:
+				var try_block:String = "try:"
+				try_block += String("\n" + structure.code_to_parser()).indent("\t")
+				try_block += "\nexcept Exception as e:"
+				try_block += '\n\tprint(f"An unexpected error occurred: {e}")'
+				if debugger and enabled_debugger:
+					var debugger_element:Element = debugger.get_debug_structure( \
+						structure.library_name,structure.title,"e")
+					try_block += "\n\t# debugger call \n\t" + generate_call(debugger_element)
+				function += String("\n" + try_block).indent("\t")
+			else:
+				function += String("\n" + structure.code_to_parser()).indent("\t")
+			source += function + "\n"
 		for file in structure.file_include:
 			var file_name:String = references.assign_guided(file.file_name,"files")
 			generate_file(file_name,file.source_code,file.file_extention)
@@ -132,6 +165,9 @@ static func  generate_functions(structures:Array[Structure]) -> String:
 
 static func  generate_init_functions(flow_name:String) -> String:
 	var source:String = '\nif __name__ == "__main__":'
+	if debugger and enabled_debugger:
+		var debugger_element:Element = debugger.get_debug_UDPClient()
+		source += "\n\t# debugger call \n\t" + generate_call(debugger_element)
 	source += String("\n" + flow_name + "()").indent("\t")
 	return source
 

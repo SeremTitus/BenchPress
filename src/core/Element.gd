@@ -4,15 +4,36 @@ signal element_properties_changed
 
 var owner:Element
 var properties:Array[Attribute]
+var global_properties:Array[Attribute]
 var structure:Structure
 var is_enabled:bool = true
 var children_element:Array[Element] = []
 var graph_position:Vector2
 var references:Unique
 
-func emit_attribute_changed():
+func _init(new_structure:Structure) -> void:
+	structure = new_structure
+	properties = new_structure.properties
+	global_properties = new_structure.global_properties
+	for attribute in properties:
+		attribute.attribute_value_changed.connect(emit_attribute_changed.unbind(1))
+		attribute.attribute_const_changed_attempt.connect(attribute_changed_attempt)
+	for attribute in global_properties:
+		attribute.attribute_value_changed.connect(emit_attribute_changed.unbind(1))
+		attribute.attribute_const_changed_attempt.connect(attribute_changed_attempt)
+	
+func emit_attribute_changed() -> void:
 	element_properties_changed.emit()
 
+func attribute_changed_attempt(attribute:Attribute,new_value:Variant) -> void:
+	var new_attribute:Attribute = SaveLoad.duplicate(attribute)
+	new_attribute.is_const  = false
+	new_attribute.value = new_value
+	if properties.has(attribute):
+		properties.append(new_attribute)
+		properties.erase(attribute)
+	
+	
 func add_property(new_attribute:Attribute):
 	new_attribute.attribute_value_changed.connect(emit_attribute_changed)
 	properties.append(new_attribute)

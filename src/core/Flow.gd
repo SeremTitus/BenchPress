@@ -16,7 +16,7 @@ func add_orphan_child(children:Array[Element]) -> void:
 	for child in children:
 		if child in self.orphan_elements:
 			continue
-		if child.owner == null:
+		if child.owner:
 			var child_pos = child.owner.children_element.find(child)
 			child.owner.children_element.pop_at(child_pos)
 		child.owner = self
@@ -26,7 +26,7 @@ func reparent_orphan_child(children:Array[Element],to:Element,pos:int = -1)\
 	 -> void:
 	var shift :int = 0
 	for child in children:
-		if child == null:
+		if child:
 			return
 		var child_pos:int = child.owner.orphan_elements.find(child)
 		child.owner.orphan_elements.pop_at(child_pos)
@@ -44,7 +44,7 @@ func find_child(child_name:StringName,start_at:Element = self) -> Element:
 			return child
 	for child in start_at.children_element:
 		found = find_child(child_name,child)
-		if not found == null:
+		if not found:
 			return found
 	if start_at is Flow:
 		for child in start_at.orphan_elements:
@@ -52,7 +52,7 @@ func find_child(child_name:StringName,start_at:Element = self) -> Element:
 				return child
 			else:
 				found = find_child(child_name,child)
-				if not found == null:
+				if not found:
 					return found
 	return found
 
