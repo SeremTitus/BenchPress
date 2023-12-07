@@ -1,4 +1,7 @@
-[gd_scene format=3 uid="uid://bhnfl413hbsdq"]
+[gd_scene load_steps=3 format=3 uid="uid://bhnfl413hbsdq"]
+
+[ext_resource type="Script" path="res://src/main.gd" id="1_3dyjq"]
+[ext_resource type="PackedScene" uid="uid://cbgfp848bd6n8" path="res://src/main/desktop/desktop.tscn" id="2_t3xg6"]
 
 [node name="main" type="Control"]
 layout_mode = 3
@@ -7,3 +10,5 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_3dyjq")
+desktop = ExtResource("2_t3xg6")
