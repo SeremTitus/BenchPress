@@ -32,7 +32,12 @@ var is_const = false
 var references:Unique
 var profile:String
 
-func set_value(new_value) -> void:
+func set_value(new_value:Variant) -> void:
+	if new_value is String:
+		if new_value[0] == '"':
+			new_value = new_value.erase(0)
+		if new_value[len(new_value) - 1] == '"':
+			new_value = new_value.erase(len(new_value) - 1)
 	if is_const:
 		attribute_const_changed_attempt.emit(self,new_value)
 		return
@@ -42,8 +47,7 @@ func set_value(new_value) -> void:
 func get_value() -> Variant:
 	match type:
 		types.Text, types.LongText, types.OSPath:
-			if value and not value.is_empty():
-				return '"' + value + '"'
+			return '"' + str(value) + '"'
 	return value
 
 func  reset_value() -> void:

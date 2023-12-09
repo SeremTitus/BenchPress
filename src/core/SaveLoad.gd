@@ -64,48 +64,6 @@ func  remove_include_property_name(owner:Object,property_name:String) -> void:
 
 #endregion
 
-#region true duplicate
-static func duplicate(this:Object) -> Object:
-	var access = SaveLoad.new()
-	var new_object: Object = access.object_from_constructor(access.get_objects_constructor(this))
-	if not new_object: return null
-	var props:Dictionary = access.default_values(new_object)
-	for prop in props:
-		var orignal_value = this.get(prop)
-		var new_value = duplicate_var(orignal_value) if not orignal_value is Object else duplicate(orignal_value)
-		new_object.set(prop,new_value)
-	for sig in this.get_signal_list():
-		for conn in this.get_signal_connection_list(sig.name):
-			new_object.connect(sig.name ,conn.callable ,conn.flags)
-	return new_object
-
-static func duplicate_var(this:Variant) -> Variant:
-	var new_var:Variant
-	match typeof(this):
-		TYPE_ARRAY:
-			var new_array:Array = []
-			for item in this:
-				if item is Object:
-					new_array.append(duplicate(item))
-				else:
-					new_array.append(duplicate_var(item))
-			new_var = new_array
-		TYPE_DICTIONARY:
-			var new_dict:Dictionary = {}
-			for key in this:
-				var item = duplicate_var(this[key]) if not this[key] is Object else duplicate(this[key])
-				key = duplicate_var(key) if not key is Object else duplicate(key)
-				new_dict[key] = item
-			new_var = new_dict
-		TYPE_INT, TYPE_STRING, TYPE_FLOAT, TYPE_STRING_NAME, TYPE_BOOL, TYPE_CALLABLE:
-			new_var = this
-		TYPE_NIL:
-			new_var = null
-		_:
-			new_var = this.duplicate()
-	return new_var
-#endregion
-
 #region shared
 func are_object_same_class(obj1:Object,obj2:Object) -> bool:
 	if  not obj1 and not obj2:

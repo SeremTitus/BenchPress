@@ -26,7 +26,7 @@ func emit_attribute_changed() -> void:
 	element_properties_changed.emit()
 
 func attribute_changed_attempt(attribute:Attribute,new_value:Variant) -> void:
-	var new_attribute:Attribute = SaveLoad.duplicate(attribute)
+	var new_attribute:Attribute = Duplicate.object(attribute)
 	new_attribute.is_const  = false
 	new_attribute.value = new_value
 	if properties.has(attribute):

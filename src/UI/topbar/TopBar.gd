@@ -1,9 +1,9 @@
-extends Control
+extends PanelContainer
 
 var pressed_signal_redirect={}#{itemName:itemIndex{callinstruction}}
 func _ready():
-	var topbar ={
-		$"%file":{
+	var menus ={
+		$%File:{
 			'New':{
 				'add_item':{},
 				'set_item_disabled':true,
@@ -29,7 +29,7 @@ func _ready():
 				'set_item_disabled':true,
 				},
 			},
-		$"%edit":{
+		$%Edit:{
 			'Undo':{
 				'add_item':{},
 				'set_item_disabled':true,
@@ -67,7 +67,7 @@ func _ready():
 				'set_item_disabled':true,
 				},
 			},
-		$"%debug":{
+		$%Debug:{
 			'Select Device':{
 				'add_item':{},
 				'set_item_disabled':true,
@@ -109,7 +109,7 @@ func _ready():
 				'set_item_disabled':true,
 				},
 			},
-		$"%editor":{
+		$%Editor:{
 			'Editor Settings':{
 				'add_item':{},
 				'set_item_disabled':true,
@@ -131,7 +131,7 @@ func _ready():
 				'set_item_disabled':true,
 				},
 			},
-		$"%help":{
+		$%Help:{
 			"Documentation":{
 				'add_item':{},
 				'set_item_disabled':true,
@@ -143,30 +143,30 @@ func _ready():
 			"About BenchPress":{
 				'add_item':{},
 				'set_item_disabled':false,
-				'connect':{'target':$"%About",
-							'method': 'popup',
-							},
+				#'connect':{'target':$"%About",
+				#			'method': 'popup',
+				#			},
 				},
 			"Support Development":{
 				'add_item':{},
 				'set_item_disabled':true,
 				},
 			},
-		$"%device":{
+		$%Device:{
 			'Local':{
 				'add_radio_check_item':{},
 				'set_item_disabled':true,
 				},
 			},
 	}
-	add_item(topbar)
+	add_item(menus)
 
-func add_item(topbar:Dictionary):
-	for menubutton in topbar:
+func add_item(menus:Dictionary):
+	for menubutton in menus:
 		var itemIndex = 0
-		for itemName in topbar[menubutton]:
-			for instruction in topbar[menubutton][itemName]:
-				var instructionValue = topbar[menubutton][itemName][instruction]
+		for itemName in menus[menubutton]:
+			for instruction in menus[menubutton][itemName]:
+				var instructionValue = menus[menubutton][itemName][instruction]
 				match instruction:
 					'add_item':
 						menubutton.get_popup().add_item(itemName,itemIndex)

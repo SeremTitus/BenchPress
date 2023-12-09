@@ -1,0 +1,131 @@
+[gd_scene load_steps=9 format=3 uid="uid://cibl6l7deh6ay"]
+
+[ext_resource type="Script" path="res://src/UI/topbar/TopBar.gd" id="1_br2ak"]
+[ext_resource type="Theme" uid="uid://dc0il7m7ryfbx" path="res://assets/themes/menubutton.tres" id="2_maasj"]
+[ext_resource type="Texture2D" uid="uid://b3nxmfc1jnsuv" path="res://assets/icons/debug/play.svg" id="3_xwvwa"]
+[ext_resource type="Texture2D" uid="uid://b2og6enhoa1kq" path="res://assets/icons/debug/Pause.svg" id="4_k54dr"]
+[ext_resource type="Texture2D" uid="uid://cdma5nt84osjo" path="res://assets/icons/debug/Stop.svg" id="5_cilph"]
+[ext_resource type="Texture2D" uid="uid://ckagj02aygcv1" path="res://assets/icons/debug/SkipInto.svg" id="6_38m21"]
+[ext_resource type="Texture2D" uid="uid://dv83v1runlrjs" path="res://assets/icons/debug/breakPoint.svg" id="7_d8rrm"]
+[ext_resource type="Texture2D" uid="uid://cnyecue6loxdc" path="res://assets/icons/debug/Record.svg" id="8_ugc57"]
+
+[node name="TopBar" type="PanelContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 32.0
+grow_horizontal = 2
+script = ExtResource("1_br2ak")
+
+[node name="Layout" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Left" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="File" type="MenuButton" parent="Layout/Left"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "File"
+switch_on_hover = true
+
+[node name="Edit" type="MenuButton" parent="Layout/Left"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_maasj")
+text = "Edit"
+switch_on_hover = true
+
+[node name="Debug" type="MenuButton" parent="Layout/Left"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_maasj")
+text = "Debug"
+switch_on_hover = true
+
+[node name="Editor" type="MenuButton" parent="Layout/Left"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_maasj")
+text = "Editor"
+switch_on_hover = true
+
+[node name="Help" type="MenuButton" parent="Layout/Left"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_maasj")
+text = "Help"
+switch_on_hover = true
+
+[node name="Center" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Global" type="Button" parent="Layout/Center"]
+layout_mode = 2
+theme = ExtResource("2_maasj")
+text = "Globals"
+
+[node name="Schedule" type="Button" parent="Layout/Center"]
+layout_mode = 2
+theme = ExtResource("2_maasj")
+text = "Schedule"
+
+[node name="Right" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="RunRerun" type="Button" parent="Layout/Right"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 6
+icon = ExtResource("3_xwvwa")
+flat = true
+
+[node name="Pause" type="Button" parent="Layout/Right"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.352941)
+layout_mode = 2
+size_flags_vertical = 6
+icon = ExtResource("4_k54dr")
+flat = true
+
+[node name="Stop" type="Button" parent="Layout/Right"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.352941)
+layout_mode = 2
+size_flags_vertical = 6
+icon = ExtResource("5_cilph")
+flat = true
+
+[node name="SkipInto" type="Button" parent="Layout/Right"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.352941)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 6
+icon = ExtResource("6_38m21")
+flat = true
+
+[node name="SkipBreakpoint" type="Button" parent="Layout/Right"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.352941)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 6
+icon = ExtResource("7_d8rrm")
+flat = true
+
+[node name="Record" type="Button" parent="Layout/Right"]
+unique_name_in_owner = true
+modulate = Color(1, 0.278431, 0.278431, 0.352941)
+layout_mode = 2
+icon = ExtResource("8_ugc57")
+flat = true
+
+[node name="Device" type="MenuButton" parent="Layout/Right"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_maasj")
+text = "Local"
+switch_on_hover = true

@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://e1vs13sgv43x"]
+
+[ext_resource type="Script" path="res://src/UI/elements_tree/ElementTree.gd" id="1_ebxs8"]
+[ext_resource type="Script" path="res://src/UI/elements_tree/TrueTree.gd" id="2_v16k6"]
+
+[node name="ElementsTree" type="PanelContainer"]
+custom_minimum_size = Vector2(150, 0)
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 83.0
+grow_vertical = 2
+script = ExtResource("1_ebxs8")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="FilterElements" type="LineEdit" parent="Layout/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Filter Elements"
+clear_button_enabled = true
+
+[node name="TrueTree" type="VBoxContainer" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("2_v16k6")
+is_root_hiden = true

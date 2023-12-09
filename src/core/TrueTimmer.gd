@@ -2,7 +2,7 @@ class_name TrueTimmer extends RefCounted
 
 signal timeout
 
-var time_left:DateTime = DateTime.zero()
+var time_left:DateTime = DateTime.new()
 var threads:Array[Thread] = []
 
 func start(second:float) -> void:
@@ -11,15 +11,15 @@ func start(second:float) -> void:
 	threads.append(timmer_thread)
 	timmer_thread.start(timmer)
 
+func timmer_ended() -> bool:
+	end_dead_thread()
+	return not bool(threads.size())
+
 func timmer() -> void:
-	var start_time:DateTime =  DateTime.now()
-	while time_left.is_greater(DateTime.zero()):
+	var end_time:DateTime =  DateTime.now().get_cummulate(time_left)
+	while end_time.is_greater(DateTime.now()):
 		end_dead_thread()
-		var diff:DateTime = start_time.get_difference(DateTime.now())
-		time_left = time_left.get_difference(diff)
-		if not diff.is_equal(DateTime.zero()):
-			start_time =  DateTime.now()
-	time_left = DateTime.zero()
+	time_left = DateTime.new()
 	timeout.emit()
 
 func  end_dead_thread() -> void:

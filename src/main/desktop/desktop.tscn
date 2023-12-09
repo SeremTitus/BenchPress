@@ -1,4 +1,13 @@
-[gd_scene format=3 uid="uid://cbgfp848bd6n8"]
+[gd_scene load_steps=5 format=3 uid="uid://cbgfp848bd6n8"]
+
+[ext_resource type="PackedScene" uid="uid://cibl6l7deh6ay" path="res://src/UI/topbar/TopBar.tscn" id="1_ppado"]
+[ext_resource type="PackedScene" uid="uid://e1vs13sgv43x" path="res://src/UI/elements_tree/ElementsTree.tscn" id="2_03klb"]
+
+[sub_resource type="SystemFont" id="SystemFont_gg4t5"]
+
+[sub_resource type="Theme" id="Theme_7kgxm"]
+default_font = SubResource("SystemFont_gg4t5")
+default_font_size = 12
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -7,3 +16,33 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_7kgxm")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.207843, 0.207843, 0.207843, 1)
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopBar" parent="Layout" instance=ExtResource("1_ppado")]
+layout_mode = 2
+
+[node name="WorkSpace" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ElementsTree" parent="Layout/WorkSpace" instance=ExtResource("2_03klb")]
+layout_mode = 2

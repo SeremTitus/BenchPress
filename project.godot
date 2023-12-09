@@ -14,7 +14,7 @@ config/name="BenchPress"
 config/description="BenchPress is a easy to use automation tool for the Web-browsers, Desktop Application GUI and other automations. 
 BenchPress automations are cross-platform,shared,launched remotely and schedulable."
 config/version="1.0.0"
-run/main_scene="res://src/main.tscn"
+run/main_scene="res://src/Main.tscn"
 config/features=PackedStringArray("4.2")
 run/low_processor_mode=true
 
@@ -25,6 +25,7 @@ buses/default_bus_layout=""
 [autoload]
 
 UndoRedoManager="*res://src/UndoRedoManager.gd"
+GlobalLibrary="*res://src/GlobalLibrary.gd"
 
 [display]
 
@@ -62,9 +63,6 @@ ui_end={
 [internationalization]
 
 locale/translation_remaps={}
-locale/language_filter=[]
-locale/locale_filter_mode=0
-locale/script_filter=[]
 
 [rendering]
 
