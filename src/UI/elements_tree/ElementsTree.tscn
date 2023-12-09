@@ -30,3 +30,5 @@ layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("2_v16k6")
 is_root_hiden = true
+
+[connection signal="text_changed" from="Layout/HBoxContainer/FilterElements" to="." method="search_tree"]
