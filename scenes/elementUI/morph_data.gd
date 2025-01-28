@@ -19,12 +19,12 @@ var Properties= {#loop-able keys are not fixed
 				} :set=adding_properties
 
 var propertiesDisplay ={
-'LineEdit' :'res://scenes/elementUI/PropertiesDispay/LineEdit.tscn',
-'RadiButton':"res://scenes/elementUI/PropertiesDispay/RadioButton.tscn",
-'Options' : "res://scenes/elementUI/PropertiesDispay/Option.tscn",
-'TextEdit' : "res://scenes/elementUI/PropertiesDispay/TextEdit.tscn",
-'List' : "res://scenes/elementUI/PropertiesDispay/list.tscn",
-'Dictionary' : "res://scenes/elementUI/PropertiesDispay/list.tscn"
+'LineEdit' :'res://scenes/ActionCallUI/PropertiesDispay/LineEdit.tscn',
+'RadiButton':"res://scenes/ActionCallUI/PropertiesDispay/RadioButton.tscn",
+'Options' : "res://scenes/ActionCallUI/PropertiesDispay/Option.tscn",
+'TextEdit' : "res://scenes/ActionCallUI/PropertiesDispay/TextEdit.tscn",
+'List' : "res://scenes/ActionCallUI/PropertiesDispay/list.tscn",
+'Dictionary' : "res://scenes/ActionCallUI/PropertiesDispay/list.tscn"
 }
 
 func adding_properties(input):

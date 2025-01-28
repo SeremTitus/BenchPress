@@ -1,18 +1,18 @@
-class_name CustomStructureItem extends Button
+class_name CustomActionItem extends Button
 
 signal double_clicked(stored_data:Variant)
 
 var is_selected:bool = false
-var store_data:Structure
-var group_name:String = "CustomStructureItem"
+var store_data:Action
+var group_name:String = "CustomActionItem"
 var search_radius:Node
 
 func  _init() -> void:
 	alignment = HORIZONTAL_ALIGNMENT_LEFT
 	add_to_group(group_name,true)
 
-static func create(new_text:String,data:Structure = null,search:Node = null,new_icon:Texture = null) -> CustomStructureItem:
-	var new_item:CustomStructureItem = CustomStructureItem.new()
+static func create(new_text:String,data:Action = null,search:Node = null,new_icon:Texture = null) -> CustomActionItem:
+	var new_item:CustomActionItem = CustomActionItem.new()
 	new_item.set_text(new_text)
 	new_item.set_store_data(data)
 	new_item.set_search_radius(search)
@@ -22,7 +22,7 @@ static func create(new_text:String,data:Structure = null,search:Node = null,new_
 func set_icon(texture:Texture) -> void:
 	icon = texture
 
-func  set_store_data(new_data:Structure)  -> void:
+func  set_store_data(new_data:Action)  -> void:
 	store_data = new_data
 
 func set_search_radius(search:Node) -> void:
@@ -45,7 +45,7 @@ func _gui_input(event:InputEvent) -> void:
 			select()
 
 func _get_drag_data(_at_position) -> Variant:
-	var data:Array[Structure] = []
+	var data:Array[Action] = []
 	if store_data:
 		data.append(store_data)
 	if not search_radius and get_tree(): search_radius = get_tree().get_root()

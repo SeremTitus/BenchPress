@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c1w0eu76f273w"]
 
-[ext_resource type="Script" path="res://scenes/elementUI/PropertiesDispay/listing.gd" id="2"]
+[ext_resource type="Script" path="res://scenes/ActionCallUI/PropertiesDispay/listing.gd" id="2"]
 
 [node name="list" type="HBoxContainer"]
 size_flags_horizontal = 3

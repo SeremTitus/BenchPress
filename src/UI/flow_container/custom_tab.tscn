@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://dofviik2fj7n8"]
+
+[ext_resource type="Script" path="res://src/UI/Subroutine_container/custom_tab.gd" id="1_dg4ru"]
+[ext_resource type="Texture2D" uid="uid://5m0v1jukf03l" path="res://assets/icons/close.svg" id="2_xjjb6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_83f1e"]
+bg_color = Color(0.117647, 0.117647, 0.117647, 1)
+border_width_top = 3
+border_color = Color(0, 0.984314, 0.952941, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yi450"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="CustomTab" type="PanelContainer"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_83f1e")
+script = ExtResource("1_dg4ru")
+
+[node name="Layout" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_uneditable_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_yi450")
+theme_override_styles/focus = SubResource("StyleBoxFlat_yi450")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_yi450")
+text = "Main"
+editable = false
+expand_to_text_length = true
+flat = true
+caret_blink = true
+
+[node name="Close" type="TextureButton" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("2_xjjb6")
+
+[connection signal="focus_exited" from="Layout/LineEdit" to="." method="_on_line_edit_focus_exited"]
+[connection signal="gui_input" from="Layout/LineEdit" to="." method="_on_line_edit_gui_input"]
+[connection signal="text_changed" from="Layout/LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="text_submitted" from="Layout/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="button_down" from="Layout/Close" to="." method="_on_close_button_down"]

@@ -1,0 +1,227 @@
+[gd_scene load_steps=4 format=3 uid="uid://bw8inunyexkrt"]
+
+[ext_resource type="PackedScene" uid="uid://e1vs13sgv43x" path="res://src/UI/ActionCalls_tree/ActionCallsTree.tscn" id="1_3v33a"]
+[ext_resource type="Texture2D" uid="uid://cku4mjw5gni2y" path="res://assets/icons/add.svg" id="1_vkaam"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqkhu"]
+content_margin_left = 15.0
+content_margin_right = 15.0
+bg_color = Color(0, 0, 0, 0)
+
+[node name="ActionEditor" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Layout" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_aqkhu")
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="GridContainer" type="GridContainer" parent="Layout/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 2
+columns = 2
+
+[node name="Lable" type="Label" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Title:"
+
+[node name="Title" type="LineEdit" parent="Layout/ScrollContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "example add_variable"
+
+[node name="Lable2" type="Label" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Library Name:"
+
+[node name="Library" type="LineEdit" parent="Layout/ScrollContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Lable3" type="Label" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Description:"
+
+[node name="description" type="TextEdit" parent="Layout/ScrollContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Lable4" type="Label" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Icon:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="icon" type="TextureRect" parent="Layout/ScrollContainer/GridContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Layout/ScrollContainer/GridContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "add
+"
+icon = ExtResource("1_vkaam")
+
+[node name="Lable5" type="Label" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Group Path:"
+
+[node name="GroupPath" type="LineEdit" parent="Layout/ScrollContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Lable6" type="Label" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Imports:"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="SubroutineContainer" type="SubroutineContainer" parent="Layout/ScrollContainer/GridContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Layout/ScrollContainer/GridContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "add"
+icon = ExtResource("1_vkaam")
+
+[node name="Lable7" type="Label" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Files Include:"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="SubroutineContainer" type="SubroutineContainer" parent="Layout/ScrollContainer/GridContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Layout/ScrollContainer/GridContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "add"
+icon = ExtResource("1_vkaam")
+
+[node name="Lable8" type="Label" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Action Include:"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="SubroutineContainer" type="SubroutineContainer" parent="Layout/ScrollContainer/GridContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Layout/ScrollContainer/GridContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "add"
+icon = ExtResource("1_vkaam")
+
+[node name="Lable10" type="Label" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Code:"
+
+[node name="Code" type="CodeEdit" parent="Layout/ScrollContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+line_folding = true
+
+[node name="HoldsChildren" type="CheckButton" parent="Layout/ScrollContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Holds Children: "
+
+[node name="LoopDeterminer" type="CheckButton" parent="Layout/ScrollContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Loop Determiner: "
+
+[node name="Lable11" type="Label" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Properties:"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="SubroutineContainer" type="SubroutineContainer" parent="Layout/ScrollContainer/GridContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Layout/ScrollContainer/GridContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "add"
+icon = ExtResource("1_vkaam")
+
+[node name="Lable12" type="Label" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Global Properties:"
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="Layout/ScrollContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="SubroutineContainer" type="SubroutineContainer" parent="Layout/ScrollContainer/GridContainer/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Layout/ScrollContainer/GridContainer/HBoxContainer6"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "add"
+icon = ExtResource("1_vkaam")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="ActionCallsTree" parent="Layout/VBoxContainer" instance=ExtResource("1_3v33a")]
+layout_mode = 2
+use_library_selection = true
+
+[node name="Save" type="Button" parent="Layout/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+text = "Save"
+
+[connection signal="pressed" from="Layout/ScrollContainer/GridContainer/LoopDeterminer" to="Layout/ScrollContainer/GridContainer/HoldsChildren" method="set_pressed" binds= [true]]

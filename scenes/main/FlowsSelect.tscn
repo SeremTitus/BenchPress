@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://c3vfglq75isr"]
 
-[ext_resource type="Script" path="res://scenes/main/FlowsSelect.gd" id="1_cmeum"]
-[ext_resource type="PackedScene" uid="uid://c2ddhudkxr7te" path="res://scenes/main/FlowSelectName.tscn" id="2_tna60"]
+[ext_resource type="Script" path="res://scenes/main/SubroutinesSelect.gd" id="1_cmeum"]
+[ext_resource type="PackedScene" uid="uid://c2ddhudkxr7te" path="res://scenes/main/SubroutineSelectName.tscn" id="2_tna60"]
 
-[node name="FlowsSelect" type="VBoxContainer"]
+[node name="SubroutinesSelect" type="VBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -21,12 +21,12 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FlowSelectName" parent="scroll/Content" instance=ExtResource("2_tna60")]
+[node name="SubroutineSelectName" parent="scroll/Content" instance=ExtResource("2_tna60")]
 unique_name_in_owner = false
 layout_mode = 2
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 2
-text = "ADD FLOW"
+text = "ADD Subroutine"
 
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

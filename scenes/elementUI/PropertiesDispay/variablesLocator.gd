@@ -13,7 +13,7 @@ func _on_TextureRect_gui_input(event):
 
 func add_menuitems():	
 # warning-ignore:unused_variable
-	var globalvars = Global.GlobalVariables.keys()
+	var globalvars = []# Global.GlobalVariables.keys()
 # warning-ignore:unused_variable
-	var flowvars = Global.FlowVariables
+	var Subroutinevars = {}#Global.SubroutineVariables
 	

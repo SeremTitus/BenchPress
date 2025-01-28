@@ -1,46 +1,46 @@
 extends MarginContainer
 #onready var content = $'Control/content'
-var ElementStructureReference = '' :set=set_ElementStructureReference
-var ElementProperties :Dictionary = {}
+var ActionCall_ActionReference = '' :set=set_ActionCall_ActionReference
+var ActionCallProperties :Dictionary = {}
 
-func set_ElementStructureReference(newvalue):
-	ElementStructureReference = newvalue
+func set_ActionCall_ActionReference(newvalue):
+	ActionCall_ActionReference = newvalue
 	create_prop()
 	
-func create_prop(ElementStructure = Global.LibraryElementStructure[ElementStructureReference]):
+func create_prop(ActionCall_Action = {}):#Global.LibraryActionCall_Action[ActionCall_ActionReference]):
 	for child in $"%morph_data".get_children():
 		child.queue_free()
-	$"%Title".text = ElementStructure['Title']
-	$"%doc".text = ElementStructure['Doc']
-	for morphkey in ElementStructure['Morphs']:
-		var morph_data =load("res://scenes/elementUI/morph_data.tscn").instantiate()
+	$"%Title".text = ActionCall_Action['Title']
+	$"%doc".text = ActionCall_Action['Doc']
+	for morphkey in ActionCall_Action['Morphs']:
+		var morph_data =load("res://scenes/ActionCallUI/morph_data.tscn").instantiate()
 		morph_data.morph = morphkey
 		morph_data.active = false
-		for i in ElementProperties['ActiveMorphs']:
+		for i in ActionCallProperties['ActiveMorphs']:
 			if i == morphkey:
 				morph_data.active=true
-		morph_data.Properties_set_values = ElementProperties['Properties']
-		morph_data.Properties = ElementStructure['Morphs'][morphkey]['Properties']
+		morph_data.Properties_set_values = ActionCallProperties['Properties']
+		morph_data.Properties = ActionCall_Action['Morphs'][morphkey]['Properties']
 		$"%parameter".add_child(morph_data)
-		createOutputVar(ElementStructure)
+		createOutputVar(ActionCall_Action)
 
-func createOutputVar(ElementStructure=Global.LibraryElementStructure[ElementStructureReference]):
+func createOutputVar(ActionCall_Action={}):#Global.LibraryActionCall_Action[ActionCall_ActionReference]):
 	$"%OutputVar".visible = false
 	for child in $"%OutputVar".get_children():
 		if child.name == 'lable': continue
 		child.queue_free()
-	for morphkey in ElementStructure['Morphs']:
-		for propertyName in ElementStructure['Morphs'][morphkey]['Properties']:
-			if ElementStructure['Morphs'][morphkey]['Properties'][propertyName]['InputOutput'] == 'Output':
+	for morphkey in ActionCall_Action['Morphs']:
+		for propertyName in ActionCall_Action['Morphs'][morphkey]['Properties']:
+			if ActionCall_Action['Morphs'][morphkey]['Properties'][propertyName]['InputOutput'] == 'Output':
 				$"%OutputVar".visible = true
-				var item =$"%flowVariables".duplicate()
+				var item =$"%SubroutineVariables".duplicate()
 				item.visible=true
 				item.name = propertyName
-				for glovar in Global.FlowVariables:
+				for glovar in []:#Global.SubroutineVariables:
 					if propertyName == glovar: 
 						propertyName = glovar
-				if ElementProperties['Properties'].has(propertyName):
-					propertyName = ElementProperties['FlowVariable'][propertyName]
+				if ActionCallProperties['Properties'].has(propertyName):
+					propertyName = ActionCallProperties['SubroutineVariable'][propertyName]
 				item.text = propertyName
 				$"%OutputVar".add_child(item)
 

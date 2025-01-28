@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://cqr1uqt34stgn"]
 
-[ext_resource type="Script" path="res://scenes/elementUI/elementProperties.gd" id="1"]
-[ext_resource type="PackedScene" uid="uid://838mhv2d8ttv" path="res://scenes/elementUI/morph_data.tscn" id="3"]
+[ext_resource type="Script" path="res://scenes/ActionCallUI/ActionCallProperties.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://838mhv2d8ttv" path="res://scenes/ActionCallUI/morph_data.tscn" id="3"]
 
-[node name="ElementProperties" type="MarginContainer"]
+[node name="ActionCallProperties" type="MarginContainer"]
 layout_direction = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,7 +37,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Doc Example"
 
-[node name="OutputVar" type="HFlowContainer" parent="ScrollContainer/content"]
+[node name="OutputVar" type="HSubroutineContainer" parent="ScrollContainer/content"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -47,7 +47,7 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Output > "
 
-[node name="flowVariables" type="LineEdit" parent="ScrollContainer/content/OutputVar"]
+[node name="SubroutineVariables" type="LineEdit" parent="ScrollContainer/content/OutputVar"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

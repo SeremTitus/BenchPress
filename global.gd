@@ -1,10 +1,10 @@
 extends Node
 var saverReloader = preload("res://specialFunction/SAVER_RELOADER_PlaceholderHack.gd").new()
-var structures = preload("res://specialFunction/structrures.gd").new()
-var LibraryElementStructure = {
+var Actions = preload("res://specialFunction/structrures.gd").new()
+var LibraryActionCallAction = {
 	'uniwu/item/variable/New_variable':{
 		'Library' : '',
-		'Type':'Element',#Inheritable,errorhandler
+		'Type':'ActionCall',#Inheritable,errorhandler
 		'Title' : 'ADD VARIABLE',
 		'Description' : 'test description',
 		'Doc':'Doc Example',
@@ -16,7 +16,7 @@ var LibraryElementStructure = {
 		'AntiIniciator':[],
 		'Parent':false,
 		'Morphs':{#loop-able, keys are not fixed
-										#Placeholder key but Base maybe found in most elements
+										#Placeholder key but Base maybe found in most ActionCalls
 			'Base' :{#fixed keys
 				'Feature' : '',
 				'Code' : '',
@@ -46,27 +46,27 @@ var LibraryElementStructure = {
 		},
 	
 	}
-signal LibraryElementStructure_Constructed
+signal LibraryActionCallAction_Constructed
 var current_project_filePath = ''
 var current_project = {} : set = current_Project_set
 signal current_Project_changed
 var GlobalVariables = {}
-var FlowVariables = []
+var SubroutineVariables = []
 
-var highlighted_element = null : set =highlighted_element_set
-signal highlighted_element_changed
-var selected_flow = 'main' : set = selected_flow_changed
+var highlighted_ActionCall = null : set =highlighted_ActionCall_set
+signal highlighted_ActionCall_changed
+var selected_Subroutine = 'main' : set = selected_Subroutine_changed
 
 func _ready():
 	create_dir()
 	create_newProject()
-	#get_LibraryElementStructure()
+	#get_LibraryActionCallAction()
 
 
 func create_newProject():
 	current_project = {
 		'Version' : '0.0.1.Dev',
-		'FileState' : 'Flow',#Library,Flow,App -->'App' filestate is reserved for deployed clients
+		'FileState' : 'Subroutine',#Library,Subroutine,App -->'App' filestate is reserved for deployed clients
 		'LibrariesVersion' :{#loop-able keys are not fixed
 			'built-in': '0.0.1.Alfa',
 			},
@@ -76,46 +76,46 @@ func create_newProject():
 				'Value':''
 				}
 			},
-		'Flows': {#loop-able, keys are not fixed
+		'Subroutines': {#loop-able, keys are not fixed
 		'main' : {},
 		},
-		'ElementStructures':{}, # if FileState is Flow flowElementslist only include used elements
-		'ElementUpdatePatterns':{#loop-able keys are not fixed
+		'ActionCallActions':{}, # if FileState is Subroutine SubroutineActionCallslist only include used ActionCalls
+		'ActionCallUpdatePatterns':{#loop-able keys are not fixed
 			#Intended for libraries to be able to be updated atleast in minorEditor releases
 			#TOBE DEFINED
 			}
 		}
 	
-func create_Update_flow(flowname,changes):
-	if current_project.Flows.has(flowname) and typeof(changes) == TYPE_DICTIONARY:
-		current_project.Flows[flowname] = changes
+func create_Update_Subroutine(Subroutinename,changes):
+	if current_project.Subroutines.has(Subroutinename) and typeof(changes) == TYPE_DICTIONARY:
+		current_project.Subroutines[Subroutinename] = changes
 		emit_signal("current_Project_changed")
 		return OK
 	return FAILED
 	
-func add_NewFlow(flowname):
-	current_project.Flows[flowname] ={}
-	selected_flow = flowname
+func add_NewSubroutine(Subroutinename):
+	current_project.Subroutines[Subroutinename] ={}
+	selected_Subroutine = Subroutinename
 	emit_signal("current_Project_changed")
 	return OK
 	
-func rename_flow(flowname,_changes):
-	if current_project.Flows.has(flowname):
+func rename_Subroutine(Subroutinename,_changes):
+	if current_project.Subroutines.has(Subroutinename):
 		#FORCE_SAVE
-		current_project.Flows[_changes] = current_project.Flows[flowname]
-		current_project.Flows.erase(flowname)
+		current_project.Subroutines[_changes] = current_project.Subroutines[Subroutinename]
+		current_project.Subroutines.erase(Subroutinename)
 		emit_signal("current_Project_changed")
 		return OK
 	return FAILED
 	
-func delete_flow(flowname):
-	if current_project.Flows.has(flowname):
-		current_project.Flows.erase(flowname)
+func delete_Subroutine(Subroutinename):
+	if current_project.Subroutines.has(Subroutinename):
+		current_project.Subroutines.erase(Subroutinename)
 		emit_signal("current_Project_changed")
 		return OK
 	return FAILED
 	
-func run_current_flow(_params):
+func run_current_Subroutine(_params):
 	pass
 	
 func save_current_benchpress():
@@ -125,30 +125,30 @@ func current_Project_set(newvalue):
 	current_project = newvalue
 	emit_signal("current_Project_changed")
 	
-func highlighted_element_set(newvalue):
-	highlighted_element = newvalue
-	emit_signal("highlighted_element_changed")
+func highlighted_ActionCall_set(newvalue):
+	highlighted_ActionCall = newvalue
+	emit_signal("highlighted_ActionCall_changed")
 	
-func selected_flow_changed(newvalue):
-	selected_flow = newvalue
+func selected_Subroutine_changed(newvalue):
+	selected_Subroutine = newvalue
 	emit_signal("current_Project_changed")
 	
-func get_LibraryElementStructure():
+func get_LibraryActionCallAction():
 	var contents = dir_contents('user://Library').files
-	LibraryElementStructure.clear()
+	LibraryActionCallAction.clear()
 	for file_name in contents:
 		if file_name.get_extension() != 'benchpress': continue
 		#get data .benchpress files that are type library store it in BenchPressfile		
 		var BenchPressfile =saverReloader._load('user://Library/'+file_name)
 		if BenchPressfile['FileState'] != 'Library':continue
-		for SourceLibraryName in BenchPressfile['ElementStructures']:
+		for SourceLibraryName in BenchPressfile['ActionCallActions']:
 			var uniqueSourceLibraryName = SourceLibraryName.get_slice("/", 0)+'/'+SourceLibraryName.get_slice("/", 0)+'/'+SourceLibraryName.get_slice("/", 1)+'/'+SourceLibraryName.get_slice("/", 2)
 			var makeunique = 0
-			while LibraryElementStructure.has(uniqueSourceLibraryName):
+			while LibraryActionCallAction.has(uniqueSourceLibraryName):
 				makeunique += 1
 				uniqueSourceLibraryName =(SourceLibraryName.get_slice("/", 0)+str(makeunique))+'/'+SourceLibraryName.get_slice("/", 0)+'/'+SourceLibraryName.get_slice("/", 1)+'/'+SourceLibraryName.get_slice("/", 2)
-			LibraryElementStructure[uniqueSourceLibraryName] = BenchPressfile['ElementStructures'][SourceLibraryName]
-	emit_signal("LibraryElementStructure_Constructed")
+			LibraryActionCallAction[uniqueSourceLibraryName] = BenchPressfile['ActionCallActions'][SourceLibraryName]
+	emit_signal("LibraryActionCallAction_Constructed")
 	
 func dir_contents(path):
 	var contents = {
@@ -167,7 +167,7 @@ func dir_contents(path):
 			file_name = directory.get_next()
 	return contents
 	
-func create_dir(dirAndFiles = structures.custom_user_folders):
+func create_dir(dirAndFiles = Actions.custom_user_folders):
 	for dir in dirAndFiles:
 		var directory = DirAccess.open("user://")
 		if directory == null:

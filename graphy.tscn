@@ -1,0 +1,185 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3f77130chglw"]
+
+[ext_resource type="Script" path="res://GraphEdit.gd" id="1_ddov3"]
+[ext_resource type="PackedScene" uid="uid://ddm837gy7lncw" path="res://scenes/ActionCallUI/ActionCall.tscn" id="3_5yd7e"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GraphEdit" type="GraphEdit" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+snapping_enabled = false
+right_disconnects = true
+show_zoom_label = true
+show_grid_buttons = false
+script = ExtResource("1_ddov3")
+
+[node name="GraphNode" type="GraphNode" parent="GraphEdit"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 40.0
+offset_top = -154.0
+offset_right = 380.0
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+position_offset = Vector2(616, 170)
+resizable = true
+title = "GraphNode"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(0.0941176, 1, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 0.937255, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+
+[node name="Control" type="Control" parent="GraphEdit/GraphNode"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GraphNode2" type="GraphNode" parent="GraphEdit"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -648.0
+offset_top = -149.0
+offset_right = -342.0
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+position_offset = Vector2(-72, 175)
+resizable = true
+title = "GraphNode2"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(0.0941176, 1, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 0.937255, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GraphEdit/GraphNode2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ActionCall" parent="GraphEdit/GraphNode2/VBoxContainer" instance=ExtResource("3_5yd7e")]
+layout_mode = 2
+
+[node name="GraphNode3" type="GraphNode" parent="GraphEdit"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -306.0
+offset_top = -191.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+position_offset = Vector2(270, 133)
+resizable = true
+title = "GraphNode3"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(0.0941176, 1, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 0.905882, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+
+[node name="Control" type="Control" parent="GraphEdit/GraphNode3"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GraphNode4" type="GraphNode" parent="GraphEdit"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -304.0
+offset_top = 23.0
+offset_right = 2.0
+offset_bottom = 205.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+position_offset = Vector2(272, 347)
+resizable = true
+title = "GraphNode4"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(0.0941176, 1, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 0.905882, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+
+[node name="Control" type="Control" parent="GraphEdit/GraphNode4"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GraphNode5" type="GraphNode" parent="GraphEdit"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 57.0
+offset_top = 47.0
+offset_right = 363.0
+offset_bottom = 229.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+position_offset = Vector2(633, 371)
+resizable = true
+title = "GraphNode5"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(0.0941176, 1, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 0.905882, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+
+[node name="Control" type="Control" parent="GraphEdit/GraphNode5"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[connection signal="connection_request" from="GraphEdit" to="GraphEdit" method="_on_connection_request"]
+[connection signal="disconnection_request" from="GraphEdit" to="GraphEdit" method="_on_disconnection_request"]

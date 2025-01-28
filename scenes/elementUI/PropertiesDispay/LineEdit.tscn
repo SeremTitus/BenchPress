@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cvj2mpc1bbgu3"]
 
-[ext_resource type="Script" path="res://scenes/elementUI/PropertiesDispay/LineEdit.gd" id="2"]
+[ext_resource type="Script" path="res://scenes/ActionCallUI/PropertiesDispay/LineEdit.gd" id="2"]
 
 [node name="LineEdit" type="HBoxContainer"]
 anchors_preset = 10

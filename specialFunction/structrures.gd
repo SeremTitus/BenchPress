@@ -2,10 +2,10 @@ extends Node
 
 
 # Once major version 1 is reached this file is not changed ....else backward compatability may be lost   
-var ElementStructure:Dictionary ={
+var ActionCallAction:Dictionary ={
 	'Library' : '',
 	'LibraryVersion' :'',
-	'Type':'Element',#Inheritable,errorhandler
+	'Type':'ActionCall',#Inheritable,errorhandler
 	'Title' : 'ADD VARIABLE',
 	'Description' : '',
 	'Doc':'',
@@ -13,11 +13,9 @@ var ElementStructure:Dictionary ={
 	'GroupPath':'',
 	'Dependencies':[],
 	'Inherit':[],
-	'Iniciator':[],
-	'AntiIniciator':[],
 	'Parent':false,
 	'Morphs':{#loop-able, keys are not fixed
-		#Placeholder key but Base maybe found in most elements
+		#Placeholder key but Base maybe found in most ActionCalls
 		'Base' :{#fixed keys
 			'Feature' : '',
 			'Code' : '',
@@ -37,17 +35,17 @@ var ElementStructure:Dictionary ={
 		}
 	}
 	
-var ElementProperties :Dictionary = {#loop-able keys are not fixed
+var ActionCallProperties :Dictionary = {#loop-able keys are not fixed
 	'position_index':{#fixed keys
-		'children' : {},#children ElementProperties
-		'SourceLibrary':'',#Libraries['Nameunique'] (First name is editor assigned to prevent library collision)+':'+Libraries['Name']  +':'+ ElementStructure['GroupPath'] +':'+ ElementStructure['GroupPath']
+		'children' : {},#children ActionCallProperties
+		'SourceLibrary':'',#Libraries['Nameunique'] (First name is editor assigned to prevent library collision)+':'+Libraries['Name']  +':'+ ActionCallAction['GroupPath'] +':'+ ActionCallAction['GroupPath']
 		'Enabled' : true,
 		'BreakingPoint': false,
 		'ActiveMorphs' :['Base'],
 		'Properties':{#loop-able keys are not fixed
 			#'Edited_Properties_Name' :'Value'#set_values
 			},
-		'ElementVariable':{#loop-able keys are not fixed
+		'ActionCallVariable':{#loop-able keys are not fixed
 			#'Edited_Properties_Name' :'Name'#set_values
 			},
 		'errorhandlers':{#loop-able keys are not fixed
@@ -61,17 +59,17 @@ var ElementProperties :Dictionary = {#loop-able keys are not fixed
 		}
 	}
 	
-var FlowStructure:Dictionary ={#loop-able, keys are not fixed
-	'main' : ElementProperties
+var SubroutineAction:Dictionary ={#loop-able, keys are not fixed
+	'main' : ActionCallProperties
 	}
 	
-var flowElementslist:Dictionary ={
-	'SourceLibrary': ElementStructure# Nameunique = Libraries['Name'] or (First name is editor assigned to prevent library collision but not include in library files)+':'+Libraries['Name']  +':'+ ElementStructure['GroupPath'] +':'+ ElementStructure['GroupPath']
+var SubroutineActionCallslist:Dictionary ={
+	'SourceLibrary': ActionCallAction# Nameunique = Libraries['Name'] or (First name is editor assigned to prevent library collision but not include in library files)+':'+Libraries['Name']  +':'+ ActionCallAction['GroupPath'] +':'+ ActionCallAction['GroupPath']
 	}
 	
 var BenchPress :Dictionary = {
 	'Version' : '0.0.1.Dev',
-	'FileState' : 'Library',#Flow,App -->'App' filestate is reserved for deployed clients
+	'FileState' : 'Library',#Subroutine,App -->'App' filestate is reserved for deployed clients
 	'LibrariesVersion' :{#loop-able keys are not fixed
 		'built-in': '0.0.1.Alfa',
 		},
@@ -81,8 +79,8 @@ var BenchPress :Dictionary = {
 			'Value':''
 			}
 		},
-	'Flows': FlowStructure,
-	'ElementStructures':flowElementslist, # if FileState is Flow flowElementslist only include used elements
+	'Subroutines': SubroutineAction,
+	'ActionCallActions':SubroutineActionCallslist, # if FileState is Subroutine SubroutineActionCallslist only include used ActionCalls
 	'Schedule':{#loop-able keys are not fixed
 		'file path':{ 
 			'single/repeat':{
@@ -127,7 +125,7 @@ var BenchPress :Dictionary = {
 			}
 		},
 	},
-	'ElementUpdatePatterns':{#loop-able keys are not fixed
+	'ActionCallUpdatePatterns':{#loop-able keys are not fixed
 		#Intended for libraries to be able to be updated atleast in minorEditor releases
 		#TOBE DEFINED
 		}
@@ -139,22 +137,22 @@ var custom_user_folders={
 			},
 		'user://Editor' : {},#Editor settings
 		'user://enve':{},#python enveronment
-		'user://Flows' : {},#created project folders:::('user://Flows/'+uniquefoldername+'/projectname.benchpress') ,('user://Flows/'+uniquefoldername+'/Runfile') 
+		'user://Subroutines' : {},#created project folders:::('user://Subroutines/'+uniquefoldername+'/projectname.benchpress') ,('user://Subroutines/'+uniquefoldername+'/Runfile') 
 		'user://Running' : {},
 	}
 	
 func some_notes():
 	pass
-# > Flow is Python function ,
-	#(is just a collection of FlowElement)
-	#visible in Editor.FlowContainer
-# > Element.type = 'Element' is Python Snippet, 
-	#visible in Editor.ElementsContainer 
-	#and Constructor.ElementManager 
-	#(it properties are editable in FlowElementProprertiesEdit)
-# > Element.type = 'Inheritable' are Python Classes,
-	#visible in Constructor.ElementCreate
-# > Element.type = 'Errorhandler' is Python Exception Handling,
-	#visible in in FlowElementProprertiesEdit Dock 
-	#and Constructor.ElementManager
+# > Subroutine is Python function ,
+	#(is just a collection of SubroutineActionCall)
+	#visible in Editor.SubroutineContainer
+# > ActionCall.type = 'ActionCall' is Python Snippet, 
+	#visible in Editor.ActionCallsContainer 
+	#and Constructor.ActionCallManager 
+	#(it properties are editable in SubroutineActionCallProprertiesEdit)
+# > ActionCall.type = 'Inheritable' are Python Classes,
+	#visible in Constructor.ActionCallCreate
+# > ActionCall.type = 'Errorhandler' is Python Exception Handling,
+	#visible in in SubroutineActionCallProprertiesEdit Dock 
+	#and Constructor.ActionCallManager
 	

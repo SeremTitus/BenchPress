@@ -38,16 +38,16 @@ func rename_file(file:String,newName:String):
 
 
 func verify_blenchpress_data(testdata):
-	#Ensures blenchpress file adhire to file structure defined in structure.gd
+	#Ensures blenchpress file adhire to file Action defined in Action.gd
 	if typeof(testdata) != TYPE_DICTIONARY  or testdata.empty(): return FAILED
-	var structures = preload("res://specialFunction/structrures.gd").new()
-	var level_1 = structures.BenchPress.keys()
+	var Actions = preload("res://specialFunction/structrures.gd").new()
+	var level_1 = Actions.BenchPress.keys()
 	for key in testdata:
 		if ! level_1.has(key): return FAILED
-	var level_2 = structures.ElementStructure.keys()
-	for key in testdata['ElementStructures']:
-		for elementkey in testdata['ElementStructures'][key]:
-			if ! level_2.has(elementkey): return FAILED
+	var level_2 = Actions.ActionCallAction.keys()
+	for key in testdata['ActionCallActions']:
+		for ActionCallkey in testdata['ActionCallActions'][key]:
+			if ! level_2.has(ActionCallkey): return FAILED
 	return OK
 
 	

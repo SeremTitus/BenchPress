@@ -1,12 +1,12 @@
 [gd_scene load_steps=2 format=3 uid="uid://c2ddhudkxr7te"]
 
-[ext_resource type="Script" path="res://scenes/main/FlowSelectName.gd" id="1"]
+[ext_resource type="Script" path="res://scenes/main/SubroutineSelectName.gd" id="1"]
 
-[node name="FlowSelectName" type="HBoxContainer"]
+[node name="SubroutineSelectName" type="HBoxContainer"]
 unique_name_in_owner = true
 script = ExtResource("1")
 
-[node name="LabelFlow" type="LineEdit" parent="."]
+[node name="LabelSubroutine" type="LineEdit" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -42,7 +42,7 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "X"
 
-[connection signal="gui_input" from="LabelFlow" to="." method="_on_LabelFlow_gui_input"]
+[connection signal="gui_input" from="LabelSubroutine" to="." method="_on_LabelSubroutine_gui_input"]
 [connection signal="pressed" from="EditButton" to="." method="_on_EditButton_pressed"]
 [connection signal="pressed" from="ConfirmButton" to="." method="_on_ConfirmButton_pressed"]
 [connection signal="pressed" from="DeleteButton" to="." method="_on_DeleteButton_pressed"]

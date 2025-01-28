@@ -193,4 +193,4 @@ func  _notification(what):
 			persist_child = true
 	elif what == NOTIFICATION_DRAG_END:
 		if draged_persist_child:
-			persist_child = false 
+			persist_child = false

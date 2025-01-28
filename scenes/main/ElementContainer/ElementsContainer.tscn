@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://ctft7yedvi6u4"]
 
-[ext_resource type="Script" path="res://scenes/main/ElementContainer/ElementsContainer.gd" id="1"]
-[ext_resource type="PackedScene" uid="uid://rsdpcnhf8ux1" path="res://scenes/main/ElementContainer/ElementsContainerGroup.tscn" id="2"]
+[ext_resource type="Script" path="res://scenes/main/ActionCallContainer/ActionCallsContainer.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://rsdpcnhf8ux1" path="res://scenes/main/ActionCallContainer/ActionCallsContainerGroup.tscn" id="2"]
 
 [sub_resource type="StyleBoxFlat" id="8"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -9,7 +9,7 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 [sub_resource type="Theme" id="9"]
 VScrollBar/styles/scroll_focus = SubResource("8")
 
-[node name="ElementsContainer" type="VBoxContainer"]
+[node name="ActionCallsContainer" type="VBoxContainer"]
 unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,7 +25,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Filter Elements"
+placeholder_text = "Filter ActionCalls"
 clear_button_enabled = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
@@ -35,13 +35,13 @@ size_flags_vertical = 3
 theme = SubResource("9")
 follow_focus = true
 
-[node name="elements" type="VBoxContainer" parent="ScrollContainer"]
+[node name="ActionCalls" type="VBoxContainer" parent="ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ElementsContainerGroup" parent="ScrollContainer/elements" instance=ExtResource("2")]
+[node name="ActionCallsContainerGroup" parent="ScrollContainer/ActionCalls" instance=ExtResource("2")]
 layout_mode = 2
 
-[connection signal="text_changed" from="filter/filter" to="." method="filter_elements"]
+[connection signal="text_changed" from="filter/filter" to="." method="filter_ActionCalls"]

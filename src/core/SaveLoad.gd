@@ -4,13 +4,13 @@ class_name  SaveLoad extends ConfigFile
 
 #region user defined
 ## If true all inherited properties are considered else only the defined in script are
-var deep = false 
+var deep = false
 ## constructor : base_section_name
-var objects_with_sections:Dictionary = {} 
+var objects_with_sections:Dictionary = {}
 ## constructor : [prop_name,...]
 var objects_exclude_props:Dictionary = {}
 ## constructor : [prop_name,...]
-var objects_include_props:Dictionary = {} 
+var objects_include_props:Dictionary = {}
 #endregion
 
 var start_section:String = ""
@@ -25,7 +25,7 @@ var stored_objects_constructor:Dictionary ={}
 
 func _init(is_deep = false):
 	deep = is_deep
-	
+
 #region setters snd getters
 func  add_section(owner:Object,section_name:String) -> void:
 	if not section_name == meta_section_name:
@@ -65,7 +65,7 @@ func  remove_include_property_name(owner:Object,property_name:String) -> void:
 #endregion
 
 #region shared
-func are_object_same_class(obj1:Object,obj2:Object) -> bool:
+func are_object_same_class(obj1: Object,obj2: Object) -> bool:
 	if  not obj1 and not obj2:
 		return false
 	elif not obj1 or not obj2:
@@ -87,7 +87,7 @@ func clean_up() -> void:
 	stored_objects_constructor = {}
 	clear()
 
-func get_objects_constructor(from:Object) -> String:
+func get_objects_constructor(from: Object) -> String:
 	var object_script = from.get_script()
 	if not object_script:
 		return from.get_class()
@@ -97,23 +97,27 @@ func get_objects_constructor(from:Object) -> String:
 	else:
 		return script_path
 
-func object_from_constructor(constructor:String) -> Object:
+func object_from_constructor(constructor: String) -> Object:
 	if constructor.ends_with(".gd"):
-		var gdscript:GDScript = load(constructor)
-		var args:Array = []
+		var gdscript: GDScript = load(constructor)
+		var args: Array
 		for method in gdscript.get_script_method_list():
 			if not method.name == "_init": continue
 			var len_args = len(method.args)
 			var len_default_args = len(method.default_args)
 			if len_args == len_default_args: continue
 			for arg in method.args:
-				var a:Variant = ""
-				args.append(type_convert(a,arg.type))
+				var a: Variant = ""
+				if (arg.type != TYPE_OBJECT):
+					args.append(type_convert(a,arg.type))
+				else:
+					args.append(object_from_constructor(arg.class_name))
 			var count = 0
 			for default in method.default_args:
 				var pos = count + len_args - len_default_args
 				args[pos] = args[pos] if default == null else default
 				count += 1
+			break
 		return Callable(gdscript,"new").bindv(args).call()
 	elif constructor in ClassDB.get_class_list():
 		return ClassDB.instantiate(constructor)
@@ -122,7 +126,7 @@ func object_from_constructor(constructor:String) -> Object:
 #endregion
 
 #region Saving
-func generate_section_name(from:Object) -> String:
+func generate_section_name(from: Object) -> String:
 	var object_script = from.get_script()
 	if not object_script:
 		return from.get_class()
@@ -134,30 +138,30 @@ func generate_section_name(from:Object) -> String:
 		section_name = meta_section_name +'_' + ref.assign()
 	return section_name
 
-func get_section_name(from:Object) -> String:
+func get_section_name(from: Object) -> String:
 	if from in ref_objects:
 		return ref_objects[from]
 	if get_objects_constructor(from) in objects_with_sections:
 		return objects_with_sections[get_objects_constructor(from)]
 	return generate_section_name(from)
 
-func default_values(from:Object) -> Dictionary:
-	var new:Object = object_from_constructor(get_objects_constructor(from))
+func default_values(from: Object) -> Dictionary:
+	var new: Object = object_from_constructor(get_objects_constructor(from))
 	new = Object.new() if not new else new
-	var props:Array = new.get_property_list()
-	var exclude_props:PackedStringArray = ["script"]
-	var default_props_values:Dictionary = {} #name:variant
+	var props: Array = new.get_property_list()
+	var exclude_props: PackedStringArray = ["script"]
+	var default_props_values: Dictionary = {} #name:variant
 	for prop in props:
 		if prop["name"] in exclude_props: continue
 		default_props_values[prop["name"]] = new.get(prop["name"])
 	return default_props_values
 
-func props_list(from:Object) -> PackedStringArray:
+func props_list(from: Object) -> PackedStringArray:
 	var script = from.get_script()
-	var props:Array = []
+	var props: Array = []
 	props = from.get_property_list() if not script else from.get_property_list() if deep\
 		 else script.get_script_property_list()
-	var exclude_props:PackedStringArray = ["script"]
+	var exclude_props: PackedStringArray = ["script"]
 	if from is Node:
 		exclude_props += PackedStringArray(["name","scene_file_path","multiplayer","owner"])
 	if from is Control:
@@ -166,7 +170,7 @@ func props_list(from:Object) -> PackedStringArray:
 	exclude_props += PackedStringArray(objects_exclude_props[constructor]) if constructor in objects_exclude_props\
 		else PackedStringArray(exclude_props)
 	var default_props = default_values(from)
-	var list_var:PackedStringArray = []
+	var list_var: PackedStringArray = []
 	for prop in props:
 		if prop["name"] in exclude_props: continue
 		var var_value = from.get(prop["name"])
@@ -177,43 +181,47 @@ func props_list(from:Object) -> PackedStringArray:
 			list_var.append(include)
 	return  list_var
 
-func store_objects_constructors(section_name:String,from:Object) -> void:
+func store_objects_constructors(section_name: String,from: Object) -> void:
 	if stored_objects_constructor.has(section_name):
 		return
 	stored_objects_constructor[section_name] = get_objects_constructor(from)
 
-func store_object(store:Object, attach_ref:bool = false):# -> object or string
+func store_object(store: Object, attach_ref: bool = false):# -> object or string
 	if not store:
 		return null
-	var section_name:String = get_section_name(store)
+	var section_name: String = get_section_name(store)
+	
+	print("here10 :", len(get_stack()))
+	if len(get_stack()) == 362:
+		breakpoint
 	if not section_name.is_empty():
 		if attach_ref:
 			store_objects_constructors(section_name,store)
+			print("here10.0")
 			if not store in ref_objects:
 				section_name += " ref='" + ref.assign() +"'"
 		elif section_name in ref_objects.values():
 			section_name += "_" + ref.assign()
 			store_objects_constructors(section_name,store)
+			print("here10.1")
 		else:
 			store_objects_constructors(section_name,store)
+			print("here10.2")
 		ref_objects[store] = section_name
 		for prop_name in  props_list(store):
 			var prop = store.get(prop_name)
 			var is_object = false if not prop is Object else true
 			if not is_object and prop is Array:
-					var new_array:Array = []
+					var new_array: Array
 					for item in prop:
-						var prop_ref = store_object(item, true) if item is Object\
-						 else item
+						var prop_ref = store_object(item, true) if item is Object else item
 						new_array.append(prop_ref)
 					set_value(section_name,prop_name,new_array)
 			elif not is_object and prop is Dictionary:
-				var new_dict:Dictionary = {}
+				var new_dict: Dictionary
 				for key in prop:
-					var key_ref = store_object(key, true) if key is Object\
-						 else key
-					var item_ref = store_object(prop[key], true)\
-					 	if prop[key] is Object else prop[key]
+					var key_ref = store_object(key, true) if key is Object else key
+					var item_ref = store_object(prop[key], true) if prop[key] is Object else prop[key]
 					new_dict[key_ref] = item_ref
 				set_value(section_name,prop_name,new_dict)
 			elif prop is Callable:
@@ -223,18 +231,20 @@ func store_object(store:Object, attach_ref:bool = false):# -> object or string
 			else:
 				set_value(section_name,prop_name,prop)
 	else:
+		print("exit")
 		return store
+	print("exit")
 	return section_name
 
-func get_callable_constructor(new_callable:Callable) -> String:
-	var callable_section_name:String = ""
+func get_callable_constructor(new_callable: Callable) -> String:
+	var callable_section_name: String
 	if new_callable in ref_callables:
 		callable_section_name = ref_callables[new_callable]
 	else:
 		callable_section_name = "callable ref='" + ref.assign() +"'"
 		ref_callables[new_callable] = callable_section_name
 	return callable_section_name
-	
+
 func store_callables() -> void:
 	for this_callable in ref_callables:
 		var callable_obj = this_callable.get_object()
@@ -246,11 +256,11 @@ func store_callables() -> void:
 
 func store_signals() -> void:
 	for object in ref_objects:
-		var signals:Array[Dictionary] = []
+		var signals: Array[Dictionary]
 		for sig in object.get_signal_list():
 			for conn in object.get_signal_connection_list(sig.name):
-				var connections_store:Dictionary = {}
-				var signal_callable:Callable = conn.callable
+				var connections_store: Dictionary
+				var signal_callable: Callable = conn.callable
 				var signal_obj = signal_callable.get_object()
 				if signal_obj in ref_objects:
 					connections_store["name"] = sig.name
@@ -259,28 +269,25 @@ func store_signals() -> void:
 					signals.append(connections_store)
 		if not signals.is_empty():
 			set_value(ref_objects[object],"signal",signals)
-	
+
 func  store_meta() -> void:
 	var section_name = meta_section_name
 	for key in stored_objects_constructor:
 		set_value(section_name,key,stored_objects_constructor[key])
 	set_value(section_name,section_name,start_section)
 
-func construct_dir(file_path:String) -> void:
-	if not file_path.get_extension().is_empty():
-		file_path = file_path.get_base_dir()
-	var dir:DirAccess = DirAccess.open(file_path)
-	var new_path:String = file_path
-	while not dir:
-		new_path = new_path.get_base_dir()
-		if new_path.is_empty():
-			continue
-		dir = DirAccess.open(new_path)
-	dir.make_dir_recursive(file_path)
+func construct_dir(file_path: String) -> void:
+	file_path = ProjectSettings.globalize_path(file_path)
+	var base_path := file_path.get_base_dir()
+	return DirAccess.make_dir_recursive_absolute(base_path)
+
 
 ## Add key if  saving encrypted file
-func save_to(save_file_path:String,store:Object,key = PackedByteArray()) -> Error:
+func save_to(save_file_path: String,store: Object,key = PackedByteArray()) -> Error:
+	print("here")
 	clean_up()
+	
+	print("here1.1")
 	construct_dir(save_file_path)
 	if get_objects_constructor(store) in objects_with_sections:
 		start_section = objects_with_sections[store]
@@ -289,18 +296,26 @@ func save_to(save_file_path:String,store:Object,key = PackedByteArray()) -> Erro
 		start_section = generate_section_name(store) if start_section.is_empty() else start_section
 		start_section = start_section if not start_section.is_empty() else String(ref.assign())
 		objects_with_sections[get_objects_constructor(store)] = start_section
+	
+	print("here1.2")
 	store_object(store)
+	print("here1.3")
 	if not has_section(start_section):
 		start_section = get_objects_constructor(store)
 	store_meta()
+	print("here1.4")
 	store_signals()
+	print("here1.5")
 	store_callables()
+	print("here2")
 	var err:Error
 	if key == PackedByteArray():
+		print("here3")
 		err = save(save_file_path)
 	else:
 		err = save_encrypted(save_file_path,key)
 	clean_up()
+	print("here")
 	return err
 #endregion
 
@@ -363,8 +378,7 @@ func restore_signals() -> void:
 				object.connect(conn["name"],signal_callables ,conn["flags"])
 
 ## Add key if loading encrypted file
-func can_load_from(file_path:String,restore:Object,key: PackedByteArray =  PackedByteArray(),\
-	loaded:bool = false) -> Error: 
+func can_load_from(file_path: String,restore: Object,key := PackedByteArray(), loaded := false) -> Error:
 	if not loaded:
 		clean_up()
 		var err:Error
@@ -378,20 +392,18 @@ func can_load_from(file_path:String,restore:Object,key: PackedByteArray =  Packe
 	var stored = object_from_constructor(constructor)
 	if not restore and not are_object_same_class(stored,restore):
 		return FAILED
-	if not file_path.get_extension().is_empty():
-		file_path = file_path.get_base_dir()
-	DirAccess.open(file_path)
+	DirAccess.open(file_path.get_base_dir())
 	return DirAccess.get_open_error()
 
 ## Add key if loading encrypted file
-func load_from(load_file_path:String,restore:Object = null,key:PackedByteArray = PackedByteArray())\
-	 -> Object:
+func load_from(load_file_path:String,restore:Object = null,key := PackedByteArray()) -> Object:
 	clean_up()
-	if key == PackedByteArray():
-		self.load(load_file_path)
+	var err := OK
+	if key.is_empty():
+		err = self.load(load_file_path)
 	else:
-		load_encrypted(load_file_path,key)
-	if not can_load_from(load_file_path,restore,key,true) == OK:
+		err = load_encrypted(load_file_path,key)
+	if err != OK or not can_load_from(load_file_path,restore,key,true) == OK:
 		return restore
 	start_section = get_value(meta_section_name,meta_section_name)
 	restore = restore_object(start_section,restore)

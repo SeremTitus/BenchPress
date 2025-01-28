@@ -1,27 +1,47 @@
 [gd_scene load_steps=3 format=3 uid="uid://e1vs13sgv43x"]
 
-[ext_resource type="Script" path="res://src/UI/elements_tree/ElementTree.gd" id="1_ebxs8"]
-[ext_resource type="Script" path="res://src/UI/elements_tree/TrueTree.gd" id="2_v16k6"]
+[ext_resource type="Script" path="res://src/UI/ActionCalls_tree/ActionCallTree.gd" id="1_ebxs8"]
+[ext_resource type="Script" path="res://src/UI/ActionCalls_tree/TrueTree.gd" id="2_v16k6"]
 
-[node name="ElementsTree" type="PanelContainer"]
+[node name="ActionCallsTree" type="PanelContainer"]
 custom_minimum_size = Vector2(150, 0)
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 83.0
 grow_vertical = 2
+size_flags_vertical = 3
 script = ExtResource("1_ebxs8")
 
 [node name="Layout" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Layout"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Layout"]
 layout_mode = 2
 
-[node name="FilterElements" type="LineEdit" parent="Layout/HBoxContainer"]
+[node name="Library" type="VBoxContainer" parent="Layout/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Layout/VBoxContainer/Library"]
+layout_mode = 2
+text = "Select Library:"
+
+[node name="LibrarySelection" type="OptionButton" parent="Layout/VBoxContainer/Library"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Filter Elements"
+item_count = 1
+selected = 0
+popup/item_0/text = "All"
+popup/item_0/id = 0
+
+[node name="Filter" type="HBoxContainer" parent="Layout/VBoxContainer"]
+layout_mode = 2
+
+[node name="FilterActionCalls" type="LineEdit" parent="Layout/VBoxContainer/Filter"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Filter ActionCalls"
 clear_button_enabled = true
 
 [node name="TrueTree" type="VBoxContainer" parent="Layout"]
@@ -31,4 +51,4 @@ size_flags_vertical = 3
 script = ExtResource("2_v16k6")
 is_root_hiden = true
 
-[connection signal="text_changed" from="Layout/HBoxContainer/FilterElements" to="." method="search_tree"]
+[connection signal="text_changed" from="Layout/VBoxContainer/Filter/FilterActionCalls" to="." method="search_tree"]

@@ -16,7 +16,9 @@ static func variable(this:Variant) -> Variant:
 	var new_var:Variant
 	match typeof(this):
 		TYPE_ARRAY:
-			var new_array:Array = []
+			var new_array: Array
+			if this.is_typed():
+				new_array = Array([], this.get_typed_builtin(), this.get_typed_class_name(), this.get_typed_script())
 			for item in this:
 				if item is Object:
 					new_array.append(object(item))
@@ -24,7 +26,9 @@ static func variable(this:Variant) -> Variant:
 					new_array.append(variable(item))
 			new_var = new_array
 		TYPE_DICTIONARY:
-			var new_dict:Dictionary = {}
+			var new_dict:Dictionary
+			if new_dict.is_typed():
+				new_dict = Dictionary({}, this.get_typed_key_builtin(), this.get_typed_key_class_name(), this.get_typed_key_script(), this.get_typed_value_builtin(), this.get_typed_value_class_name(), this.get_typed_value_script())
 			for key in this:
 				var item = variable(this[key]) if not this[key] is Object else object(this[key])
 				key = variable(key) if not key is Object else object(key)

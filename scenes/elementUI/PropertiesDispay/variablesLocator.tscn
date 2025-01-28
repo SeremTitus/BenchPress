@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cwr0xqwu842ad"]
 
 [ext_resource type="Texture2D" uid="uid://deqa82u4ia1j4" path="res://icon.png" id="2"]
-[ext_resource type="Script" path="res://scenes/elementUI/PropertiesDispay/variablesLocator.gd" id="4"]
+[ext_resource type="Script" path="res://scenes/ActionCallUI/PropertiesDispay/variablesLocator.gd" id="4"]
 
 [node name="variablesLocator" type="Panel"]
 size_flags_vertical = 0

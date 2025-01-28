@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/icons/bin.svg" type="Texture" id=1]
-[ext_resource path="res://scenes/elementUI/PropertiesDispay/ListingItem.gd" type="Script" id=3]
+[ext_resource path="res://scenes/ActionCallUI/PropertiesDispay/ListingItem.gd" type="Script" id=3]
 
 [sub_resource type="DynamicFontData" id=33]
 font_path = "res://assets/fonts/noto_sans_ui_bold.ttf"

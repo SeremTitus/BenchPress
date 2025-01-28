@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cbgfp848bd6n8"]
+[gd_scene load_steps=6 format=3 uid="uid://cbgfp848bd6n8"]
 
 [ext_resource type="PackedScene" uid="uid://cibl6l7deh6ay" path="res://src/UI/topbar/TopBar.tscn" id="1_ppado"]
-[ext_resource type="PackedScene" uid="uid://e1vs13sgv43x" path="res://src/UI/elements_tree/ElementsTree.tscn" id="2_03klb"]
+[ext_resource type="PackedScene" uid="uid://e1vs13sgv43x" path="res://src/UI/ActionCalls_tree/ActionCallsTree.tscn" id="2_03klb"]
+[ext_resource type="PackedScene" uid="uid://028x38l1rfns" path="res://src/UI/Subroutine_container/SubroutinesContainer.tscn" id="3_6mgmd"]
 
 [sub_resource type="SystemFont" id="SystemFont_gg4t5"]
 
@@ -44,5 +45,18 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ElementsTree" parent="Layout/WorkSpace" instance=ExtResource("2_03klb")]
+[node name="HSplitContainer" type="HSplitContainer" parent="Layout/WorkSpace"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="ActionCallsTree" parent="Layout/WorkSpace/HSplitContainer" instance=ExtResource("2_03klb")]
+layout_mode = 2
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Layout/WorkSpace/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="SubroutineContainer" parent="Layout/WorkSpace/HSplitContainer/HSplitContainer" instance=ExtResource("3_6mgmd")]
 layout_mode = 2

@@ -1,25 +1,26 @@
 extends Control
 
-var flowname :String = '' :set=setflowname
+var Subroutinename :String = '' :set=setSubroutinename
 
-func setflowname(newvalue):
-	flowname = newvalue
-	$"%LabelFlow".text = flowname
-	if Global.selected_flow == flowname:
-		$"%LabelFlow".modulate ='#ffc11d'
+func setSubroutinename(newvalue):
+	Subroutinename = newvalue
+	$"%LabelSubroutine".text = Subroutinename
+	#if Global.selected_Subroutine == Subroutinename:
+	#	$"%LabelSubroutine".modulate ='#ffc11d'
 
-func _on_LabelFlow_text_entered(new_text):
-	if flowname == new_text: return FAILED
-	new_text = Global.unique_name(Global.current_project.Flows.keys(),new_text)
-	if Global.selected_flow == flowname: Global.selected_flow = new_text
-	Global.rename_flow(flowname,new_text)
+func _on_LabelSubroutine_text_entered(new_text):
+	if Subroutinename == new_text: return FAILED
+	#new_text = Global.unique_name(Global.current_project.Subroutines.keys(),new_text)
+	#if Global.selected_Subroutine == Subroutinename: Global.selected_Subroutine = new_text
+	#Global.rename_Subroutine(Subroutinename,new_text)
 
-func _on_LabelFlow_gui_input(event):
-	if event is InputEventMouseButton and event.is_pressed() and event.get_button_index() == 1 and not $"%LabelFlow".editable:
-		Global.selected_flow = flowname
+func _on_LabelSubroutine_gui_input(event):
+	if event is InputEventMouseButton and event.is_pressed() and event.get_button_index() == 1 and not $"%LabelSubroutine".editable:
+		#Global.selected_Subroutine = Subroutinename
+		pass
 
 func _on_RemoveButton_pressed():
-	$"%LabelFlow".editable = false
+	$"%LabelSubroutine".editable = false
 	$"%RemoveButton".visible = false
 	$"%EditButton".visible =false
 	$"%ConfirmButton".visible =false
@@ -27,21 +28,21 @@ func _on_RemoveButton_pressed():
 	$"%DeleteButton".visible = true
 	
 func _on_ConfirmButton_pressed():
-	$"%LabelFlow".editable = false
-	_on_LabelFlow_text_entered($"%LabelFlow".text)
+	$"%LabelSubroutine".editable = false
+	_on_LabelSubroutine_text_entered($"%LabelSubroutine".text)
 	$"%ConfirmButton".visible =false
 	$"%EditButton".visible = true
 	$"%cancelButton".visible = false
 	
 func _on_EditButton_pressed():
-	$"%LabelFlow".editable = true
+	$"%LabelSubroutine".editable = true
 	$"%EditButton".visible =false
 	$"%ConfirmButton".visible =true
 	$"%cancelButton".visible = true
 
 func _on_cancelButton_pressed():
-	$"%LabelFlow".text = flowname
-	$"%LabelFlow".editable = false
+	$"%LabelSubroutine".text = Subroutinename
+	$"%LabelSubroutine".editable = false
 	$"%RemoveButton".visible = true	
 	$"%EditButton".visible = true
 	$"%ConfirmButton".visible = false
@@ -51,17 +52,17 @@ func _on_cancelButton_pressed():
 
 func _on_DeleteButton_pressed():
 	_on_cancelButton_pressed()
-	if Global.selected_flow == flowname:
-		var previous = ''
-		for key in Global.current_project.Flows.keys():
-			if key == flowname: break
-			previous = key
-		if previous == '':
-			var next = false
-			for key in Global.current_project.Flows.keys():
-				if next:
-					previous = key
-					break
-				if key == flowname: next = true
-		Global.selected_flow = previous
-	Global.delete_flow(flowname)
+	#if Global.selected_Subroutine == Subroutinename:
+	#	var previous = ''
+	#	for key in Global.current_project.Subroutines.keys():
+	#		if key == Subroutinename: break
+	#		previous = key
+	#	if previous == '':
+	#		var next = false
+	#		for key in Global.current_project.Subroutines.keys():
+	#			if next:
+	#				previous = key
+	#				break
+	#			if key == Subroutinename: next = true
+	#	Global.selected_Subroutine = previous
+	#Global.delete_Subroutine(Subroutinename)

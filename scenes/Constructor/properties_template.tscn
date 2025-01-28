@@ -157,7 +157,7 @@ rect_min_size = Vector2( 0, 26 )
 size_flags_horizontal = 3
 custom_styles/normal = SubResource( 24 )
 script = ExtResource( 2 )
-OptionItems = PoolStringArray( "ALL Allowed", "Display only", "Global variable only", "Flow variables only", "Display with Global variables", "Display with flow variables" )
+OptionItems = PoolStringArray( "ALL Allowed", "Display only", "Global variable only", "Subroutine variables only", "Display with Global variables", "Display with Subroutine variables" )
 
 [node name="MaxSizeContainer16" type="MarginContainer" parent="."]
 margin_left = 735.0

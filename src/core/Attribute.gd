@@ -1,10 +1,10 @@
 class_name Attribute extends RefCounted
 
-signal attribute_value_changed(new_value:Variant)
-signal attribute_const_changed_attempt(attribute:Attribute,new_value:Variant)
+signal attribute_value_changed(new_value: Variant)
+signal attribute_const_changed_attempt(attribute: Attribute, new_value: Variant)
 
 enum types {
-	None = 0,
+	None,
 	Bool,
 	Number,
 	Enum,
@@ -22,17 +22,18 @@ enum types {
 	UISelectorAndroid
 }
 
-var original_name:StringName = &""
-var unique_name:StringName = &""
-var value:Variant:set = set_value, get = get_value
-var default_value:Variant
-var type:types = types.None
-var is_const = false
+var original_name: StringName
+var unique_name: StringName
+var value: Variant: set = set_value,get = get_value
+var default_value: Variant
+var type := types.None
+var is_const := false
 
-var references:Unique
-var profile:String
+var references: Unique
+## consider it as unique name grouping
+var profile: String
 
-func set_value(new_value:Variant) -> void:
+func set_value(new_value: Variant) -> void:
 	if new_value is String:
 		if new_value[0] == '"':
 			new_value = new_value.erase(0)
@@ -47,11 +48,17 @@ func set_value(new_value:Variant) -> void:
 func get_value() -> Variant:
 	match type:
 		types.Text, types.LongText, types.OSPath:
-			return '"' + str(value) + '"'
+			return '"' + str(value if value else default_value) + '"'
 	return value
 
-func  reset_value() -> void:
+func reset_value() -> void:
 	set_value(default_value)
+
+func _init(name: String = "", new_type: types = types.None ) -> void:
+	if not name.is_empty():
+		original_name = name
+	if type != types.None:
+		type = new_type
 
 func ensure_global() -> void:
 	if unique_name.is_empty():
@@ -59,13 +66,14 @@ func ensure_global() -> void:
 		if references and profile:
 			align(references,profile)
 
-func  align(new_references:Unique, profile_name:String) -> void:
+func align(new_references: Unique, profile_name: String) -> void:
 	references = new_references
 	profile = profile_name
 	unique_name = new_references.assign_guided(original_name,profile)
 
-func  unique_rename(new_name:String) -> void:
+func  unique_rename(new_name: String) -> void:
 	if not references:
 		references.unassign(unique_name,profile)
 		new_name = references.assign_guided(new_name,profile)
 	unique_name = new_name
+	

@@ -1,6 +1,6 @@
 extends HBoxContainer
 
-var listingitem = preload("res://scenes/elementUI/PropertiesDispay/ListingItem.tscn")
+var listingitem = preload("res://scenes/ActionCallUI/PropertiesDispay/ListingItem.tscn")
 var listingItemSiblingNo =-1
 
 var subtype = 'List'#'Dictionary'

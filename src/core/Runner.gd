@@ -17,7 +17,7 @@ func _init(new_address:String = "*") -> void:
 	process_timer.timeout.connect(start_timer)
 	start_listening()
 	start_timer()
-	
+
 func  start_timer():
 	process_tick()
 	process_timer.start(1.0)

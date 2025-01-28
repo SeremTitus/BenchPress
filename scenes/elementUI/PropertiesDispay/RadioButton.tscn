@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://t3k6oqa4mqex"]
 
-[ext_resource type="Script" path="res://scenes/elementUI/PropertiesDispay/RadioButton.gd" id="2"]
+[ext_resource type="Script" path="res://scenes/ActionCallUI/PropertiesDispay/RadioButton.gd" id="2"]
 
 [node name="RadioButton" type="HBoxContainer"]
 size_flags_horizontal = 3

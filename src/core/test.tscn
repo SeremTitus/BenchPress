@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://bs4iimv4gtka7"]
+
+[sub_resource type="GDScript" id="GDScript_6l4ki"]
+script/source = "extends Node
+
+func _ready():
+	var print_strut := Action.new()
+	print_strut.title = \"print_hello\"
+	print_strut.code = \"print(hello)\\nprint(hll)\"
+	var hello := Attribute.new()
+	hello.type = Attribute.types.Text
+	hello.original_name = \"hello\"
+	print_strut.global_properties.append(hello)
+	var hll := Attribute.new()
+	hll.type = Attribute.types.Text
+	hll.original_name = \"hll\"
+	hll.default_value = \"default val\"
+	print_strut.properties.append(hll)
+
+	var bench := Benchpress.new(\"res://src/core/A/test.benchpress\", true)
+	var elem := bench.main_subroutine.create_child_action_call(print_strut)
+	elem.properties[0].value = \"new val\"
+	bench.save()
+	print(Transcompiler.new().to_python(bench))
+	Transcompiler.create_file(\"res://src/core/A/b.py\", Transcompiler.new().to_python(bench))
+	print(\"Done \")
+"
+
+[node name="Test" type="Node"]
+script = SubResource("GDScript_6l4ki")
